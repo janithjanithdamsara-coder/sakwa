@@ -1509,6 +1509,56 @@ textarea.form-control { height: 70px; resize: vertical; }
   .header-user-profile button span, .user-info {
     display: none;
   }
+
+  /* Mobile Data Tables to Mobile Cards Transformation */
+  .table-container {
+    border: none;
+  }
+
+  .custom-table, .custom-table tbody, .custom-table tr, .custom-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .custom-table thead {
+    display: none;
+  }
+
+  .custom-table tbody tr {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  }
+
+  .custom-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--border-color);
+    font-size: 13px;
+    text-align: right;
+  }
+
+  .custom-table tbody td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 4px;
+  }
+
+  .custom-table tbody td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    text-align: left;
+    margin-right: 12px;
+  }
 }
 
 /* ----------------------------------------------------

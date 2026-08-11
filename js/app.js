@@ -666,15 +666,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rawBody) {
       rawBody.innerHTML = appData.rawMaterialsStock.map(item => `
         <tr>
-          <td style="font-weight:600">${item.name}</td>
-          <td>${item.category}</td>
-          <td>${item.supplier}</td>
-          <td><code>${item.lotBatch}</code></td>
-          <td>${item.receivedQty.toLocaleString()}</td>
-          <td>${item.issuedQty.toLocaleString()}</td>
-          <td style="font-weight:700; color:var(--accent-blue)">${item.balance.toLocaleString()}</td>
-          <td>${item.unit}</td>
-          <td>${item.expiry}</td>
+          <td data-label="Item Name" style="font-weight:600">${item.name}</td>
+          <td data-label="Category">${item.category}</td>
+          <td data-label="Supplier">${item.supplier}</td>
+          <td data-label="Lot/Batch"><code>${item.lotBatch}</code></td>
+          <td data-label="Received Qty">${item.receivedQty.toLocaleString()}</td>
+          <td data-label="Issued Qty">${item.issuedQty.toLocaleString()}</td>
+          <td data-label="Balance" style="font-weight:700; color:var(--accent-blue)">${item.balance.toLocaleString()}</td>
+          <td data-label="Unit">${item.unit}</td>
+          <td data-label="Expiry Date">${item.expiry}</td>
         </tr>
       `).join('');
     }
@@ -683,12 +683,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pkgBody) {
       pkgBody.innerHTML = appData.packagingMaterialsStock.map(item => `
         <tr>
-          <td><code>${item.materialCode}</code></td>
-          <td style="font-weight:600">${item.name}</td>
-          <td>${item.received.toLocaleString()}</td>
-          <td>${item.issued.toLocaleString()}</td>
-          <td style="font-weight:700; color:var(--accent-green)">${item.balance.toLocaleString()}</td>
-          <td>${item.unit}</td>
+          <td data-label="Material Code"><code>${item.materialCode}</code></td>
+          <td data-label="Description" style="font-weight:600">${item.name}</td>
+          <td data-label="Total Received">${item.received.toLocaleString()}</td>
+          <td data-label="Total Issued">${item.issued.toLocaleString()}</td>
+          <td data-label="Current Balance" style="font-weight:700; color:var(--accent-green)">${item.balance.toLocaleString()}</td>
+          <td data-label="Unit">${item.unit}</td>
         </tr>
       `).join('');
     }
@@ -697,13 +697,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (wipBody) {
       wipBody.innerHTML = appData.wipStock.map(item => `
         <tr>
-          <td>${item.productionDate}</td>
-          <td><code>${item.batchNo}</code></td>
-          <td><code>${item.retortLot}</code></td>
-          <td>${item.fishIssuedKg.toLocaleString()}</td>
-          <td>${item.brineOilUsage}</td>
-          <td style="font-weight:700">${item.cansProduced.toLocaleString()}</td>
-          <td><span class="badge badge-good">${item.status}</span></td>
+          <td data-label="Production Date">${item.productionDate}</td>
+          <td data-label="Batch No."><code>${item.batchNo}</code></td>
+          <td data-label="Retort Lot"><code>${item.retortLot}</code></td>
+          <td data-label="Fish Issued">${item.fishIssuedKg.toLocaleString()} kg</td>
+          <td data-label="Usage">${item.brineOilUsage}</td>
+          <td data-label="Cans Produced" style="font-weight:700">${item.cansProduced.toLocaleString()}</td>
+          <td data-label="Status"><span class="badge badge-good">${item.status}</span></td>
         </tr>
       `).join('');
     }
@@ -712,15 +712,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fgBody) {
       fgBody.innerHTML = appData.finishedGoodsStock.map(item => `
         <tr>
-          <td style="font-weight:600">${item.brandProduct}</td>
-          <td><code>${item.batchNo}</code></td>
-          <td>${item.prodDate}</td>
-          <td>${item.expiryDate}</td>
-          <td>${item.totalCartons.toLocaleString()}</td>
-          <td>${item.totalCans.toLocaleString()}</td>
-          <td>${item.dispatchedQty.toLocaleString()}</td>
-          <td style="font-weight:700; color:var(--accent-purple)">${item.balanceCartons.toLocaleString()}</td>
-          <td style="font-weight:700; color:var(--accent-blue)">${item.balanceCans.toLocaleString()}</td>
+          <td data-label="Product" style="font-weight:600">${item.brandProduct}</td>
+          <td data-label="Batch No."><code>${item.batchNo}</code></td>
+          <td data-label="Mfg Date">${item.prodDate}</td>
+          <td data-label="Expiry Date">${item.expiryDate}</td>
+          <td data-label="Total Cartons">${item.totalCartons.toLocaleString()}</td>
+          <td data-label="Total Cans">${item.totalCans.toLocaleString()}</td>
+          <td data-label="Dispatched">${item.dispatchedQty.toLocaleString()}</td>
+          <td data-label="Balance Cartons" style="font-weight:700; color:var(--accent-purple)">${item.balanceCartons.toLocaleString()}</td>
+          <td data-label="Balance Cans" style="font-weight:700; color:var(--accent-blue)">${item.balanceCans.toLocaleString()}</td>
         </tr>
       `).join('');
     }
@@ -735,12 +735,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tbody.innerHTML = appData.reorderAlerts.map(item => `
       <tr>
-        <td>${item.itemType}</td>
-        <td style="font-weight:600">${item.itemName}</td>
-        <td style="font-weight:700; color:#dc2626">${item.currentStock}</td>
-        <td>${item.reorderLevel}</td>
-        <td><span class="badge badge-low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</span></td>
-        <td style="text-align:center">
+        <td data-label="Item Type">${item.itemType}</td>
+        <td data-label="Item Name" style="font-weight:600">${item.itemName}</td>
+        <td data-label="Current Stock" style="font-weight:700; color:#dc2626">${item.currentStock}</td>
+        <td data-label="Re-order Level">${item.reorderLevel}</td>
+        <td data-label="Status"><span class="badge badge-low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</span></td>
+        <td data-label="Action" style="text-align:center">
           <button type="button" class="btn-outline-blue btn-reorder-action" data-item="${item.itemName}" style="padding:4px 12px; font-size:12px">
             Re-order
           </button>
@@ -767,13 +767,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       return `
         <tr>
-          <td>${item.itemType}</td>
-          <td style="font-weight:600">${item.itemName}</td>
-          <td><code>${item.batchNo}</code></td>
-          <td>${item.mfgDate}</td>
-          <td>${item.expiryDate}</td>
-          <td style="font-weight:700">${item.daysLeft} days</td>
-          <td><span class="badge ${badgeClass}">${item.status}</span></td>
+          <td data-label="Item Type">${item.itemType}</td>
+          <td data-label="Item Name" style="font-weight:600">${item.itemName}</td>
+          <td data-label="Batch No."><code>${item.batchNo}</code></td>
+          <td data-label="Mfg Date">${item.mfgDate}</td>
+          <td data-label="Expiry Date">${item.expiryDate}</td>
+          <td data-label="Days Left" style="font-weight:700">${item.daysLeft} days</td>
+          <td data-label="Status"><span class="badge ${badgeClass}">${item.status}</span></td>
         </tr>
       `;
     }).join('');
