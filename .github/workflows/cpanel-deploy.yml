@@ -1,0 +1,23 @@
+# Automated Deployment to cPanel via FTP (GitHub Actions)
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  web-deploy:
+    name: Deploy to cPanel Web Hosting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Latest Code
+        uses: actions/checkout@v4
+
+      - name: Sync files to cPanel FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.CPANEL_FTP_SERVER }}
+          username: ${{ secrets.CPANEL_FTP_USERNAME }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          port: 21
+          server-dir: /public_html/
