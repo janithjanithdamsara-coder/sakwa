@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sakwa Canneries & Exports (Pvt) Ltd | Inventory & Public Portal</title>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- App Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="public-mode" id="appBody">
+
+  <!-- ==========================================
+       PUBLIC LANDING PAGE (SAKWA CANNERIES)
+       ========================================== -->
+  <div class="public-page" id="publicHomePage">
+    
+    <!-- Public Navbar -->
+    <header class="public-nav">
+      <div class="public-nav-container">
+        <div class="brand-logo-group">
+          <div class="public-brand-logo">
+            <i class="fa-solid fa-fish-fins"></i>
+          </div>
+          <div>
+            <div class="public-brand-title">SAKWA CANNERIES & EXPORTS</div>
+            <div class="public-brand-sub">(PVT) LTD • BADDEGAMA, SRI LANKA</div>
+          </div>
+        </div>
+
+        <nav class="public-nav-links">
+          <a href="#hero" class="pub-link active">Home</a>
+          <a href="#products" class="pub-link">Products</a>
+          <a href="#about" class="pub-link">About Us</a>
+          <a href="#contact" class="pub-link">Contact</a>
+          <button class="btn-login-nav" id="btnNavToLogin">
+            <i class="fa-solid fa-lock"></i> Staff Login
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-certificate"></i> SLS Certified Canned Fish • Made in Sri Lanka
+        </div>
+        <h1 class="hero-headline">Premium Seafood & Canned Fish Exporters</h1>
+        <p class="hero-subtext">
+          Sakwa Canneries & Exports (Pvt) Ltd processes fresh deep-sea Mackerel and Tuna into high-grade 425g canned products, supplying domestic markets and international exports.
+        </p>
+        <div class="hero-actions">
+          <a href="#products" class="btn-hero-primary">Explore Our Products</a>
+          <button class="btn-hero-secondary" id="btnHeroLogin">
+            <i class="fa-solid fa-right-to-bracket"></i> Storekeeper Portal
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Highlights Strip -->
+    <section class="highlights-bar">
+      <div class="highlight-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <div class="hl-title">SLS Quality Standard</div>
+          <div class="hl-desc">100% SLS Certified Processing</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <i class="fa-solid fa-anchor"></i>
+        <div>
+          <div class="hl-title">Fresh Ocean Catch</div>
+          <div class="hl-desc">Direct from Sri Lankan Waters</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <i class="fa-solid fa-temperature-arrow-down"></i>
+        <div>
+          <div class="hl-title">Advanced Retort Tech</div>
+          <div class="hl-desc">Strict Sterilization & Hygiene</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <i class="fa-solid fa-globe"></i>
+        <div>
+          <div class="hl-title">Global Exports</div>
+          <div class="hl-desc">Supplying Local & Export Markets</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Showcase Section -->
+    <section class="products-section" id="products">
+      <div class="section-container">
+        <div class="text-center">
+          <div class="section-tag">Our Main Products</div>
+          <h2 class="section-title">425g Canned Fish Line</h2>
+          <p class="section-desc">Delivering unmatched quality, nutritional value, and long shelf-life.</p>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-tag-badge">Bestseller</div>
+            <div class="product-img-box">
+              <i class="fa-solid fa-jar-wheat" style="color:var(--accent-orange)"></i>
+            </div>
+            <div class="product-details">
+              <h3>425g Mackerel in Tomato Sauce</h3>
+              <p>Rich, savory tomato gravy crafted from fresh tomatoes and Sri Lankan ocean mackerel. 3-year shelf life.</p>
+              <div class="product-specs">
+                <span>Net Wt: 425g</span>
+                <span>Can Type: Rigiform Tin</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-tag-badge" style="background:#0284c7">Healthy Choice</div>
+            <div class="product-img-box">
+              <i class="fa-solid fa-bottle-water" style="color:var(--accent-blue)"></i>
+            </div>
+            <div class="product-details">
+              <h3>425g Mackerel in Natural Brine</h3>
+              <p>Preserved in purified sea salt brine without artificial preservatives. Ideal for health-conscious consumers.</p>
+              <div class="product-specs">
+                <span>Net Wt: 425g</span>
+                <span>Can Type: Rigiform Tin</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-tag-badge" style="background:#8b5cf6">Premium Export</div>
+            <div class="product-img-box">
+              <i class="fa-solid fa-fish" style="color:var(--accent-purple)"></i>
+            </div>
+            <div class="product-details">
+              <h3>425g Yellowfin Tuna in Oil</h3>
+              <p>Select Yellowfin Tuna steaks packed in refined vegetable oil, offering high omega-3 fatty acids and rich taste.</p>
+              <div class="product-specs">
+                <span>Net Wt: 425g</span>
+                <span>Can Type: Easy-Open Lid</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <div class="section-container grid-2-col">
+        <div>
+          <div class="section-tag">About Sakwa Canneries</div>
+          <h2 class="section-title">Leading Fish Canning & Processing Plant in Baddegama</h2>
+          <p>
+            Sakwa Canneries & Exports (Pvt) Ltd operates a modern seafood canning facility located at Baddegama, Sri Lanka. Our state-of-the-art retort sterilization, blast freezing, and packaging lines ensure every can meets international quality standards.
+          </p>
+          <ul class="about-list">
+            <li><i class="fa-solid fa-check-circle"></i> Strict adherence to HACCP & SLS quality protocols</li>
+            <li><i class="fa-solid fa-check-circle"></i> Complete raw material traceability from vessel arrival to finished cans</li>
+            <li><i class="fa-solid fa-check-circle"></i> Supporting local coastal fishing communities</li>
+          </ul>
+        </div>
+        <div class="facility-card-box">
+          <div class="facility-card">
+            <i class="fa-solid fa-industry"></i>
+            <h3>Modern Canning Facility</h3>
+            <p>Aratuweta Waththa, Boralukada, Baddegama, Sri Lanka</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <footer class="public-footer" id="contact">
+      <div class="footer-container">
+        <div class="footer-col">
+          <div class="public-brand-title" style="font-size:18px; margin-bottom:10px">SAKWA CANNERIES & EXPORTS (PVT) LTD</div>
+          <p style="color:#94a3b8; font-size:13px; line-height:1.6">
+            Leading manufacturer and exporter of canned seafood in Sri Lanka. Committed to quality, sustainability, and excellence.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Official Contact</h4>
+          <p><i class="fa-solid fa-location-dot"></i> Aratuweta Waththa, Boralukada, Baddegama, Sri Lanka</p>
+          <p><i class="fa-brands fa-whatsapp"></i> Phone / WhatsApp: 071 55 22 378</p>
+          <p><i class="fa-solid fa-envelope"></i> Email: sakwa.trading578@gmail.com</p>
+        </div>
+        <div class="footer-col">
+          <h4>Portal Access</h4>
+          <p style="color:#94a3b8; font-size:13px">Authorized storekeepers and factory supervisors can access internal stock management software here.</p>
+          <button class="btn-hero-primary" id="btnFooterLogin" style="margin-top:12px; font-size:13px">
+            <i class="fa-solid fa-right-to-bracket"></i> Login to Inventory System
+          </button>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 Sakwa Canneries & Exports (Pvt) Ltd. All Rights Reserved.
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==========================================
+       STAFF LOGIN SCREEN / MODAL
+       ========================================== -->
+  <div class="login-screen-wrapper" id="loginScreen">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">
+          <i class="fa-solid fa-fish-fins"></i>
+        </div>
+        <h2>Sakwa Canneries & Exports</h2>
+        <p>Factory Inventory System • Storekeeper Portal</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group" style="margin-bottom:16px">
+          <label for="loginUsername">Username / Staff ID</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-user input-icon"></i>
+            <input type="text" class="form-control" id="loginUsername" placeholder="e.g. storekeeper" value="storekeeper" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label for="loginPassword">Password</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" value="sakwa123" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-password" id="togglePasswordBtn" title="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login-submit" id="btnLoginSubmit">
+          <span>Log In to System</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="login-quick-demo">
+        <button type="button" class="btn-quick-login" id="btnQuickLogin">
+          <i class="fa-solid fa-bolt"></i> 1-Click Storekeeper Demo Login
+        </button>
+      </div>
+
+      <div style="margin-top:20px; text-align:center">
+        <button type="button" class="btn-back-home" id="btnBackToHome">
+          <i class="fa-solid fa-arrow-left"></i> Back to Public Website
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SIDEBAR & INTERNAL INVENTORY SYSTEM
+       ========================================== -->
+  <aside class="sidebar" id="appSidebar">
+    <div>
+      <div class="brand-header">
+        <div class="brand-logo">
+          <i class="fa-solid fa-fish"></i>
+        </div>
+        <div>
+          <div class="brand-title">Sakwa Canneries</div>
+          <div class="brand-subtitle">INVENTORY SYSTEM</div>
+        </div>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item active" data-view="dashboard">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard</span>
+        </li>
+        <li class="nav-item" data-view="fish-arrival">
+          <i class="fa-solid fa-truck-ramp-box"></i>
+          <span>Fish Arrival (Note)</span>
+        </li>
+        <li class="nav-item" data-view="raw-grn">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Raw Material GRN</span>
+        </li>
+        <li class="nav-item" data-view="stock-issuing">
+          <i class="fa-solid fa-boxes-packing"></i>
+          <span>Stock Issuing</span>
+        </li>
+        <li class="nav-item" data-view="stock-inventory">
+          <i class="fa-solid fa-warehouse"></i>
+          <span>Stock Inventory</span>
+        </li>
+        <li class="nav-item" data-view="reorder-alerts">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Re-order Alerts</span>
+        </li>
+        <li class="nav-item" data-view="expiry-tracking">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Expiry Tracking</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout to Website</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       INTERNAL MAIN WRAPPER
+       ========================================== -->
+  <div class="main-wrapper" id="appMainWrapper">
+
+    <!-- Top Header -->
+    <header class="top-header">
+      <div style="display:flex; align-items:center; gap:16px">
+        <h1 class="page-header-title" id="pageTitle">Dashboard</h1>
+      </div>
+      
+      <div class="header-user-profile">
+        <button class="btn-outline-blue" id="btnHeaderPublicWebsite" style="padding:6px 14px; font-size:12px; margin-right:10px">
+          <i class="fa-solid fa-globe"></i> Public Website
+        </button>
+        <div class="user-info">
+          <div class="user-welcome">Welcome, <strong style="color:var(--text-primary)" id="currentUserName">Storekeeper</strong></div>
+        </div>
+        <div class="user-avatar">
+          <i class="fa-solid fa-user-gear"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Views -->
+    <main class="content-area">
+
+      <!-- 1. DASHBOARD VIEW -->
+      <section class="view-panel active" id="view-dashboard">
+        <!-- Stock Summary Cards -->
+        <div class="section-label">Stock Summary</div>
+        <div class="dashboard-grid">
+          <div class="summary-card card-blue">
+            <div class="card-icon-wrapper"><i class="fa-solid fa-fish"></i></div>
+            <div class="card-content">
+              <div class="card-subtitle">Raw Fish (Weight)</div>
+              <div class="card-value" id="dashRawFish">12,450 <span class="card-unit">kg</span></div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Total Net Weight</div>
+            </div>
+          </div>
+
+          <div class="summary-card card-green">
+            <div class="card-icon-wrapper"><i class="fa-solid fa-box-archive"></i></div>
+            <div class="card-content">
+              <div class="card-subtitle">Empty Cans / Boxes</div>
+              <div class="card-value" id="dashCans">28,560</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Total Available</div>
+              <div class="card-breakdown">
+                <div>Rigiform Cans: <span id="dashRigiform">18,200</span></div>
+                <div>Plastic Boxes: <span id="dashPlastic">10,360</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-card card-orange">
+            <div class="card-icon-wrapper"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <div class="card-content">
+              <div class="card-subtitle">Salt Stock</div>
+              <div class="card-value" id="dashSalt">2,150 <span class="card-unit">kg</span></div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Total Available</div>
+            </div>
+          </div>
+
+          <div class="summary-card card-purple">
+            <div class="card-icon-wrapper"><i class="fa-solid fa-bottle-droplet"></i></div>
+            <div class="card-content">
+              <div class="card-subtitle">Oil Stock</div>
+              <div class="card-value" id="dashOil">1,320 <span class="card-unit">L</span></div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Total Available</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions-bar">
+          <div class="section-label">Quick Actions</div>
+          <div class="action-buttons-group">
+            <button class="btn-action btn-action-blue" id="btnNavFishArrival">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span>Add New Fish Arrival</span>
+            </button>
+            <button class="btn-action btn-action-green" id="btnNavGRN">
+              <i class="fa-solid fa-file-circle-plus"></i>
+              <span>Create Raw Material GRN</span>
+            </button>
+            <button class="btn-action btn-action-orange" id="btnNavIssuing">
+              <i class="fa-solid fa-dolly"></i>
+              <span>Issue to Production</span>
+            </button>
+            <button class="btn-action btn-action-purple" id="btnNavReports">
+              <i class="fa-solid fa-chart-column"></i>
+              <span>View Reports</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="section-label">Management Summary</div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Daily Production (kg)</span>
+              <i class="fa-solid fa-chart-simple" style="color:var(--accent-blue)"></i>
+            </div>
+            <div class="chart-container">
+              <canvas id="dailyProdChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Weekly Production (kg)</span>
+              <i class="fa-solid fa-chart-bar" style="color:var(--accent-green)"></i>
+            </div>
+            <div class="chart-container">
+              <canvas id="weeklyProdChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Monthly Waste (kg)</span>
+              <i class="fa-solid fa-chart-line" style="color:#ef4444"></i>
+            </div>
+            <div class="chart-container">
+              <canvas id="monthlyWasteChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. FISH ARRIVAL NOTE VIEW -->
+      <section class="view-panel" id="view-fish-arrival">
+        <div class="form-card">
+          <div class="form-section-title">Supplier Details</div>
+          <div class="form-grid-4">
+            <div class="form-group">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" class="form-control" id="fanDate" value="2025-05-18">
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" class="form-control" id="fanTime" value="08:45">
+            </div>
+            <div class="form-group">
+              <label>Supplier Name <span class="required">*</span></label>
+              <input type="text" class="form-control" id="fanSupplier" placeholder="e.g. Seagold Fisheries" value="Seagold Fisheries">
+            </div>
+            <div class="form-group">
+              <label>Vehicle No.</label>
+              <input type="text" class="form-control" id="fanVehicle" placeholder="WP - 1234" value="WP - 1234">
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label>Driver Name</label>
+              <input type="text" class="form-control" id="fanDriver" placeholder="Driver Name" value="Kamal Perera">
+            </div>
+          </div>
+
+          <div class="form-section-title">Fish Details</div>
+          <div class="form-grid-4">
+            <div class="form-group">
+              <label>Fish Species <span class="required">*</span></label>
+              <select class="form-control" id="fanSpecies">
+                <option value="Mackerel" selected>Mackerel</option>
+                <option value="Tuna">Yellowfin Tuna</option>
+                <option value="Sardine">Sardine</option>
+                <option value="Skipjack">Skipjack Tuna</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Box Type <span class="required">*</span></label>
+              <select class="form-control" id="fanBoxType">
+                <option value="Rigiform" selected>Rigiform</option>
+                <option value="Plastic">Plastic</option>
+                <option value="Wooden">Wooden</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>No. of Boxes</label>
+              <input type="number" class="form-control" id="fanNoBoxes" value="120">
+            </div>
+            <div class="form-group">
+              <label>Cans per Box</label>
+              <input type="number" class="form-control" id="fanCansPerBox" value="50">
+            </div>
+          </div>
+
+          <div class="form-section-title">Weight Details</div>
+          <div class="form-grid-4">
+            <div class="form-group">
+              <label>Total Supplier Weight (kg) <span class="required">*</span></label>
+              <input type="number" class="form-control calc-weight" id="fanSupplierWeight" value="3600">
+            </div>
+            <div class="form-group">
+              <label>Reject Weight (kg)</label>
+              <input type="number" class="form-control calc-weight" id="fanRejectWeight" value="240">
+            </div>
+            <div class="form-group">
+              <label>Deduction / Loss (kg)</label>
+              <input type="number" class="form-control calc-weight" id="fanLossWeight" value="60">
+            </div>
+            <div class="form-group">
+              <label style="color:var(--accent-green); font-weight:700">Net Weight (kg)</label>
+              <input type="number" class="form-control" id="fanNetWeight" value="3300" readonly style="font-weight:700; color:var(--accent-green); background:#f0fdf4">
+            </div>
+          </div>
+
+          <div class="form-section-title">Remarks</div>
+          <div class="form-group">
+            <textarea class="form-control" id="fanRemarks" placeholder="Notes about fish condition...">Good Quality Fish.</textarea>
+          </div>
+
+          <div class="form-actions-footer">
+            <button type="button" class="btn-secondary" id="btnFanClear">Clear</button>
+            <button type="button" class="btn-primary-blue" id="btnFanSave"><i class="fa-solid fa-floppy-disk"></i> Save Arrival Note</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. RAW MATERIAL GRN VIEW -->
+      <section class="view-panel" id="view-raw-grn">
+        <div class="form-card">
+          <div class="form-section-title">GRN Details</div>
+          <div class="form-grid-4">
+            <div class="form-group">
+              <label>GRN No.</label>
+              <input type="text" class="form-control" id="grnNo" value="GRN-2025-05-018" readonly style="font-weight:700">
+            </div>
+            <div class="form-group">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" class="form-control" id="grnDate" value="2025-05-18">
+            </div>
+            <div class="form-group">
+              <label>Supplier Name <span class="required">*</span></label>
+              <input type="text" class="form-control" id="grnSupplier" value="Seagold Fisheries">
+            </div>
+            <div class="form-group">
+              <label>Vehicle No.</label>
+              <input type="text" class="form-control" id="grnVehicle" value="WP - 1234">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Driver Name</label>
+              <input type="text" class="form-control" id="grnDriver" value="Kamal Perera">
+            </div>
+            <div class="form-group">
+              <label>Received By</label>
+              <select class="form-control" id="grnReceivedBy">
+                <option value="Storekeeper" selected>Storekeeper</option>
+                <option value="Asst Storekeeper">Asst Storekeeper</option>
+                <option value="Quality Manager">Quality Manager</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>Material Details</span>
+            <button type="button" class="btn-outline-blue" id="btnAddGrnRow" style="padding:4px 12px; font-size:12px">
+              <i class="fa-solid fa-plus"></i> Add Line Item
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="custom-table" id="grnItemsTable">
+              <thead>
+                <tr>
+                  <th style="width: 22%">Item Type</th>
+                  <th style="width: 28%">Item Name</th>
+                  <th style="width: 10%">Unit</th>
+                  <th style="width: 13%">Quantity</th>
+                  <th style="width: 13%">Unit Price (Rs.)</th>
+                  <th style="width: 14%">Total (Rs.)</th>
+                  <th style="width: 5%"></th>
+                </tr>
+              </thead>
+              <tbody id="grnItemsBody"></tbody>
+            </table>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; align-items:center; gap:16px; margin: 15px 0;">
+            <div style="font-size:14px; font-weight:700; color:var(--text-secondary)">Total Amount (Rs.):</div>
+            <div style="font-size:22px; font-weight:800; color:var(--accent-green)" id="grnGrandTotal">1,205,000.00</div>
+          </div>
+
+          <div class="form-actions-footer">
+            <button type="button" class="btn-secondary" id="btnGrnClear">Clear</button>
+            <button type="button" class="btn-outline-blue" id="btnGrnSaveDraft">Save Draft</button>
+            <button type="button" class="btn-primary-green" id="btnGrnSave"><i class="fa-solid fa-check"></i> Save GRN</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. STOCK ISSUING VIEW -->
+      <section class="view-panel" id="view-stock-issuing">
+        <div class="form-card">
+          <div class="form-section-title">Issue Details</div>
+          <div class="form-grid-4">
+            <div class="form-group">
+              <label>Issue No.</label>
+              <input type="text" class="form-control" id="issueNo" value="ISS-2025-06-018" readonly style="font-weight:700">
+            </div>
+            <div class="form-group">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" class="form-control" id="issueDate" value="2025-05-18">
+            </div>
+            <div class="form-group">
+              <label>Department / Section <span class="required">*</span></label>
+              <select class="form-control" id="issueDept">
+                <option value="Fish Canning Line - 1" selected>Fish Canning Line - 1</option>
+                <option value="Fish Canning Line - 2">Fish Canning Line - 2</option>
+                <option value="Retort Sterilization">Retort Sterilization</option>
+                <option value="Packing Line">Packing Line</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Issued By</label>
+              <select class="form-control" id="issueIssuedBy">
+                <option value="Storekeeper" selected>Storekeeper</option>
+                <option value="Asst Storekeeper">Asst Storekeeper</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>Material Issue Details</span>
+            <button type="button" class="btn-outline-blue" id="btnAddIssueRow" style="padding:4px 12px; font-size:12px">
+              <i class="fa-solid fa-plus"></i> Add Item
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="custom-table" id="issueItemsTable">
+              <thead>
+                <tr>
+                  <th style="width: 25%">Item Type</th>
+                  <th style="width: 25%">Batch No.</th>
+                  <th style="width: 10%">Unit</th>
+                  <th style="width: 15%">Issued Quantity</th>
+                  <th style="width: 25%">Remarks</th>
+                  <th style="width: 5%"></th>
+                </tr>
+              </thead>
+              <tbody id="issueItemsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Authorized By (Supervisor) <span class="required">*</span></label>
+              <select class="form-control" id="issueAuthBy">
+                <option value="Nimal Perera" selected>Nimal Perera (Production Manager)</option>
+                <option value="Sarath Silva">Sarath Silva (Plant Supervisor)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" class="form-control" id="issueRemarks" value="Production Issue.">
+            </div>
+          </div>
+
+          <div class="form-actions-footer">
+            <button type="button" class="btn-secondary" id="btnIssueClear">Clear</button>
+            <button type="button" class="btn-primary-blue" id="btnIssueSave"><i class="fa-solid fa-paper-plane"></i> Save Issue</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. STOCK INVENTORY VIEW -->
+      <section class="view-panel" id="view-stock-inventory">
+        <div class="stock-tabs-header">
+          <button class="tab-btn active" data-tab="tab-raw">1. Raw Material Stock</button>
+          <button class="tab-btn" data-tab="tab-packaging">2. Packaging Material Stock</button>
+          <button class="tab-btn" data-tab="tab-wip">3. WIP / Production Stock</button>
+          <button class="tab-btn" data-tab="tab-fg">4. Finished Goods Stock</button>
+        </div>
+
+        <div class="tab-content active" id="tab-raw">
+          <div class="form-card" style="padding:16px">
+            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
+              Raw Material Stock (Frozen Fish, Salt, Ingredients)
+            </div>
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th>Lot/Batch</th>
+                    <th>Received Qty</th>
+                    <th>Issued Qty</th>
+                    <th>Balance</th>
+                    <th>Unit</th>
+                    <th>Expiry Date</th>
+                  </tr>
+                </thead>
+                <tbody id="rawStockBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-packaging">
+          <div class="form-card" style="padding:16px">
+            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
+              Packaging Material Stock (Cans, Lids, Labels, Cartons, Polythene, Tape)
+            </div>
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Material Code</th>
+                    <th>Material Description</th>
+                    <th>Total Received</th>
+                    <th>Total Issued</th>
+                    <th>Current Balance</th>
+                    <th>Unit</th>
+                  </tr>
+                </thead>
+                <tbody id="packagingStockBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-wip">
+          <div class="form-card" style="padding:16px">
+            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
+              WIP / Production Stock (Fish Issued, Brine/Oil Usage, Cans Produced)
+            </div>
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Production Date</th>
+                    <th>Batch No.</th>
+                    <th>Retort Lot</th>
+                    <th>Fish Issued (kg)</th>
+                    <th>Brine / Oil Usage</th>
+                    <th>Cans Produced (Nos)</th>
+                    <th>Line Status</th>
+                  </tr>
+                </thead>
+                <tbody id="wipStockBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-fg">
+          <div class="form-card" style="padding:16px">
+            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
+              Finished Goods Stock (425 g Canned Fish Products & Brands)
+            </div>
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Brand / Product Description</th>
+                    <th>Batch No.</th>
+                    <th>Production Date</th>
+                    <th>Expiry Date</th>
+                    <th>Total Cartons</th>
+                    <th>Total Cans</th>
+                    <th>Dispatched Qty (Cans)</th>
+                    <th>Balance Cartons</th>
+                    <th>Balance Cans</th>
+                  </tr>
+                </thead>
+                <tbody id="fgStockBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. RE-ORDER ALERTS VIEW -->
+      <section class="view-panel" id="view-reorder-alerts">
+        <div class="form-card">
+          <div class="form-section-title">Critical & Low Stock Re-order Items</div>
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Item Type</th>
+                  <th>Item Name</th>
+                  <th>Current Stock</th>
+                  <th>Re-order Level</th>
+                  <th>Status</th>
+                  <th style="text-align:center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="reorderAlertsBody"></tbody>
+            </table>
+          </div>
+          <div class="alert-note-banner">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size:16px"></i>
+            <span><strong>Note:</strong> Items listed above are currently below the minimum safety re-order level threshold. Proactive purchasing is recommended.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. EXPIRY TRACKING VIEW -->
+      <section class="view-panel" id="view-expiry-tracking">
+        <div class="form-card">
+          <div class="form-section-title">Stock Expiry & Shelf Life Monitoring</div>
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Item Type</th>
+                  <th>Item Name</th>
+                  <th>Batch No.</th>
+                  <th>Manufacture Date</th>
+                  <th>Expiry Date</th>
+                  <th>Days Left</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="expiryTrackingBody"></tbody>
+            </table>
+          </div>
+          <div class="alert-note-banner">
+            <i class="fa-solid fa-circle-info" style="font-size:16px"></i>
+            <span><strong>Note:</strong> Always enforce the <strong>FEFO (First Expiry, First Out)</strong> principle when issuing raw materials or dispatching finished goods.</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
