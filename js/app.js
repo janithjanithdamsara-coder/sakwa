@@ -104,6 +104,27 @@ document.addEventListener('DOMContentLoaded', () => {
     btnQuickLogin?.addEventListener('click', () => {
       executeLogin('Storekeeper');
     });
+
+    // Mobile Navbar Toggle (Public Site)
+    const publicNavToggle = document.getElementById('publicNavToggle');
+    const publicNavLinks = document.getElementById('publicNavLinks');
+
+    publicNavToggle?.addEventListener('click', () => {
+      publicNavLinks?.classList.toggle('mobile-open');
+    });
+
+    // Inventory Sidebar Mobile Drawer Toggle
+    const inventorySidebarToggle = document.getElementById('inventorySidebarToggle');
+    const appSidebar = document.getElementById('appSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    const toggleMobileSidebar = () => {
+      appSidebar?.classList.toggle('open');
+      sidebarOverlay?.classList.toggle('active');
+    };
+
+    inventorySidebarToggle?.addEventListener('click', toggleMobileSidebar);
+    sidebarOverlay?.addEventListener('click', toggleMobileSidebar);
   }
 
   function executeLogin(username) {
@@ -117,10 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
      1. INTERNAL NAVIGATION SYSTEM
      ========================================================================== */
   function initNavigation() {
+    const appSidebar = document.getElementById('appSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
     navItems.forEach(item => {
       item.addEventListener('click', () => {
         const targetView = item.getAttribute('data-view');
         switchView(targetView);
+        
+        // Auto-close mobile sidebar drawer on item click
+        if (window.innerWidth <= 992) {
+          appSidebar?.classList.remove('open');
+          sidebarOverlay?.classList.remove('active');
+        }
       });
     });
 

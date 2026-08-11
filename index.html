@@ -37,7 +37,11 @@
           </div>
         </div>
 
-        <nav class="public-nav-links">
+        <button class="mobile-nav-toggle" id="publicNavToggle" aria-label="Toggle Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav class="public-nav-links" id="publicNavLinks">
           <a href="#hero" class="pub-link active">Home</a>
           <a href="#products" class="pub-link">Products</a>
           <a href="#about" class="pub-link">About Us</a>
@@ -319,6 +323,7 @@
       </button>
     </div>
   </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <!-- ==========================================
        INTERNAL MAIN WRAPPER
@@ -327,7 +332,10 @@
 
     <!-- Top Header -->
     <header class="top-header">
-      <div style="display:flex; align-items:center; gap:16px">
+      <div style="display:flex; align-items:center; gap:12px">
+        <button class="btn-sidebar-toggle" id="inventorySidebarToggle" aria-label="Toggle Sidebar Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
         <h1 class="page-header-title" id="pageTitle">Dashboard</h1>
       </div>
       
