@@ -57,7 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modeName === 'app-mode') {
       renderDashboardMetrics();
       setTimeout(updateCharts, 100);
+      initLiveTempStream();
     }
+  }
+
+  function initLiveTempStream() {
+    const tempDisplay = document.getElementById('liveColdRoomTemp');
+    if (!tempDisplay) return;
+
+    setInterval(() => {
+      // Simulate live micro-fluctuations around -18.4 °C
+      const baseTemp = -18.4;
+      const variation = (Math.random() * 0.4 - 0.2);
+      const currentTemp = (baseTemp + variation).toFixed(1);
+      tempDisplay.textContent = currentTemp;
+    }, 4000);
   }
 
   function initModeRouting() {

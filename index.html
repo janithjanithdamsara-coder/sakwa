@@ -362,6 +362,53 @@
 
       <!-- 1. DASHBOARD VIEW -->
       <section class="view-panel active" id="view-dashboard">
+        
+        <!-- Cold Room Real-Time IoT Temperature Monitoring Card -->
+        <div class="section-label">Real-Time Cold Room Monitoring</div>
+        <div class="coldroom-iot-card">
+          <div class="coldroom-header">
+            <div class="coldroom-title">
+              <i class="fa-solid fa-snowflake" style="color:#38bdf8; font-size:22px"></i>
+              <div>
+                <div class="cr-name">Cold Room #1 - Deep Freeze Storage</div>
+                <div class="cr-sub">Copeland Dixell XR06CX Controller • Real-Time IoT Stream</div>
+              </div>
+            </div>
+            <div class="coldroom-live-badge">
+              <span class="live-dot"></span> LIVE IoT STREAM
+            </div>
+          </div>
+
+          <div class="coldroom-body">
+            <div class="led-display-box">
+              <div class="led-subtext">DIGITAL READOUT</div>
+              <div class="led-screen">
+                <span class="led-digits" id="liveColdRoomTemp">-18.4</span>
+                <span class="led-unit">°C</span>
+              </div>
+            </div>
+
+            <div class="coldroom-metrics">
+              <div class="cr-metric-item">
+                <span class="cr-label">Target Set Temp:</span>
+                <span class="cr-val">-18.0 °C</span>
+              </div>
+              <div class="cr-metric-item">
+                <span class="cr-label">Compressor Status:</span>
+                <span class="cr-val badge-good">ACTIVE ❄️</span>
+              </div>
+              <div class="cr-metric-item">
+                <span class="cr-label">Evaporator Fan:</span>
+                <span class="cr-val badge-good">RUNNING 🌀</span>
+              </div>
+              <div class="cr-metric-item">
+                <span class="cr-label">Safety Alert Threshold:</span>
+                <span class="cr-val" style="color:var(--accent-blue)">-10.0 °C</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Stock Summary Cards -->
         <div class="section-label">Stock Summary</div>
         <div class="dashboard-grid">
