@@ -318,6 +318,10 @@
           <i class="fa-solid fa-clock-rotate-left"></i>
           <span>Expiry Tracking</span>
         </li>
+        <li class="nav-item" data-view="seam-qc">
+          <i class="fa-solid fa-compass-drafting"></i>
+          <span>Double Seam QC</span>
+        </li>
       </ul>
     </div>
 
@@ -912,6 +916,131 @@
           <div class="alert-note-banner">
             <i class="fa-solid fa-circle-info" style="font-size:16px"></i>
             <span><strong>Note:</strong> Always enforce the <strong>FEFO (First Expiry, First Out)</strong> principle when issuing raw materials or dispatching finished goods.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. DOUBLE SEAM QC INSPECTION VIEW (HACCP QUALITY CONTROL) -->
+      <section class="view-panel" id="view-seam-qc">
+        <div class="form-card">
+          <div class="form-section-title">Double Seam Inspection Sheet (HACCP QC Module)</div>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;">
+            Measure 4 points around the canned fish tin rim (SL, BH, CH). System calculates <strong>Actual Overlap</strong> &amp; <strong>Overlap %</strong> in real time. Pass criteria: Overlap % &ge; 50%.
+          </p>
+
+          <!-- Top Meta Form Grid -->
+          <div class="form-grid-4" style="margin-bottom:24px">
+            <div class="form-group">
+              <label>Inspection Date</label>
+              <input type="date" class="form-control" id="seamDate">
+            </div>
+            <div class="form-group">
+              <label>Can Size / Type</label>
+              <select class="form-control" id="seamCanSize">
+                <option value="425g A1 Tin (Standard)" selected>425g A1 Tin (Standard)</option>
+                <option value="425g Easy-Open Lid">425g Easy-Open Lid</option>
+                <option value="155g Small Tin">155g Small Tin</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Batch No.</label>
+              <input type="text" class="form-control" id="seamBatchNo" value="BATCH-2025-05-10">
+            </div>
+            <div class="form-group">
+              <label>Seamer Line / Inspector</label>
+              <input type="text" class="form-control" id="seamInspector" value="Line #1 • HACCP Team">
+            </div>
+          </div>
+
+          <!-- 4-Point Measurement Table Matrix -->
+          <div class="table-container" style="margin-bottom:24px">
+            <table class="custom-table" id="seamMatrixTable">
+              <thead>
+                <tr>
+                  <th>Parameters (mm)</th>
+                  <th>Point 1</th>
+                  <th>Point 2</th>
+                  <th>Point 3</th>
+                  <th>Point 4</th>
+                  <th>Target Standard</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="Parameter" style="font-weight:700">Seam Length (SL)</td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-sl" value="2.80"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-sl" value="2.83"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-sl" value="2.81"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-sl" value="2.87"></td>
+                  <td data-label="Target" style="font-size:12px; color:var(--text-secondary)">2.80mm &plusmn; 0.20mm</td>
+                </tr>
+                <tr>
+                  <td data-label="Parameter" style="font-weight:700">Body Hook (BH)</td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bh" value="1.88"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bh" value="1.89"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bh" value="1.93"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bh" value="1.90"></td>
+                  <td data-label="Target" style="font-size:12px; color:var(--text-secondary)">2.00mm &plusmn; 0.20mm</td>
+                </tr>
+                <tr>
+                  <td data-label="Parameter" style="font-weight:700">Cover Hook (CH)</td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-ch" value="1.82"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-ch" value="1.74"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-ch" value="1.83"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-ch" value="1.74"></td>
+                  <td data-label="Target" style="font-size:12px; color:var(--text-secondary)">2.00mm &plusmn; 0.20mm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Real-Time Computed Results Bar -->
+          <div class="seam-results-bar">
+            <div class="seam-result-box">
+              <div class="seam-res-label">Actual Overlap (Avg)</div>
+              <div class="seam-res-val" id="resActualOverlap">1.10 mm</div>
+            </div>
+            <div class="seam-result-box">
+              <div class="seam-res-label">Overlap Percentage</div>
+              <div class="seam-res-val" id="resOverlapPercent">49.33 %</div>
+            </div>
+            <div class="seam-result-box">
+              <div class="seam-res-label">HACCP QC Status</div>
+              <div id="resSeamStatus"><span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> PASS ✅</span></div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap">
+            <button type="button" class="btn-hero-primary" id="btnSaveSeamQC">
+              <i class="fa-solid fa-floppy-disk"></i> Save QC Inspection
+            </button>
+            <button type="button" class="btn-outline-blue" id="btnPrintSeamQC">
+              <i class="fa-solid fa-print"></i> Print HACCP Inspection Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- History Log Table -->
+        <div class="form-card" style="margin-top:28px">
+          <div class="form-section-title">Double Seam Inspection History Log</div>
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Batch No.</th>
+                  <th>Can Size</th>
+                  <th>Avg SL (mm)</th>
+                  <th>Avg BH (mm)</th>
+                  <th>Avg CH (mm)</th>
+                  <th>Actual Overlap</th>
+                  <th>Overlap %</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="seamHistoryBody"></tbody>
+            </table>
           </div>
         </div>
       </section>

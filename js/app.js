@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAllStockTables();
   renderReorderAlerts();
   renderExpiryTracking();
+  initSeamQcModule();
 
   /* ==========================================================================
      MODE ROUTING ENGINE (PUBLIC vs LOGIN vs INVENTORY APP)
@@ -791,6 +792,100 @@ document.addEventListener('DOMContentLoaded', () => {
         </tr>
       `;
     }).join('');
+  }
+
+  /* ==========================================================================
+     8. DOUBLE SEAM QC INSPECTION MODULE (HACCP QUALITY CONTROL)
+     ========================================================================== */
+  function initSeamQcModule() {
+    const dateInput = document.getElementById('seamDate');
+    if (dateInput && !dateInput.value) {
+      dateInput.value = new Date().toISOString().split('T')[0];
+    }
+
+    const slInputs = document.querySelectorAll('.seam-sl');
+    const bhInputs = document.querySelectorAll('.seam-bh');
+    const chInputs = document.querySelectorAll('.seam-ch');
+
+    const updateSeamCalculations = () => {
+      let sumSL = 0, sumBH = 0, sumCH = 0;
+      slInputs.forEach(i => sumSL += parseFloat(i.value) || 0);
+      bhInputs.forEach(i => sumBH += parseFloat(i.value) || 0);
+      chInputs.forEach(i => sumCH += parseFloat(i.value) || 0);
+
+      const avgSL = sumSL / 4;
+      const avgBH = sumBH / 4;
+      const avgCH = sumCH / 4;
+
+      const EPT = 0.20; // End Plate Thickness (mm)
+      const BPT = 0.17; // Body Plate Thickness (mm)
+
+      const actualOverlap = (avgCH + avgBH + EPT) - avgSL;
+      const overlapDenominator = avgSL - ((2 * EPT) + BPT);
+      const overlapPercent = overlapDenominator > 0 ? (actualOverlap / overlapDenominator) * 100 : 0;
+
+      const isPass = overlapPercent >= 50.0;
+
+      document.getElementById('resActualOverlap').textContent = actualOverlap.toFixed(2) + ' mm';
+      document.getElementById('resOverlapPercent').textContent = overlapPercent.toFixed(2) + ' %';
+      document.getElementById('resSeamStatus').innerHTML = isPass
+        ? '<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> PASS ✅</span>'
+        : '<span class="badge badge-expired" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-triangle-exclamation"></i> FAIL ❌</span>';
+    };
+
+    [...slInputs, ...bhInputs, ...chInputs].forEach(input => {
+      input.addEventListener('input', updateSeamCalculations);
+    });
+
+    updateSeamCalculations();
+
+    document.getElementById('btnSaveSeamQC')?.addEventListener('click', () => {
+      const record = {
+        id: 'SEAM-' + Date.now().toString().slice(-4),
+        date: document.getElementById('seamDate').value,
+        batchNo: document.getElementById('seamBatchNo').value,
+        canSize: document.getElementById('seamCanSize').value,
+        inspector: document.getElementById('seamInspector').value,
+        avgSL: (Array.from(slInputs).reduce((a, b) => a + (parseFloat(b.value) || 0), 0) / 4).toFixed(2) + ' mm',
+        avgBH: (Array.from(bhInputs).reduce((a, b) => a + (parseFloat(b.value) || 0), 0) / 4).toFixed(2) + ' mm',
+        avgCH: (Array.from(chInputs).reduce((a, b) => a + (parseFloat(b.value) || 0), 0) / 4).toFixed(2) + ' mm',
+        actualOverlap: document.getElementById('resActualOverlap').textContent,
+        overlapPercent: document.getElementById('resOverlapPercent').textContent,
+        status: document.getElementById('resSeamStatus').textContent.includes('PASS') ? 'PASS ✅' : 'FAIL ❌'
+      };
+
+      appData.seamQcRecords = appData.seamQcRecords || [];
+      appData.seamQcRecords.unshift(record);
+      saveStoredData(appData);
+
+      renderSeamQcHistory();
+      showToast('Double Seam Inspection Record saved successfully!', 'success');
+    });
+
+    document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
+      window.print();
+    });
+
+    renderSeamQcHistory();
+  }
+
+  function renderSeamQcHistory() {
+    const tbody = document.getElementById('seamHistoryBody');
+    if (!tbody || !appData.seamQcRecords) return;
+
+    tbody.innerHTML = appData.seamQcRecords.map(item => `
+      <tr>
+        <td data-label="Date">${item.date}</td>
+        <td data-label="Batch No."><code>${item.batchNo}</code></td>
+        <td data-label="Can Size">${item.canSize}</td>
+        <td data-label="Avg SL">${item.avgSL}</td>
+        <td data-label="Avg BH">${item.avgBH}</td>
+        <td data-label="Avg CH">${item.avgCH}</td>
+        <td data-label="Actual Overlap" style="font-weight:700">${item.actualOverlap}</td>
+        <td data-label="Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.overlapPercent}</td>
+        <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
+      </tr>
+    `).join('');
   }
 
   /* ==========================================================================

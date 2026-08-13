@@ -143,6 +143,35 @@ const DEFAULT_FACTORY_DATA = {
     { id: 'EXP-02', itemType: 'Oil', itemName: 'Palm Oil', batchNo: 'OIL-2025-01-15', mfgDate: '2025-01-15', expiryDate: '2025-07-15', daysLeft: 57, status: 'Expiring Soon' },
     { id: 'EXP-03', itemType: 'Salt', itemName: 'Iodized Salt', batchNo: 'SALT-2024-12-01', mfgDate: '2024-12-01', expiryDate: '2025-06-01', daysLeft: 13, status: 'Expiring Soon' },
     { id: 'EXP-04', itemType: 'Oil', itemName: 'Palm Oil', batchNo: 'OIL-2024-12-20', mfgDate: '2024-12-20', expiryDate: '2025-05-20', daysLeft: 1, status: 'Expired' }
+  ],
+
+  seamQcRecords: [
+    {
+      id: 'SEAM-01',
+      date: '2025-09-01',
+      batchNo: 'BATCH-2025-05-10',
+      canSize: '425g A1 Tin (Standard)',
+      inspector: 'Line #1 • HACCP Team',
+      avgSL: '2.83 mm',
+      avgBH: '1.90 mm',
+      avgCH: '1.78 mm',
+      actualOverlap: '1.10 mm',
+      overlapPercent: '49.33 %',
+      status: 'PASS ✅'
+    },
+    {
+      id: 'SEAM-02',
+      date: '2025-09-01',
+      batchNo: 'BATCH-2025-05-12',
+      canSize: '425g Easy-Open Lid',
+      inspector: 'Line #2 • HACCP Team',
+      avgSL: '2.91 mm',
+      avgBH: '1.89 mm',
+      avgCH: '1.86 mm',
+      actualOverlap: '1.04 mm',
+      overlapPercent: '45.57 %',
+      status: 'FAIL ❌'
+    }
   ]
 };
 
