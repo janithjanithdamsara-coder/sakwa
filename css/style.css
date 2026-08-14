@@ -1333,8 +1333,28 @@ textarea.form-control { height: 70px; resize: vertical; }
   width: 100%;
   overflow-x: auto;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   margin-bottom: 20px;
+  background: var(--bg-card);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
 }
 
 .custom-table {
@@ -1351,18 +1371,28 @@ textarea.form-control { height: 70px; resize: vertical; }
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 12px 16px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--border-color);
 }
 
 .custom-table td {
-  padding: 12px 16px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
   vertical-align: middle;
 }
 
-.custom-table tbody tr:hover { background-color: #f8fafc; }
+#seamMatrixTable td input.form-control {
+  width: 100%;
+  max-width: 120px;
+  padding: 8px 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.custom-table tbody tr:hover { background-color: rgba(241, 245, 249, 0.5); }
 
 .form-actions-footer {
   display: flex;
