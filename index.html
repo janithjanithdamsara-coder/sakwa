@@ -355,11 +355,16 @@
       </div>
       
       <div class="header-user-profile">
-        <button class="btn-outline-blue" id="btnHeaderPublicWebsite" style="padding:6px 14px; font-size:12px; margin-right:10px">
+        <select class="form-control user-role-select" id="userRoleSelect" style="padding:4px 10px; font-size:12px; font-weight:600; cursor:pointer; width:auto">
+          <option value="storekeeper" selected>👤 Storekeeper (Full Stock)</option>
+          <option value="qc_officer">🔬 Quality Officer (HACCP QC)</option>
+          <option value="director">👑 Plant Director (Executive)</option>
+        </select>
+        <button class="btn-outline-blue" id="btnHeaderPublicWebsite" style="padding:6px 14px; font-size:12px">
           <i class="fa-solid fa-globe"></i> Public Website
         </button>
         <div class="user-info">
-          <div class="user-welcome">Welcome, <strong style="color:var(--text-primary)" id="currentUserName">Storekeeper</strong></div>
+          <div class="user-welcome">Role: <strong style="color:var(--text-primary)" id="currentUserName">Storekeeper</strong></div>
         </div>
         <div class="user-avatar">
           <i class="fa-solid fa-user-gear"></i>

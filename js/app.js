@@ -52,13 +52,40 @@ document.addEventListener('DOMContentLoaded', () => {
   renderExpiryTracking();
   initSeamQcModule();
 
-  // Restore Session Mode & Active View
+  // Restore Session Mode, Active Role & Active View
+  const savedRole = localStorage.getItem('SAKWA_USER_ROLE') || 'storekeeper';
+  const userRoleSelect = document.getElementById('userRoleSelect');
+  if (userRoleSelect) {
+    userRoleSelect.value = savedRole;
+  }
+
+  userRoleSelect?.addEventListener('change', (e) => {
+    const selectedRole = e.target.value;
+    localStorage.setItem('SAKWA_USER_ROLE', selectedRole);
+    applyUserRolePermissions(selectedRole);
+  });
+
   if (savedMode === 'app-mode') {
     document.getElementById('currentUserName').textContent = savedUser;
     setAppMode('app-mode');
+    applyUserRolePermissions(savedRole);
     switchView(savedView);
   } else {
     setAppMode(savedMode);
+  }
+
+  function applyUserRolePermissions(role) {
+    const userNameEl = document.getElementById('currentUserName');
+    if (role === 'qc_officer') {
+      if (userNameEl) userNameEl.textContent = 'QC Officer (HACCP)';
+      showToast('Switched Role: Quality Control Officer (HACCP QC Mode Active)', 'info');
+    } else if (role === 'director') {
+      if (userNameEl) userNameEl.textContent = 'Plant Director';
+      showToast('Switched Role: Plant Director (Executive Oversight Active)', 'info');
+    } else {
+      if (userNameEl) userNameEl.textContent = 'Storekeeper';
+      showToast('Switched Role: Storekeeper (Full Inventory System Active)', 'success');
+    }
   }
 
   /* ==========================================================================
