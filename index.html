@@ -11,8 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Chart.js CDN -->
+  <!-- Chart.js & SheetJS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <!-- App Custom CSS -->
   <link rel="stylesheet" href="css/style.css?v=2.7">
@@ -769,11 +770,21 @@
 
         <div class="tab-content active" id="tab-raw">
           <div class="form-card" style="padding:16px">
-            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
-              Raw Material Stock (Frozen Fish, Salt, Ingredients)
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px">
+              <div style="font-size:14px; font-weight:700; color:var(--primary-navy)">
+                Raw Material Stock (Frozen Fish, Salt, Ingredients)
+              </div>
+              <div style="display:flex; gap:8px">
+                <button type="button" class="btn-outline-blue btn-export-excel" data-target="table-raw" data-name="Raw_Material_Stock.xlsx" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-excel" style="color:#16a34a"></i> Export Excel
+                </button>
+                <button type="button" class="btn-outline-blue btn-export-pdf" onclick="window.print()" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-pdf" style="color:#dc2626"></i> Print PDF
+                </button>
+              </div>
             </div>
             <div class="table-container">
-              <table class="custom-table">
+              <table class="custom-table" id="table-raw">
                 <thead>
                   <tr>
                     <th>Item Name</th>
@@ -795,11 +806,21 @@
 
         <div class="tab-content" id="tab-packaging">
           <div class="form-card" style="padding:16px">
-            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
-              Packaging Material Stock (Cans, Lids, Labels, Cartons, Polythene, Tape)
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px">
+              <div style="font-size:14px; font-weight:700; color:var(--primary-navy)">
+                Packaging Material Stock (Cans, Lids, Labels, Cartons, Polythene, Tape)
+              </div>
+              <div style="display:flex; gap:8px">
+                <button type="button" class="btn-outline-blue btn-export-excel" data-target="table-pkg" data-name="Packaging_Stock.xlsx" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-excel" style="color:#16a34a"></i> Export Excel
+                </button>
+                <button type="button" class="btn-outline-blue btn-export-pdf" onclick="window.print()" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-pdf" style="color:#dc2626"></i> Print PDF
+                </button>
+              </div>
             </div>
             <div class="table-container">
-              <table class="custom-table">
+              <table class="custom-table" id="table-pkg">
                 <thead>
                   <tr>
                     <th>Material Code</th>
@@ -818,11 +839,21 @@
 
         <div class="tab-content" id="tab-wip">
           <div class="form-card" style="padding:16px">
-            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
-              WIP / Production Stock (Fish Issued, Brine/Oil Usage, Cans Produced)
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px">
+              <div style="font-size:14px; font-weight:700; color:var(--primary-navy)">
+                WIP / Production Stock (Fish Issued, Brine/Oil Usage, Cans Produced)
+              </div>
+              <div style="display:flex; gap:8px">
+                <button type="button" class="btn-outline-blue btn-export-excel" data-target="table-wip" data-name="WIP_Production_Stock.xlsx" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-excel" style="color:#16a34a"></i> Export Excel
+                </button>
+                <button type="button" class="btn-outline-blue btn-export-pdf" onclick="window.print()" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-pdf" style="color:#dc2626"></i> Print PDF
+                </button>
+              </div>
             </div>
             <div class="table-container">
-              <table class="custom-table">
+              <table class="custom-table" id="table-wip">
                 <thead>
                   <tr>
                     <th>Production Date</th>
@@ -842,11 +873,21 @@
 
         <div class="tab-content" id="tab-fg">
           <div class="form-card" style="padding:16px">
-            <div style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--primary-navy)">
-              Finished Goods Stock (425 g Canned Fish Products & Brands)
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px">
+              <div style="font-size:14px; font-weight:700; color:var(--primary-navy)">
+                Finished Goods Stock (425 g Canned Fish Products & Brands)
+              </div>
+              <div style="display:flex; gap:8px">
+                <button type="button" class="btn-outline-blue btn-export-excel" data-target="table-fg" data-name="Finished_Goods_Stock.xlsx" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-excel" style="color:#16a34a"></i> Export Excel
+                </button>
+                <button type="button" class="btn-outline-blue btn-export-pdf" onclick="window.print()" style="padding:4px 12px; font-size:12px">
+                  <i class="fa-solid fa-file-pdf" style="color:#dc2626"></i> Print PDF
+                </button>
+              </div>
             </div>
             <div class="table-container">
-              <table class="custom-table">
+              <table class="custom-table" id="table-fg">
                 <thead>
                   <tr>
                     <th>Brand / Product Description</th>

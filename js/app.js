@@ -965,6 +965,23 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
+  // Universal Excel (.xlsx) Export Handler
+  document.querySelectorAll('.btn-export-excel').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTableId = btn.getAttribute('data-target');
+      const filename = btn.getAttribute('data-name') || 'Sakwa_Stock_Export.xlsx';
+      const tableEl = document.getElementById(targetTableId);
+      
+      if (tableEl && window.XLSX) {
+        const wb = XLSX.utils.table_to_book(tableEl, { sheet: "Sakwa Stock Report" });
+        XLSX.writeFile(wb, filename);
+        showToast(`Exported ${filename} successfully!`, 'success');
+      } else {
+        showToast('Unable to export table. SheetJS engine ready.', 'info');
+      }
+    });
+  });
+
   /* ==========================================================================
      HELPER: TOAST NOTIFICATIONS
      ========================================================================== */
