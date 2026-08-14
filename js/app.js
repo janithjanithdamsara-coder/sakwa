@@ -445,6 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveStoredData(appData);
     renderDashboardMetrics();
+    renderAllStockTables();
     showToast(`Fish Arrival Note saved! Net Weight: ${netWeight.toLocaleString()} kg added to stock.`, 'success');
     clearFishForm();
   }
@@ -597,13 +598,40 @@ document.addEventListener('DOMContentLoaded', () => {
         appData.stockSummary.plasticBoxes += quantity;
         appData.stockSummary.emptyCans += quantity;
       }
+
+      // Automatically prepend to Stock Inventory tables
+      if (type.includes('Fish') || type.includes('Salt') || type.includes('Oil')) {
+        appData.rawMaterialsStock.unshift({
+          id: `RM-${Date.now()}`,
+          name: name || type,
+          category: type.includes('Fish') ? 'Raw Fish' : (type.includes('Salt') ? 'Ingredients' : 'Oil'),
+          supplier: supplier,
+          lotBatch: `GRN-${grnRecord.grnNo.slice(-4)}-${Date.now().toString().slice(-3)}`,
+          receivedQty: quantity,
+          issuedQty: 0,
+          balance: quantity,
+          unit: unit,
+          expiry: '2026-12-31'
+        });
+      } else {
+        appData.packagingMaterialsStock.unshift({
+          materialCode: `PKG-${Date.now().toString().slice(-4)}`,
+          name: name || type,
+          received: quantity,
+          issued: 0,
+          balance: quantity,
+          unit: unit
+        });
+      }
     });
 
+    appData.grnRecords = appData.grnRecords || [];
     appData.grnRecords.unshift(grnRecord);
     saveStoredData(appData);
 
     renderDashboardMetrics();
-    showToast('Goods Receipt Note (GRN) saved successfully and stock updated!', 'success');
+    renderAllStockTables();
+    showToast('Goods Receipt Note (GRN) saved & added to Stock Inventory!', 'success');
   }
 
   /* ==========================================================================
@@ -677,6 +705,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const rows = document.querySelectorAll('#issueItemsBody tr');
+    let totalCansProduced = 0;
+    let fishIssued = 0;
+
     rows.forEach(tr => {
       const type = tr.querySelector('.issue-type').value;
       const batchNo = tr.querySelector('.issue-batch').value;
@@ -686,20 +717,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
       issueRecord.items.push({ type, batchNo, unit, quantity, remarks });
 
-      if (type.includes('Mackerel')) appData.stockSummary.rawFish = Math.max(0, appData.stockSummary.rawFish - quantity);
+      if (type.includes('Mackerel')) {
+        appData.stockSummary.rawFish = Math.max(0, appData.stockSummary.rawFish - quantity);
+        fishIssued += quantity;
+      }
       if (type.includes('Salt')) appData.stockSummary.saltStock = Math.max(0, appData.stockSummary.saltStock - quantity);
       if (type.includes('Oil')) appData.stockSummary.oilStock = Math.max(0, appData.stockSummary.oilStock - quantity);
       if (type.includes('Rigiform')) {
         appData.stockSummary.rigiformCans = Math.max(0, appData.stockSummary.rigiformCans - quantity);
         appData.stockSummary.emptyCans = Math.max(0, appData.stockSummary.emptyCans - quantity);
+        totalCansProduced += quantity;
       }
     });
 
+    // Automatically add WIP Production record to WIP Stock table!
+    if (fishIssued > 0 || totalCansProduced > 0) {
+      appData.wipStock.unshift({
+        productionDate: issueRecord.date,
+        batchNo: `BATCH-${issueRecord.issueNo.slice(-4)}-${Date.now().toString().slice(-3)}`,
+        retortLot: `RETORT-${Date.now().toString().slice(-4)}`,
+        fishIssuedKg: fishIssued || 2000,
+        brineOilUsage: 'Standard Brine (2% Salt)',
+        cansProduced: totalCansProduced || 5000,
+        status: 'In Retort'
+      });
+    }
+
+    appData.issueRecords = appData.issueRecords || [];
     appData.issueRecords.unshift(issueRecord);
     saveStoredData(appData);
 
     renderDashboardMetrics();
-    showToast('Stock Issued to Production successfully! Stock balance deducted.', 'success');
+    renderAllStockTables();
+    showToast('Stock Issued to Production & WIP Stock updated!', 'success');
   }
 
   /* ==========================================================================
@@ -1188,9 +1238,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    document.getElementById('btnAddMasterOption')?.addEventListener('click', () => {
-      const input = document.getElementById('newMasterOptionName');
-      const val = input.value.trim();
+    const inputEl = document.getElementById('newMasterOptionName');
+    const addOptHandler = () => {
+      const val = inputEl ? inputEl.value.trim() : '';
       if (!val) {
         showToast('Please enter an option name.', 'info');
         return;
@@ -1204,10 +1254,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       masterDropdowns[activeMasterCategory].push(val);
       saveMasterDropdowns();
-      input.value = '';
+      if (inputEl) inputEl.value = '';
       renderMasterOptionsTable();
       syncAllFormDropdowns();
       showToast(`Added "${val}" to dropdown lists successfully!`, 'success');
+    };
+
+    document.getElementById('btnAddMasterOption')?.addEventListener('click', addOptHandler);
+    inputEl?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addOptHandler();
     });
 
     renderMasterOptionsTable();
