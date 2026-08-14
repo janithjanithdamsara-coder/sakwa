@@ -1051,6 +1051,135 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- ==========================================
+       OFFICIAL HACCP DOUBLE SEAM PRINT SHEET (EXACT MATCH FOR SEAM.XLSX)
+       ========================================== -->
+  <div class="haccp-print-sheet" id="haccpPrintSheet">
+    <!-- Header Title Box -->
+    <div class="haccp-print-header">
+      <div class="haccp-brand-col">
+        <h2 style="margin:0; font-size:18px; font-weight:800; text-transform:uppercase; color:#0f172a">Sakwa Canneries &amp; Exports (Pvt) Ltd</h2>
+        <div style="font-size:11px; color:#475569; margin-top:2px">Aratuweta Waththa, Boralukada, Baddegama, Sri Lanka • Tel: 071 55 22 378</div>
+      </div>
+      <div class="haccp-doc-title">
+        <h3 style="margin:0; font-size:15px; font-weight:800; letter-spacing:0.5px">DOUBLE SEAM INSPECTION SHEET</h3>
+        <div style="font-size:10px; margin-top:2px; font-weight:700; color:#2563eb">HACCP QUALITY CONTROL SYSTEM</div>
+      </div>
+      <div class="haccp-doc-meta">
+        <div><strong>DOC REF:</strong> SC&amp;E/QC/DS/01</div>
+        <div><strong>ISSUE NO:</strong> 01 | <strong>REV:</strong> 00</div>
+        <div><strong>PAGE:</strong> 1 of 1</div>
+      </div>
+    </div>
+
+    <!-- Meta Details Table -->
+    <table class="haccp-meta-table">
+      <tr>
+        <td><strong>INSPECTION DATE:</strong> <span id="printDate">2025-09-01</span></td>
+        <td><strong>CAN SIZE / TYPE:</strong> <span id="printCanSize">425g A1 Tin (Standard)</span></td>
+      </tr>
+      <tr>
+        <td><strong>BATCH NO:</strong> <span id="printBatchNo">BATCH-2025-05-10</span></td>
+        <td><strong>LINE / INSPECTOR:</strong> <span id="printInspector">Line #1 • HACCP Team</span></td>
+      </tr>
+      <tr>
+        <td><strong>EPT (End Plate):</strong> 0.20 mm</td>
+        <td><strong>BPT (Body Plate):</strong> 0.17 mm</td>
+      </tr>
+    </table>
+
+    <!-- 4-Point Full Matrix Table (Matching Seam.xlsx exactly!) -->
+    <table class="haccp-matrix-table">
+      <thead>
+        <tr>
+          <th rowspan="2">INSPECTION PARAMETERS (mm)</th>
+          <th colspan="4" style="text-align:center">POINT MEASUREMENTS</th>
+          <th rowspan="2" style="text-align:center">AVERAGE</th>
+          <th rowspan="2" style="text-align:center">SPECIFICATION STANDARD</th>
+        </tr>
+        <tr>
+          <th>Point 1</th>
+          <th>Point 2</th>
+          <th>Point 3</th>
+          <th>Point 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Seam Length (SL)</strong></td>
+          <td id="pSL1">2.80</td>
+          <td id="pSL2">2.83</td>
+          <td id="pSL3">2.81</td>
+          <td id="pSL4">2.87</td>
+          <td id="pSLAvg" style="font-weight:700">2.83</td>
+          <td style="font-size:11px">2.80 mm &plusmn; 0.20 mm</td>
+        </tr>
+        <tr>
+          <td><strong>Body Hook (BH)</strong></td>
+          <td id="pBH1">1.88</td>
+          <td id="pBH2">1.89</td>
+          <td id="pBH3">1.93</td>
+          <td id="pBH4">1.90</td>
+          <td id="pBHAvg" style="font-weight:700">1.90</td>
+          <td style="font-size:11px">2.00 mm &plusmn; 0.20 mm</td>
+        </tr>
+        <tr>
+          <td><strong>Cover Hook (CH)</strong></td>
+          <td id="pCH1">1.82</td>
+          <td id="pCH2">1.74</td>
+          <td id="pCH3">1.83</td>
+          <td id="pCH4">1.74</td>
+          <td id="pCHAvg" style="font-weight:700">1.78</td>
+          <td style="font-size:11px">2.00 mm &plusmn; 0.20 mm</td>
+        </tr>
+        <tr style="background:#f8fafc">
+          <td><strong>Actual Overlap (mm)</strong></td>
+          <td id="pOL1">1.10</td>
+          <td id="pOL2">1.00</td>
+          <td id="pOL3">1.15</td>
+          <td id="pOL4">0.97</td>
+          <td id="pOLAvg" style="font-weight:800; color:#2563eb">1.06</td>
+          <td style="font-size:11px">Target: &ge; 0.80 mm</td>
+        </tr>
+        <tr style="background:#f8fafc">
+          <td><strong>Overlap Percentage (%)</strong></td>
+          <td id="pOLPct1">49.33%</td>
+          <td id="pOLPct2">44.25%</td>
+          <td id="pOLPct3">51.34%</td>
+          <td id="pOLPct4">42.17%</td>
+          <td id="pOLPctAvg" style="font-weight:800; color:#2563eb">46.77%</td>
+          <td style="font-size:11px; font-weight:700">Standard: &ge; 50 %</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Result Banner -->
+    <div class="haccp-status-box" id="printStatusBox">
+      FINAL QC DECISION: PASS ✅ (OVERLAP WITHIN HACCP SPECIFICATIONS)
+    </div>
+
+    <!-- Formulas Explanation Footer -->
+    <div class="haccp-formula-footer">
+      <div><strong>Formulas &amp; Calculation Reference:</strong></div>
+      <div>1. Actual Overlap = (Cover Hook + Body Hook + EPT) - Seam Length &nbsp;|&nbsp; <em>Where EPT = 0.20mm</em></div>
+      <div>2. Overlap (%) = [Actual Overlap / (Seam Length - (2 &times; EPT + BPT))] &times; 100 &nbsp;|&nbsp; <em>Where BPT = 0.17mm</em></div>
+    </div>
+
+    <!-- HACCP Audit Signature Block (Matching Seam.xlsx) -->
+    <div class="haccp-signatures">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-role">Done / Prepared by</div>
+        <div class="sig-title">HACCP Inspection Team</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-role">Checked / Reviewed by</div>
+        <div class="sig-title">Quality Assurance Manager</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Application Logic Scripts -->
   <script src="js/mockData.js"></script>
   <script src="js/app.js"></script>

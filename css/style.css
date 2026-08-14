@@ -1913,3 +1913,124 @@ textarea.form-control { height: 70px; resize: vertical; }
   color: var(--accent-blue);
 }
 
+/* HACCP PRINT SHEET STYLES (EXACT MATCH FOR SEAM.XLSX) */
+.haccp-print-sheet {
+  display: none;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 30px;
+  font-family: 'Inter', sans-serif;
+}
+
+.haccp-print-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.haccp-doc-title {
+  text-align: center;
+}
+
+.haccp-doc-meta {
+  font-size: 11px;
+  text-align: right;
+  line-height: 1.5;
+}
+
+.haccp-meta-table, .haccp-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
+.haccp-meta-table td {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+}
+
+.haccp-matrix-table th, .haccp-matrix-table td {
+  border: 1px solid #94a3b8;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.haccp-matrix-table th {
+  background: #e2e8f0;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.haccp-status-box {
+  background: #f0fdf4;
+  border: 2px solid #22c55e;
+  color: #15803d;
+  padding: 12px 18px;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: center;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+}
+
+.haccp-formula-footer {
+  font-size: 11px;
+  color: #475569;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 12px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.haccp-signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.sig-block {
+  width: 240px;
+  text-align: center;
+}
+
+.sig-line {
+  border-bottom: 1px solid #0f172a;
+  height: 40px;
+  margin-bottom: 8px;
+}
+
+.sig-role {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.sig-title {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* MEDIA PRINT RULE */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  
+  #haccpPrintSheet, #haccpPrintSheet * {
+    visibility: visible !important;
+  }
+  
+  #haccpPrintSheet {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+  }
+}
+

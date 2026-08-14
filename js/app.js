@@ -863,6 +863,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
+      // Sync meta details
+      const dateVal = document.getElementById('seamDate').value || new Date().toISOString().split('T')[0];
+      const canSizeVal = document.getElementById('seamCanSize').value;
+      const batchNoVal = document.getElementById('seamBatchNo').value;
+      const inspectorVal = document.getElementById('seamInspector').value;
+
+      document.getElementById('printDate').textContent = dateVal;
+      document.getElementById('printMetaDate').textContent = dateVal;
+      document.getElementById('printCanSize').textContent = canSizeVal;
+      document.getElementById('printBatchNo').textContent = batchNoVal;
+      document.getElementById('printInspector').textContent = inspectorVal;
+
+      // Sync 4-Point measurements
+      const slValues = Array.from(slInputs).map(i => parseFloat(i.value) || 0);
+      const bhValues = Array.from(bhInputs).map(i => parseFloat(i.value) || 0);
+      const chValues = Array.from(chInputs).map(i => parseFloat(i.value) || 0);
+
+      const EPT = 0.20, BPT = 0.17;
+
+      for (let pt = 1; pt <= 4; pt++) {
+        const sl = slValues[pt - 1];
+        const bh = bhValues[pt - 1];
+        const ch = chValues[pt - 1];
+
+        const ol = (ch + bh + EPT) - sl;
+        const olDen = sl - ((2 * EPT) + BPT);
+        const olPct = olDen > 0 ? (ol / olDen) * 100 : 0;
+
+        document.getElementById(`pSL${pt}`).textContent = sl.toFixed(2);
+        document.getElementById(`pBH${pt}`).textContent = bh.toFixed(2);
+        document.getElementById(`pCH${pt}`).textContent = ch.toFixed(2);
+        document.getElementById(`pOL${pt}`).textContent = ol.toFixed(2);
+        document.getElementById(`pOLPct${pt}`).textContent = olPct.toFixed(2) + '%';
+      }
+
+      const avgSL = slValues.reduce((a,b)=>a+b,0)/4;
+      const avgBH = bhValues.reduce((a,b)=>a+b,0)/4;
+      const avgCH = chValues.reduce((a,b)=>a+b,0)/4;
+      const avgOL = (avgCH + avgBH + EPT) - avgSL;
+      const avgOLDen = avgSL - ((2 * EPT) + BPT);
+      const avgOLPct = avgOLDen > 0 ? (avgOL / avgOLDen) * 100 : 0;
+
+      document.getElementById('pSLAvg').textContent = avgSL.toFixed(2);
+      document.getElementById('pBHAvg').textContent = avgBH.toFixed(2);
+      document.getElementById('pCHAvg').textContent = avgCH.toFixed(2);
+      document.getElementById('pOLAvg').textContent = avgOL.toFixed(2) + ' mm';
+      document.getElementById('pOLPctAvg').textContent = avgOLPct.toFixed(2) + '%';
+
+      const isPass = avgOLPct >= 50.0;
+      const statusBox = document.getElementById('printStatusBox');
+      if (statusBox) {
+        statusBox.textContent = isPass
+          ? 'FINAL QC DECISION: PASS ✅ (OVERLAP WITHIN HACCP SPECIFICATIONS)'
+          : 'FINAL QC DECISION: FAIL ❌ (OVERLAP BELOW HACCP 50% SAFETY THRESHOLD)';
+        statusBox.style.background = isPass ? '#f0fdf4' : '#fef2f2';
+        statusBox.style.borderColor = isPass ? '#22c55e' : '#ef4444';
+        statusBox.style.color = isPass ? '#15803d' : '#991b1b';
+      }
+
       window.print();
     });
 
