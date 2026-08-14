@@ -33,6 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let weeklyChart = null;
   let wasteChart = null;
 
+  // Master Dropdown State Variables
+  const defaultMasterDropdowns = {
+    fishSpecies: ['Mackerel (Aratoluwa)', 'Tuna (Kelawalla)', 'Linna', 'Balaya', 'Hurulla', 'Yellowfin Tuna'],
+    boxTypes: ['Rigiform Box (25kg)', 'Plastic Crate (30kg)', 'Insulated Tub (100kg)', 'Wooden Box'],
+    suppliers: ['Seagold Fisheries', 'Ocean Fresh Traders', 'Lanka Sea Foods Ltd', 'Industrial Salt Suppliers'],
+    packaging: ['425g Tin Cans Standard', '425g Easy-Open Lid', 'Printed Paper Labels', 'Master Cartons'],
+    departments: ['Fish Canning Line - 1', 'Fish Canning Line - 2', 'Retort Sterilization', 'Packing Line'],
+    inspectors: ['Line #1 • HACCP Team', 'Nimal Perera (Production Mgr)', 'Sarath Silva (Plant Sup)']
+  };
+
+  let masterDropdowns = JSON.parse(localStorage.getItem('SAKWA_MASTER_DROPDOWNS')) || defaultMasterDropdowns;
+  let activeMasterCategory = 'fishSpecies';
+
   // Session & View Persistence Check
   const savedMode = localStorage.getItem('SAKWA_APP_MODE') || 'public-mode';
   const savedView = localStorage.getItem('SAKWA_CURRENT_VIEW') || 'dashboard';
@@ -1215,18 +1228,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      9. MASTER SETTINGS & DYNAMIC DROPDOWN MANAGER MODULE
      ========================================================================== */
-  const defaultMasterDropdowns = {
-    fishSpecies: ['Mackerel (Aratoluwa)', 'Tuna (Kelawalla)', 'Linna', 'Balaya', 'Hurulla', 'Yellowfin Tuna'],
-    boxTypes: ['Rigiform Box (25kg)', 'Plastic Crate (30kg)', 'Insulated Tub (100kg)', 'Wooden Box'],
-    suppliers: ['Seagold Fisheries', 'Ocean Fresh Traders', 'Lanka Sea Foods Ltd', 'Industrial Salt Suppliers'],
-    packaging: ['425g Tin Cans Standard', '425g Easy-Open Lid', 'Printed Paper Labels', 'Master Cartons'],
-    departments: ['Fish Canning Line - 1', 'Fish Canning Line - 2', 'Retort Sterilization', 'Packing Line'],
-    inspectors: ['Line #1 • HACCP Team', 'Nimal Perera (Production Mgr)', 'Sarath Silva (Plant Sup)']
-  };
-
-  let masterDropdowns = JSON.parse(localStorage.getItem('SAKWA_MASTER_DROPDOWNS')) || defaultMasterDropdowns;
-  let activeMasterCategory = 'fishSpecies';
-
   function initMasterSettingsModule() {
     const tabs = document.querySelectorAll('#masterCategoryTabs .tab-btn');
     tabs.forEach(tab => {
