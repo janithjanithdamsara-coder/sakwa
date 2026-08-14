@@ -33,8 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let weeklyChart = null;
   let wasteChart = null;
 
-  // Set initial mode (Public Website)
-  setAppMode('public-mode');
+  // Session & View Persistence Check
+  const savedMode = localStorage.getItem('SAKWA_APP_MODE') || 'public-mode';
+  const savedView = localStorage.getItem('SAKWA_CURRENT_VIEW') || 'dashboard';
+  const savedUser = localStorage.getItem('SAKWA_USER_NAME') || 'Storekeeper';
 
   // Register Mode & Routing Listeners
   initModeRouting();
@@ -50,11 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
   renderExpiryTracking();
   initSeamQcModule();
 
+  // Restore Session Mode & Active View
+  if (savedMode === 'app-mode') {
+    document.getElementById('currentUserName').textContent = savedUser;
+    setAppMode('app-mode');
+    switchView(savedView);
+  } else {
+    setAppMode(savedMode);
+  }
+
   /* ==========================================================================
      MODE ROUTING ENGINE (PUBLIC vs LOGIN vs INVENTORY APP)
      ========================================================================== */
   function setAppMode(modeName) {
     appBody.className = modeName;
+    localStorage.setItem('SAKWA_APP_MODE', modeName);
     if (modeName === 'app-mode') {
       renderDashboardMetrics();
       setTimeout(updateCharts, 100);
@@ -96,7 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Back to Public Website
-    btnBackToHome?.addEventListener('click', () => setAppMode('public-mode'));
+    btnBackToHome?.addEventListener('click', () => {
+      setAppMode('public-mode');
+    });
     btnHeaderPublicWebsite?.addEventListener('click', () => {
       setAppMode('public-mode');
       showToast('Switched to Sakwa Canneries Public Website', 'info');
@@ -142,10 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarOverlay?.addEventListener('click', toggleMobileSidebar);
   }
 
-  function executeLogin(username) {
+  function executeLogin(username, targetView = 'dashboard') {
     document.getElementById('currentUserName').textContent = username;
+    localStorage.setItem('SAKWA_USER_NAME', username);
     setAppMode('app-mode');
-    switchView('dashboard');
+    switchView(targetView);
     showToast(`Welcome back, ${username}! System ready.`, 'success');
   }
 
@@ -177,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function switchView(viewId) {
+    localStorage.setItem('SAKWA_CURRENT_VIEW', viewId);
     navItems.forEach(nav => {
       if (nav.getAttribute('data-view') === viewId) {
         nav.classList.add('active');
@@ -203,6 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderReorderAlerts();
     } else if (viewId === 'expiry-tracking') {
       renderExpiryTracking();
+    } else if (viewId === 'seam-qc') {
+      renderSeamQcHistory();
     }
   }
 
