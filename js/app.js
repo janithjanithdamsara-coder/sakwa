@@ -725,7 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderAllStockTables() {
     const rawBody = document.getElementById('rawStockBody');
     if (rawBody) {
-      rawBody.innerHTML = appData.rawMaterialsStock.map(item => `
+      rawBody.innerHTML = appData.rawMaterialsStock.map((item, idx) => `
         <tr>
           <td data-label="Item Name" style="font-weight:600">${item.name}</td>
           <td data-label="Category">${item.category}</td>
@@ -736,13 +736,23 @@ document.addEventListener('DOMContentLoaded', () => {
           <td data-label="Balance" style="font-weight:700; color:var(--accent-blue)">${item.balance.toLocaleString()}</td>
           <td data-label="Unit">${item.unit}</td>
           <td data-label="Expiry Date">${item.expiry}</td>
+          <td data-label="Action" style="text-align:center">
+            <div style="display:flex; gap:6px; justify-content:center">
+              <button type="button" class="btn-outline-blue btn-edit-stock" data-cat="raw" data-index="${idx}" style="padding:3px 8px; font-size:11px" title="Edit Item">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" class="btn-outline-blue btn-del-stock" data-cat="raw" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Item">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
 
     const pkgBody = document.getElementById('packagingStockBody');
     if (pkgBody) {
-      pkgBody.innerHTML = appData.packagingMaterialsStock.map(item => `
+      pkgBody.innerHTML = appData.packagingMaterialsStock.map((item, idx) => `
         <tr>
           <td data-label="Material Code"><code>${item.materialCode}</code></td>
           <td data-label="Description" style="font-weight:600">${item.name}</td>
@@ -750,13 +760,23 @@ document.addEventListener('DOMContentLoaded', () => {
           <td data-label="Total Issued">${item.issued.toLocaleString()}</td>
           <td data-label="Current Balance" style="font-weight:700; color:var(--accent-green)">${item.balance.toLocaleString()}</td>
           <td data-label="Unit">${item.unit}</td>
+          <td data-label="Action" style="text-align:center">
+            <div style="display:flex; gap:6px; justify-content:center">
+              <button type="button" class="btn-outline-blue btn-edit-stock" data-cat="pkg" data-index="${idx}" style="padding:3px 8px; font-size:11px" title="Edit Item">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" class="btn-outline-blue btn-del-stock" data-cat="pkg" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Item">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
 
     const wipBody = document.getElementById('wipStockBody');
     if (wipBody) {
-      wipBody.innerHTML = appData.wipStock.map(item => `
+      wipBody.innerHTML = appData.wipStock.map((item, idx) => `
         <tr>
           <td data-label="Production Date">${item.productionDate}</td>
           <td data-label="Batch No."><code>${item.batchNo}</code></td>
@@ -765,13 +785,23 @@ document.addEventListener('DOMContentLoaded', () => {
           <td data-label="Usage">${item.brineOilUsage}</td>
           <td data-label="Cans Produced" style="font-weight:700">${item.cansProduced.toLocaleString()}</td>
           <td data-label="Status"><span class="badge badge-good">${item.status}</span></td>
+          <td data-label="Action" style="text-align:center">
+            <div style="display:flex; gap:6px; justify-content:center">
+              <button type="button" class="btn-outline-blue btn-edit-stock" data-cat="wip" data-index="${idx}" style="padding:3px 8px; font-size:11px" title="Edit Item">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" class="btn-outline-blue btn-del-stock" data-cat="wip" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Item">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
 
     const fgBody = document.getElementById('fgStockBody');
     if (fgBody) {
-      fgBody.innerHTML = appData.finishedGoodsStock.map(item => `
+      fgBody.innerHTML = appData.finishedGoodsStock.map((item, idx) => `
         <tr>
           <td data-label="Product" style="font-weight:600">${item.brandProduct}</td>
           <td data-label="Batch No."><code>${item.batchNo}</code></td>
@@ -782,9 +812,57 @@ document.addEventListener('DOMContentLoaded', () => {
           <td data-label="Dispatched">${item.dispatchedQty.toLocaleString()}</td>
           <td data-label="Balance Cartons" style="font-weight:700; color:var(--accent-purple)">${item.balanceCartons.toLocaleString()}</td>
           <td data-label="Balance Cans" style="font-weight:700; color:var(--accent-blue)">${item.balanceCans.toLocaleString()}</td>
+          <td data-label="Action" style="text-align:center">
+            <div style="display:flex; gap:6px; justify-content:center">
+              <button type="button" class="btn-outline-blue btn-edit-stock" data-cat="fg" data-index="${idx}" style="padding:3px 8px; font-size:11px" title="Edit Item">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" class="btn-outline-blue btn-del-stock" data-cat="fg" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Item">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
+
+    // Attach Edit & Delete Click Listeners
+    document.querySelectorAll('.btn-del-stock').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-cat');
+        const idx = parseInt(btn.getAttribute('data-index'));
+        if (cat === 'raw') appData.rawMaterialsStock.splice(idx, 1);
+        if (cat === 'pkg') appData.packagingMaterialsStock.splice(idx, 1);
+        if (cat === 'wip') appData.wipStock.splice(idx, 1);
+        if (cat === 'fg') appData.finishedGoodsStock.splice(idx, 1);
+        saveStoredData(appData);
+        renderAllStockTables();
+        showToast('Item deleted successfully from inventory!', 'info');
+      });
+    });
+
+    document.querySelectorAll('.btn-edit-stock').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-cat');
+        const idx = parseInt(btn.getAttribute('data-index'));
+        let targetItem;
+        if (cat === 'raw') targetItem = appData.rawMaterialsStock[idx];
+        if (cat === 'pkg') targetItem = appData.packagingMaterialsStock[idx];
+        if (cat === 'wip') targetItem = appData.wipStock[idx];
+        if (cat === 'fg') targetItem = appData.finishedGoodsStock[idx];
+
+        if (targetItem) {
+          const newName = prompt('Edit Item Name / Description:', targetItem.name || targetItem.brandProduct);
+          if (newName && newName.trim()) {
+            if (targetItem.name) targetItem.name = newName.trim();
+            if (targetItem.brandProduct) targetItem.brandProduct = newName.trim();
+            saveStoredData(appData);
+            renderAllStockTables();
+            showToast('Item updated successfully!', 'success');
+          }
+        }
+      });
+    });
   }
 
   /* ==========================================================================
@@ -978,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tbody = document.getElementById('seamHistoryBody');
     if (!tbody || !appData.seamQcRecords) return;
 
-    tbody.innerHTML = appData.seamQcRecords.map(item => `
+    tbody.innerHTML = appData.seamQcRecords.map((item, idx) => `
       <tr>
         <td data-label="Date">${item.date}</td>
         <td data-label="Batch No."><code>${item.batchNo}</code></td>
@@ -989,8 +1067,42 @@ document.addEventListener('DOMContentLoaded', () => {
         <td data-label="Actual Overlap" style="font-weight:700">${item.actualOverlap}</td>
         <td data-label="Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.overlapPercent}</td>
         <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
+        <td data-label="Action" style="text-align:center">
+          <div style="display:flex; gap:6px; justify-content:center">
+            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:3px 8px; font-size:11px" title="Edit Record">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Record">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
       </tr>
     `).join('');
+
+    tbody.querySelectorAll('.btn-delete-seam-rec').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        const removed = appData.seamQcRecords.splice(idx, 1);
+        saveStoredData(appData);
+        renderSeamQcHistory();
+        showToast(`QC Record ${removed[0].batchNo} deleted.`, 'info');
+      });
+    });
+
+    tbody.querySelectorAll('.btn-edit-seam-rec').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        const rec = appData.seamQcRecords[idx];
+        const newBatch = prompt('Edit Batch No:', rec.batchNo);
+        if (newBatch && newBatch.trim()) {
+          rec.batchNo = newBatch.trim();
+          saveStoredData(appData);
+          renderSeamQcHistory();
+          showToast('Record updated successfully!', 'success');
+        }
+      });
+    });
   }
 
   // Universal Excel (.xlsx) Export Handler
