@@ -982,6 +982,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Step 2: Instant Live Search Filter across all active tables
+  const globalSearchInput = document.getElementById('globalTableSearch');
+  globalSearchInput?.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    const activeTables = document.querySelectorAll('.view-panel.active table, .tab-content.active table');
+    
+    activeTables.forEach(table => {
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(tr => {
+        const text = tr.textContent.toLowerCase();
+        tr.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  });
+
   /* ==========================================================================
      HELPER: TOAST NOTIFICATIONS
      ========================================================================== */
