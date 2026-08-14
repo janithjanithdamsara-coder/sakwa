@@ -1024,6 +1024,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Step 4: Dark / Light Theme Toggle Handler
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const savedTheme = localStorage.getItem('SAKWA_THEME_MODE') || 'light';
+
+  const applyTheme = (theme) => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark-theme');
+      if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+    } else {
+      document.body.classList.remove('dark-theme');
+      if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+    }
+  };
+
+  applyTheme(savedTheme);
+
+  btnThemeToggle?.addEventListener('click', () => {
+    const isDark = document.body.classList.contains('dark-theme');
+    const newTheme = isDark ? 'light' : 'dark';
+    localStorage.setItem('SAKWA_THEME_MODE', newTheme);
+    applyTheme(newTheme);
+    showToast(`Switched to ${newTheme.toUpperCase()} theme mode!`, 'info');
+  });
+
   /* ==========================================================================
      HELPER: TOAST NOTIFICATIONS
      ========================================================================== */

@@ -16,7 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <!-- App Custom CSS -->
-  <link rel="stylesheet" href="css/style.css?v=2.7">
+  <link rel="stylesheet" href="css/style.css?v=2.8">
 </head>
 <body class="public-mode" id="appBody">
 
@@ -355,6 +355,9 @@
       </div>
       
       <div class="header-user-profile">
+        <button class="btn-theme-toggle" id="btnThemeToggle" title="Toggle Dark/Light Mode" aria-label="Toggle Dark/Light Theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
         <select class="form-control user-role-select" id="userRoleSelect" style="padding:4px 10px; font-size:12px; font-weight:600; cursor:pointer; width:auto">
           <option value="storekeeper" selected>👤 Storekeeper (Full Stock)</option>
           <option value="qc_officer">🔬 Quality Officer (HACCP QC)</option>

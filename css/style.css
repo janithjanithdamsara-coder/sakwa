@@ -960,6 +960,61 @@ body.app-mode { display: flex; height: 100vh; overflow: hidden; }
   gap: 16px;
 }
 
+/* THEME TOGGLE BUTTON & DARK THEME ENGINE */
+.btn-theme-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-theme-toggle:hover {
+  background: #e2e8f0;
+  transform: scale(1.05);
+}
+
+body.dark-theme {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+body.dark-theme .top-header,
+body.dark-theme .form-card,
+body.dark-theme .metric-card,
+body.dark-theme .chart-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-theme .custom-table th {
+  background-color: #0f172a !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark-theme .custom-table td {
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-theme .global-search-input {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
 .user-info {
   text-align: right;
 }
