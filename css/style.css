@@ -1343,22 +1343,26 @@ textarea.form-control { height: 70px; resize: vertical; }
     overflow-x: hidden !important;
   }
 
-  .custom-table, #grnItemsTable, #seamMatrixTable {
+  .custom-table, #grnItemsTable, #issueItemsTable, #seamMatrixTable {
     table-layout: fixed !important;
     width: 100% !important;
   }
 
   .custom-table th, .custom-table td,
   #grnItemsTable th, #grnItemsTable td,
+  #issueItemsTable th, #issueItemsTable td,
   #seamMatrixTable th, #seamMatrixTable td {
     padding: 8px 10px !important;
     font-size: 12px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    vertical-align: middle !important;
   }
 
   #grnItemsTable input.form-control,
   #grnItemsTable select.form-control,
+  #issueItemsTable input.form-control,
+  #issueItemsTable select.form-control,
   #seamMatrixTable input.form-control {
     width: 100% !important;
     max-width: 100% !important;
