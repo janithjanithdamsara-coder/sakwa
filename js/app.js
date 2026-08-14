@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderReorderAlerts();
   renderExpiryTracking();
   initSeamQcModule();
+  initMasterSettingsModule();
 
   // Restore Session Mode, Active Role & Active View
   const savedRole = localStorage.getItem('SAKWA_USER_ROLE') || 'storekeeper';
@@ -1048,6 +1049,112 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(newTheme);
     showToast(`Switched to ${newTheme.toUpperCase()} theme mode!`, 'info');
   });
+
+  /* ==========================================================================
+     9. MASTER SETTINGS & DYNAMIC DROPDOWN MANAGER MODULE
+     ========================================================================== */
+  const defaultMasterDropdowns = {
+    fishSpecies: ['Mackerel (Aratoluwa)', 'Tuna (Kelawalla)', 'Linna', 'Balaya', 'Hurulla', 'Yellowfin Tuna'],
+    boxTypes: ['Rigiform Box (25kg)', 'Plastic Crate (30kg)', 'Insulated Tub (100kg)', 'Wooden Box'],
+    suppliers: ['Seagold Fisheries', 'Ocean Fresh Traders', 'Lanka Sea Foods Ltd', 'Industrial Salt Suppliers'],
+    packaging: ['425g Tin Cans Standard', '425g Easy-Open Lid', 'Printed Paper Labels', 'Master Cartons'],
+    departments: ['Fish Canning Line - 1', 'Fish Canning Line - 2', 'Retort Sterilization', 'Packing Line'],
+    inspectors: ['Line #1 • HACCP Team', 'Nimal Perera (Production Mgr)', 'Sarath Silva (Plant Sup)']
+  };
+
+  let masterDropdowns = JSON.parse(localStorage.getItem('SAKWA_MASTER_DROPDOWNS')) || defaultMasterDropdowns;
+  let activeMasterCategory = 'fishSpecies';
+
+  function initMasterSettingsModule() {
+    const tabs = document.querySelectorAll('#masterCategoryTabs .tab-btn');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeMasterCategory = tab.getAttribute('data-cat');
+        renderMasterOptionsTable();
+      });
+    });
+
+    document.getElementById('btnAddMasterOption')?.addEventListener('click', () => {
+      const input = document.getElementById('newMasterOptionName');
+      const val = input.value.trim();
+      if (!val) {
+        showToast('Please enter an option name.', 'info');
+        return;
+      }
+
+      masterDropdowns[activeMasterCategory] = masterDropdowns[activeMasterCategory] || [];
+      if (masterDropdowns[activeMasterCategory].includes(val)) {
+        showToast('This option already exists!', 'info');
+        return;
+      }
+
+      masterDropdowns[activeMasterCategory].push(val);
+      saveMasterDropdowns();
+      input.value = '';
+      renderMasterOptionsTable();
+      syncAllFormDropdowns();
+      showToast(`Added "${val}" to dropdown lists successfully!`, 'success');
+    });
+
+    renderMasterOptionsTable();
+    syncAllFormDropdowns();
+  }
+
+  function saveMasterDropdowns() {
+    localStorage.setItem('SAKWA_MASTER_DROPDOWNS', JSON.stringify(masterDropdowns));
+  }
+
+  function renderMasterOptionsTable() {
+    const tbody = document.getElementById('masterOptionsBody');
+    if (!tbody) return;
+
+    const list = masterDropdowns[activeMasterCategory] || [];
+    tbody.innerHTML = list.map((item, idx) => `
+      <tr>
+        <td data-label="#">${idx + 1}</td>
+        <td data-label="Option Name" style="font-weight:600">${item}</td>
+        <td data-label="Action" style="text-align:center">
+          <button type="button" class="btn-outline-blue btn-delete-master-opt" data-index="${idx}" style="padding:3px 10px; font-size:11px; color:#ef4444; border-color:#f87171">
+            <i class="fa-solid fa-trash"></i> Remove
+          </button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.btn-delete-master-opt').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        const removed = masterDropdowns[activeMasterCategory].splice(idx, 1);
+        saveMasterDropdowns();
+        renderMasterOptionsTable();
+        syncAllFormDropdowns();
+        showToast(`Removed "${removed[0]}" from list.`, 'info');
+      });
+    });
+  }
+
+  function syncAllFormDropdowns() {
+    populateSelectOptions('fanFishSpecies', masterDropdowns.fishSpecies);
+    populateSelectOptions('fanBoxType', masterDropdowns.boxTypes);
+    populateSelectOptions('grnSupplier', masterDropdowns.suppliers);
+    populateSelectOptions('fanSupplier', masterDropdowns.suppliers);
+    populateSelectOptions('issueDept', masterDropdowns.departments);
+    populateSelectOptions('seamInspector', masterDropdowns.inspectors);
+    populateSelectOptions('grnReceivedBy', masterDropdowns.inspectors);
+    populateSelectOptions('issueIssuedBy', masterDropdowns.inspectors);
+  }
+
+  function populateSelectOptions(selectId, items) {
+    const select = document.getElementById(selectId);
+    if (!select || !items) return;
+    const currentVal = select.value;
+    select.innerHTML = items.map(item => `<option value="${item}">${item}</option>`).join('');
+    if (items.includes(currentVal)) {
+      select.value = currentVal;
+    }
+  }
 
   /* ==========================================================================
      HELPER: TOAST NOTIFICATIONS
