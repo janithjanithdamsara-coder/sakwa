@@ -157,11 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast('Switched to Sakwa Canneries Public Website', 'info');
     });
 
-    // Logout Button
-    logoutBtn?.addEventListener('click', () => {
+    // Logout Buttons (Sidebar & Mobile Header)
+    const handleLogout = () => {
       setAppMode('public-mode');
       showToast('Logged out of Inventory System', 'info');
-    });
+    };
+
+    logoutBtn?.addEventListener('click', handleLogout);
+    document.getElementById('mobileHeaderLogoutBtn')?.addEventListener('click', handleLogout);
 
     // Login Form Submission
     loginForm?.addEventListener('submit', (e) => {
