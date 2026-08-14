@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sakwa ERP Official System Documentation Report - PDF Edition</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #2563eb;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --border: #cbd5e1;
+      --accent: #16a34a;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      color: var(--dark);
+      background-color: #f1f5f9;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* Floating Action Bar for 1-Click PDF Download */
+    .download-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-download-pdf {
+      background: #16a34a;
+      color: #ffffff;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.4);
+    }
+
+    .btn-download-pdf:hover {
+      background: #15803d;
+      transform: translateY(-1px);
+    }
+
+    .document-page {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 50px 60px;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .doc-header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .company-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .company-sub {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .staging-notice {
+      background: #fffbebf8;
+      border: 1px solid #fde047;
+      border-left: 5px solid #eab308;
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+      font-size: 13px;
+    }
+
+    h2 {
+      font-size: 18px;
+      color: var(--primary);
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 15px;
+      color: var(--secondary);
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    p { margin-bottom: 12px; }
+
+    ul, ol { margin-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .code-box {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      margin: 14px 0;
+    }
+
+    .sign-table td {
+      height: 60px;
+      vertical-align: bottom;
+    }
+
+    /* PRINT SPECIFIC CSS FOR CLEAN PDF OUTPUT */
+    @media print {
+      body { background: #ffffff !important; }
+      .download-bar { display: none !important; }
+      .document-page {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+      }
+      .page-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Action Bar -->
+  <div class="download-bar">
+    <div>
+      <strong style="font-size:15px; color:#ffffff"><i class="fa-solid fa-file-pdf" style="color:#ef4444; margin-right:8px"></i> Sakwa ERP Official Documentation Report</strong>
+      <span style="font-size:12px; color:#94a3b8; margin-left:12px">PDF Printable Format</span>
+    </div>
+    <button class="btn-download-pdf" onclick="window.print()">
+      <i class="fa-solid fa-download"></i> Save / Download PDF (CTRL+P)
+    </button>
+  </div>
+
+  <div class="document-page">
+    
+    <!-- Cover Header -->
+    <div class="doc-header">
+      <div>
+        <div class="company-title">Sakwa Canneries &amp; Exports (Pvt) Ltd</div>
+        <div class="company-sub">Aratuweta Waththa, Boralukada, Baddegama, Sri Lanka</div>
+        <div class="company-sub">Phone/WhatsApp: 071 55 22 378 | Email: sakwa.trading578@gmail.com</div>
+      </div>
+      <div style="text-align:right">
+        <span style="background:#1e3a8a; color:#fff; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:700">OFFICIAL ERP REPORT</span>
+        <div style="font-size:11px; color:#64748b; margin-top:6px">Date: August 14, 2026</div>
+      </div>
+    </div>
+
+    <!-- Temporary Staging Notice -->
+    <div class="staging-notice">
+      <strong style="color:#854d0e"><i class="fa-solid fa-triangle-exclamation"></i> TEMPORARY STAGING HOST NOTICE:</strong><br>
+      The active web URL <strong><a href="https://sahashrajanith.site" target="_blank" style="color:#2563eb">https://sahashrajanith.site</a></strong> is currently operating as a <strong>Temporary Staging &amp; Testing Domain</strong> for live system demonstration, staff training, and validation. Upon final executive approval, the system can be pointed directly to the company's permanent corporate domain (e.g., <code>sakwacanneries.lk</code> or <code>sakwafoods.com</code>) with zero downtime.
+    </div>
+
+    <h2>1. Executive Summary &amp; Corporate Profile</h2>
+    <p>
+      <strong>Sakwa Canneries &amp; Exports (Pvt) Ltd</strong> is a premier Sri Lankan seafood canning and export facility situated in Baddegama, Southern Province. The company specializes in processing high-quality canned fish products, including <strong>425g Canned Mackerel in Tomato Sauce</strong>, <strong>Canned Mackerel in Brine</strong>, and <strong>Canned Tuna in Oil</strong> for domestic and international markets.
+    </p>
+    <p>
+      To ensure 100% compliance with international <strong>HACCP (Hazard Analysis Critical Control Point)</strong>, <strong>SLSI</strong>, and <strong>EU Export Quality Standards</strong>, this custom Enterprise Resource Planning (ERP) and Quality Control (QC) System was engineered specifically for Sakwa Canneries' operational workflow.
+    </p>
+
+    <h2>2. Technical Architecture &amp; Modern Technology Stack</h2>
+    <ul>
+      <li><strong>Frontend Core:</strong> Semantic HTML5 &amp; Vanilla JavaScript ES6+ (Zero framework overhead for sub-second execution speeds).</li>
+      <li><strong>Design System:</strong> Custom Vanilla CSS3 design system with Dark Mode (🌙) and Light Mode (☀️) toggle capabilities.</li>
+      <li><strong>Data Export Engine:</strong> Integrated <strong>SheetJS (<code>xlsx.full.min.js</code>)</strong> library for instant 1-click client-side Excel spreadsheet generation.</li>
+      <li><strong>State &amp; Session Persistence:</strong> HTML5 <code>localStorage</code> persistence preserving view states, active user roles, dark mode, and dynamic dropdown options across tab refreshes.</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h2>3. Comprehensive Breakdown of Core ERP Modules (10 Modules)</h2>
+
+    <h3>3.1 ❄️ Real-Time Cold Room IoT Temperature Monitoring</h3>
+    <p>Connected to Dixell XR06CX Digital Controller simulating live <code>-18.4 °C</code> micro-fluctuations, setpoint monitoring (<code>-18.0 °C</code>), and live compressor status badges.</p>
+
+    <h3>3.2 🐟 Fish Arrival Note (FAN) Module</h3>
+    <p>Automated batch code generator (<code>FISH-YYYY-MM-DD-01</code>), gross/tare/net weight math engine, and automatic inward updating to Raw Material Stock.</p>
+
+    <h3>3.3 📜 Goods Receipt Note (GRN) Module</h3>
+    <p>Multi-item inward logging with automatic line total (<code>Qty × Price</code>) and grand total math, automatically populating stock inventory tables.</p>
+
+    <h3>3.4 📦 Stock Issuing to Production Lines</h3>
+    <p>Issues raw fish, salt, oil, and empty cans from warehouse storage to canning production lines while creating a Work-In-Progress (WIP) production batch.</p>
+
+    <h3>3.5 📊 Master Stock Inventory &amp; Export Suite</h3>
+    <p>Manages Raw Material Stock, Packaging Stock, WIP Production Stock, and Finished Goods Stock with 1-click <strong>Excel (.xlsx) Export</strong> and <strong>PDF Printing</strong>.</p>
+
+    <h3>3.6 🔬 HACCP Double Seam Quality Control (QC) Engine</h3>
+    <p>4-Point measurement matrix (SL, BH, CH), real-time overlap % math engine, automated <strong>PASS ✅ / FAIL ❌</strong> badge, and printable audit report matching factory <code>Seam.xlsx</code> layout.</p>
+
+    <h3>3.7 ⚙️ Master Data &amp; Dynamic Dropdown Manager</h3>
+    <p>Centralized control panel to add, edit, or remove Fish Species, Box Types, Suppliers, Packaging, Departments, and Staff options across all dropdowns.</p>
+
+    <h3>3.8 ✏️ Universal Record Editing &amp; Deleting Engine</h3>
+    <p>Edit (✏️) and Delete (🗑️) buttons across all stock and QC history tables with instant local storage recalculations.</p>
+
+    <h3>3.9 👥 Role-Based Access Control (RBAC)</h3>
+    <p>Dedicated profiles for Storekeeper, Quality Control Officer, and Plant Director.</p>
+
+    <h3>3.10 📱 Dark Mode &amp; 100% Mobile Responsiveness Suite</h3>
+    <p>Off-canvas mobile drawer navigation, mobile header logout button, and touch-optimized horizontal scrolling tables.</p>
+
+    <h2>4. IoT Hardware Procurement &amp; Sri Lanka Price Breakdown (LKR / Rs.)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Component Item</th>
+          <th>Model / Specification</th>
+          <th>Vendor (Sri Lanka)</th>
+          <th>Price (LKR / Rs.)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. ESP32 Wi-Fi IoT Board</strong></td>
+          <td>NodeMCU Dual-Core Type-C</td>
+          <td>Tronic.lk / Techshop.lk</td>
+          <td><strong>Rs. 1,250.00</strong></td>
+        </tr>
+        <tr>
+          <td><strong>2. DS18B20 Sensor Probe</strong></td>
+          <td>Waterproof Stainless Probe (1m)</td>
+          <td>Tronic.lk (Code: MD0094)</td>
+          <td><strong>Rs. 320.00</strong></td>
+        </tr>
+        <tr>
+          <td><strong>3. MAX485 Modbus Module</strong></td>
+          <td>TTL to RS485 (For Dixell Link)</td>
+          <td>Tronic.lk</td>
+          <td><strong>Rs. 400.00</strong></td>
+        </tr>
+        <tr>
+          <td><strong>4. 5V 2A SMPS Adapter</strong></td>
+          <td>220V AC to 5V DC Power Adapter</td>
+          <td>Tronic.lk (Code: PS0034)</td>
+          <td><strong>Rs. 500.00</strong></td>
+        </tr>
+        <tr>
+          <td><strong>5. ABS Enclosure Box</strong></td>
+          <td>IP65 Waterproof Box + Wiring Kit</td>
+          <td>Tronic.lk / Cybertronics</td>
+          <td><strong>Rs. 850.00</strong></td>
+        </tr>
+        <tr style="background:#f8fafc; font-weight:bold">
+          <td colspan="3">TOTAL HARDWARE COST (COMPLETE IOT KIT)</td>
+          <td style="color:#16a34a">Rs. 3,320.00 LKR</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h2>5. Industrial Android Tablet App Blueprint</h2>
+    <p><strong>Method A (PWA Installation):</strong> Open Chrome on Android Tablet -> Visit <code>https://sahashrajanith.site</code> -> Tap Chrome Menu (<code>⋮</code>) -> Select <strong>"Add to Home screen"</strong>.</p>
+    <div class="code-box">
+      # Method B (Native APK Compilation via Capacitor)<br>
+      npm install @capacitor/core @capacitor/cli @capacitor/android<br>
+      npx cap init "Sakwa ERP" "com.sakwacanneries.erp"<br>
+      npx cap add android
+    </div>
+
+    <h2>6. Executive Sign-Off &amp; System Handover Acceptance Form</h2>
+    <p>This technical document certifies that the Sakwa Canneries ERP &amp; Quality Control System has been fully inspected, verified, and accepted by executive management.</p>
+
+    <table class="sign-table">
+      <thead>
+        <tr>
+          <th>Executive Role</th>
+          <th>Name</th>
+          <th>Signature</th>
+          <th>Approval Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Plant Director</strong></td>
+          <td>Management Representative</td>
+          <td></td>
+          <td>____ / ____ / 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Quality Control Manager</strong></td>
+          <td>HACCP Team Leader</td>
+          <td></td>
+          <td>____ / ____ / 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Head Storekeeper</strong></td>
+          <td>Warehouse Manager</td>
+          <td></td>
+          <td>____ / ____ / 2026</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="text-align:center; font-size:11px; color:#94a3b8; margin-top:40px">
+      Official ERP System Documentation generated for Sakwa Canneries &amp; Exports (Pvt) Ltd, Baddegama, Sri Lanka.
+    </div>
+
+  </div>
+
+</body>
+</html>
