@@ -159,18 +159,49 @@
       vertical-align: bottom;
     }
 
-    /* PRINT SPECIFIC CSS FOR CLEAN PDF OUTPUT */
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm 15mm 15mm;
+    }
+
+    /* PRINT SPECIFIC CSS FOR CLEAN FULL-PAGE A4 PDF OUTPUT */
     @media print {
-      body { background: #ffffff !important; }
-      .download-bar { display: none !important; }
+      html, body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        color: #000000 !important;
+      }
+
+      .download-bar {
+        display: none !important;
+      }
+
       .document-page {
         margin: 0 !important;
         padding: 0 !important;
         box-shadow: none !important;
         border: none !important;
         max-width: 100% !important;
+        width: 100% !important;
+        background: #ffffff !important;
       }
-      .page-break { page-break-before: always; }
+
+      .page-break {
+        page-break-before: always !important;
+        break-before: page !important;
+      }
+
+      tr, table {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      h2, h3 {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
     }
   </style>
 </head>
