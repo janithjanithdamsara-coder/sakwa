@@ -1914,8 +1914,8 @@ textarea.form-control { height: 70px; resize: vertical; }
 }
 
 /* HACCP PRINT SHEET STYLES (EXACT MATCH FOR SEAM.XLSX) */
-.haccp-print-sheet {
-  display: none;
+.haccp-print-sheet, #haccpPrintSheet {
+  display: none !important;
   background: #ffffff;
   color: #0f172a;
   padding: 30px;
@@ -2017,20 +2017,27 @@ textarea.form-control { height: 70px; resize: vertical; }
 
 /* MEDIA PRINT RULE */
 @media print {
-  body * {
-    visibility: hidden !important;
+  body > * {
+    display: none !important;
   }
   
-  #haccpPrintSheet, #haccpPrintSheet * {
-    visibility: visible !important;
-  }
-  
-  #haccpPrintSheet {
+  .haccp-print-sheet, #haccpPrintSheet {
     display: block !important;
-    position: absolute !important;
+    position: relative !important;
     left: 0 !important;
     top: 0 !important;
     width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+
+  .haccp-print-sheet *, #haccpPrintSheet * {
+    display: revert !important;
+    visibility: visible !important;
+  }
+
+  .haccp-print-header, .haccp-signatures {
+    display: flex !important;
   }
 }
 
