@@ -2232,3 +2232,194 @@ textarea.form-control { height: 70px; resize: vertical; }
   }
 }
 
+/* ==========================================================================
+   ENTERPRISE MOBILE & TABLET RESPONSIVE SUITE (@media max-width: 768px & 480px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Layout Base & Main Container */
+  .app-container {
+    flex-direction: column !important;
+  }
+
+  .main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Off-Canvas Sidebar Mobile Drawer */
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    width: 260px !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .sidebar.active, .sidebar.open {
+    left: 0 !important;
+    transform: translateX(0) !important;
+  }
+
+  .sidebar-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: 9998 !important;
+    display: none;
+  }
+
+  .sidebar-overlay.active, .sidebar-overlay.open {
+    display: block !important;
+  }
+
+  .btn-sidebar-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  /* Top Header Bar Mobile Adaptations */
+  .top-header {
+    padding: 12px 14px !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    height: auto !important;
+  }
+
+  .page-header-title {
+    font-size: 16px !important;
+  }
+
+  .search-box-container {
+    width: 100% !important;
+    order: 3 !important;
+    margin-top: 4px !important;
+  }
+
+  .global-search-input {
+    width: 100% !important;
+  }
+
+  .header-user-profile {
+    margin-left: auto !important;
+    gap: 8px !important;
+  }
+
+  /* Main View Panel Padding */
+  .main-content {
+    padding: 14px 10px !important;
+  }
+
+  /* Dashboard Cards Responsive Grid */
+  .stats-grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .coldroom-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .coldroom-body {
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  .led-display-box {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .coldroom-metrics {
+    width: 100% !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+
+  /* Form Cards & Input Grids Stacking */
+  .form-card {
+    padding: 14px !important;
+  }
+
+  .form-grid-2, .form-grid-3, .form-grid-4 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .form-actions-footer {
+    flex-direction: column-reverse !important;
+    gap: 10px !important;
+  }
+
+  .form-actions-footer button {
+    width: 100% !important;
+  }
+
+  /* Touch-Optimized Responsive Data Tables */
+  .table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-bottom: 16px !important;
+    border-radius: var(--radius-sm) !important;
+  }
+
+  .custom-table, #grnItemsTable, #issueItemsTable, #seamMatrixTable, #masterOptionsTable {
+    width: 100% !important;
+    min-width: 600px !important; /* Forces clean horizontal swipe on small screens */
+  }
+
+  /* Tabs Swipe Header */
+  .stock-tabs-header {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 6px !important;
+    gap: 6px !important;
+  }
+
+  .tab-btn {
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    padding: 8px 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Double Seam Matrix Table */
+  .seam-matrix-table {
+    min-width: 500px !important;
+  }
+
+  .seam-results-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 12px !important;
+  }
+
+  .stat-val {
+    font-size: 18px !important;
+  }
+
+  .btn-primary-blue, .btn-secondary, .btn-outline-blue {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
