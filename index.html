@@ -993,43 +993,13 @@
             Measure 4 points around the canned fish tin rim (SL, BH, CH) for <strong>Top Cover Seam (Can Lid)</strong> and <strong>Bottom End Seam (Can Maker's End)</strong>. System calculates Overlap % in real time. Pass threshold: Overlap % &ge; 50%.
           </p>
 
-          <!-- Seam Location Category Selector -->
-          <div class="stock-tabs-header" id="seamLocationTabs" style="margin-bottom:20px">
-            <button class="tab-btn active" data-loc="top">🔝 Top Cover Seam (Lid / Factory Seamer)</button>
-            <button class="tab-btn" data-loc="bottom">🔚 Bottom End Seam (Can Maker's End)</button>
-            <button class="tab-btn" data-loc="both">🔄 Both Seams (Dual Inspection Mode)</button>
-          </div>
-
-          <!-- Top Meta Form Grid -->
-          <div class="form-grid-4" style="margin-bottom:20px">
-            <div class="form-group">
-              <label>Inspection Date</label>
-              <input type="date" class="form-control" id="seamDate">
-            </div>
-            <div class="form-group">
-              <label>Can Size / Type</label>
-              <select class="form-control" id="seamCanSize">
-                <option value="425g A1 Tin (Standard)" selected>425g A1 Tin (Standard)</option>
-                <option value="425g Easy-Open Lid">425g Easy-Open Lid</option>
-                <option value="155g Small Tin">155g Small Tin</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Batch No.</label>
-              <input type="text" class="form-control" id="seamBatchNo" value="BATCH-2025-05-10">
-            </div>
-            <div class="form-group">
-              <label>Seamer Line / Inspector</label>
-              <input type="text" class="form-control" id="seamInspector" value="Line #1 • HACCP Team">
-            </div>
-          </div>
-
           <!-- TOP COVER SEAM MATRIX -->
-          <div class="seam-matrix-card" id="topSeamMatrixCard">
-            <div style="font-size:14px; font-weight:700; color:var(--primary-navy); margin-bottom:10px">
-              🔝 Top Cover Seam 4-Point Measurement Matrix (Can Lid / Factory Seamer)
+          <div class="seam-matrix-card" id="topSeamMatrixCard" style="margin-bottom:24px">
+            <div style="font-size:14px; font-weight:700; color:var(--primary-navy); margin-bottom:10px; display:flex; align-items:center; gap:8px">
+              <span>🔝 Top Cover Seam 4-Point Measurement Matrix (Can Lid / Factory Seamer)</span>
+              <span class="badge badge-good" style="font-size:11px">Factory Lid Seamer</span>
             </div>
-            <div class="table-container" style="margin-bottom:20px">
+            <div class="table-container" style="margin-bottom:16px">
               <table class="custom-table seam-matrix-table" id="seamMatrixTableTop">
                 <thead>
                   <tr>
@@ -1072,11 +1042,12 @@
           </div>
 
           <!-- BOTTOM END SEAM MATRIX -->
-          <div class="seam-matrix-card" id="bottomSeamMatrixCard" style="display:none">
-            <div style="font-size:14px; font-weight:700; color:var(--primary-navy); margin-bottom:10px">
-              🔚 Bottom End Seam 4-Point Measurement Matrix (Can Maker's End)
+          <div class="seam-matrix-card" id="bottomSeamMatrixCard" style="margin-bottom:24px">
+            <div style="font-size:14px; font-weight:700; color:var(--primary-navy); margin-bottom:10px; display:flex; align-items:center; gap:8px">
+              <span>🔚 Bottom End Seam 4-Point Measurement Matrix (Can Maker's End)</span>
+              <span class="badge badge-good" style="font-size:11px; background:#e0f2fe; color:#0369a1">Can Manufacturer End</span>
             </div>
-            <div class="table-container" style="margin-bottom:20px">
+            <div class="table-container" style="margin-bottom:16px">
               <table class="custom-table seam-matrix-table" id="seamMatrixTableBottom">
                 <thead>
                   <tr>
@@ -1124,12 +1095,12 @@
               <div class="seam-res-label">Top Seam Overlap %</div>
               <div class="seam-res-val" id="resTopOverlapPercent">49.33 %</div>
             </div>
-            <div class="seam-result-box" id="resBottomBox" style="display:none">
+            <div class="seam-result-box" id="resBottomBox">
               <div class="seam-res-label">Bottom Seam Overlap %</div>
               <div class="seam-res-val" id="resBottomOverlapPercent">53.40 %</div>
             </div>
             <div class="seam-result-box">
-              <div class="seam-res-label">HACCP QC Status</div>
+              <div class="seam-res-label">HACCP Dual QC Status</div>
               <div id="resSeamStatus"><span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> PASS ✅</span></div>
             </div>
           </div>

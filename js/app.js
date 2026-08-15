@@ -993,37 +993,6 @@ document.addEventListener('DOMContentLoaded', () => {
       dateInput.value = new Date().toISOString().split('T')[0];
     }
 
-    let activeLoc = 'top'; // 'top', 'bottom', or 'both'
-
-    const seamTabs = document.querySelectorAll('#seamLocationTabs .tab-btn');
-    const topCard = document.getElementById('topSeamMatrixCard');
-    const botCard = document.getElementById('bottomSeamMatrixCard');
-    const botResBox = document.getElementById('resBottomBox');
-
-    seamTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        seamTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        activeLoc = tab.getAttribute('data-loc');
-
-        if (activeLoc === 'top') {
-          if (topCard) topCard.style.display = 'block';
-          if (botCard) botCard.style.display = 'none';
-          if (botResBox) botResBox.style.display = 'none';
-        } else if (activeLoc === 'bottom') {
-          if (topCard) topCard.style.display = 'none';
-          if (botCard) botCard.style.display = 'block';
-          if (botResBox) botResBox.style.display = 'none';
-        } else {
-          if (topCard) topCard.style.display = 'block';
-          if (botCard) botCard.style.display = 'block';
-          if (botResBox) botResBox.style.display = 'block';
-        }
-
-        updateSeamCalculations();
-      });
-    });
-
     const EPT = 0.20; // End Plate Thickness (mm)
     const BPT = 0.17; // Body Plate Thickness (mm)
 
@@ -1055,19 +1024,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('resTopOverlapPercent').textContent = topRes.overlapPercent.toFixed(2) + ' %';
       document.getElementById('resBottomOverlapPercent').textContent = botRes.overlapPercent.toFixed(2) + ' %';
 
-      let isPass = false;
-      let statusText = '';
-
-      if (activeLoc === 'top') {
-        isPass = topRes.overlapPercent >= 50.0;
-        statusText = isPass ? 'PASS ✅ (Top Seam)' : 'FAIL ❌ (Top Seam Defect)';
-      } else if (activeLoc === 'bottom') {
-        isPass = botRes.overlapPercent >= 50.0;
-        statusText = isPass ? 'PASS ✅ (Bottom Seam)' : 'FAIL ❌ (Bottom Seam Defect)';
-      } else {
-        isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
-        statusText = isPass ? 'PASS ✅ (Both Seams Comply)' : 'FAIL ❌ (Seam Defect Found)';
-      }
+      const isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
+      const statusText = isPass ? 'PASS ✅ (Both Top & Bottom Seams Comply)' : 'FAIL ❌ (Seam Defect Found)';
 
       document.getElementById('resSeamStatus').innerHTML = isPass
         ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
@@ -1084,21 +1042,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const topRes = calcMatrix('.seam-top-sl', '.seam-top-bh', '.seam-top-ch');
       const botRes = calcMatrix('.seam-bot-sl', '.seam-bot-bh', '.seam-bot-ch');
 
-      const locName = activeLoc === 'top' ? 'Top Cover Seam' : (activeLoc === 'bottom' ? 'Bottom End Seam' : 'Both Top & Bottom');
-
-      let isPass = false;
-      if (activeLoc === 'top') isPass = topRes.overlapPercent >= 50.0;
-      else if (activeLoc === 'bottom') isPass = botRes.overlapPercent >= 50.0;
-      else isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
+      const isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
 
       const record = {
         id: 'SEAM-' + Date.now().toString().slice(-4),
         date: document.getElementById('seamDate').value,
         batchNo: document.getElementById('seamBatchNo').value,
         canSize: document.getElementById('seamCanSize').value,
-        seamLocation: locName,
-        topOverlapPercent: (activeLoc === 'bottom' ? 'N/A' : topRes.overlapPercent.toFixed(2) + ' %'),
-        botOverlapPercent: (activeLoc === 'top' ? 'N/A' : botRes.overlapPercent.toFixed(2) + ' %'),
+        seamLocation: 'Top & Bottom Dual Seams',
+        topOverlapPercent: topRes.overlapPercent.toFixed(2) + ' %',
+        botOverlapPercent: botRes.overlapPercent.toFixed(2) + ' %',
         status: isPass ? 'PASS ✅' : 'FAIL ❌'
       };
 
@@ -1107,7 +1060,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveStoredData(appData);
 
       renderSeamQcHistory();
-      showToast(`Double Seam QC Record for ${locName} saved!`, 'success');
+      showToast('Double Seam QC Record for Top & Bottom Seams saved!', 'success');
     });
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
