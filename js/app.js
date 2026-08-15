@@ -995,10 +995,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentTinIndex = 0; // 0 to 3 for Tins #1..#4
     const sampleTinsData = [
-      { topSL: [2.83, 2.90, 2.93, 2.85], topBH: [2.09, 2.09, 2.09, 2.07], topCH: [1.70, 1.70, 1.70, 1.63], botSL: [2.98, 2.94, 3.00, 3.00], botBH: [2.13, 2.10, 2.08, 2.12], botCH: [1.85, 1.86, 1.82, 1.89], completed: false },
-      { topSL: [2.84, 2.80, 2.80, 2.75], topBH: [1.91, 2.03, 1.99, 1.99], topCH: [1.83, 1.88, 2.00, 1.82], botSL: [2.84, 2.82, 2.75, 2.76], botBH: [2.02, 2.01, 2.12, 2.08], botCH: [1.98, 1.99, 1.91, 1.93], completed: false },
-      { topSL: [2.85, 2.84, 2.85, 2.90], topBH: [2.08, 2.07, 2.05, 2.02], topCH: [1.74, 1.70, 1.71, 1.74], botSL: [3.00, 2.92, 2.98, 2.93], botBH: [2.11, 2.14, 2.09, 2.13], botCH: [1.73, 1.72, 1.70, 1.84], completed: false },
-      { topSL: [2.78, 2.84, 2.92, 2.78], topBH: [1.94, 2.12, 2.06, 2.03], topCH: [1.91, 1.95, 1.94, 1.96], botSL: [2.72, 2.71, 2.73, 2.75], botBH: [1.85, 1.81, 1.90, 1.93], botCH: [1.95, 1.81, 1.86, 1.76], completed: false }
+      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false },
+      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false },
+      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false },
+      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false }
     ];
 
     const EPT = 0.20, BPT = 0.17;
@@ -1013,17 +1013,38 @@ document.addEventListener('DOMContentLoaded', () => {
       const botCHs = document.querySelectorAll('.seam-bot-ch');
 
       for (let i = 0; i < 4; i++) {
-        if (topSLs[i]) topSLs[i].value = data.topSL[i];
-        if (topBHs[i]) topBHs[i].value = data.topBH[i];
-        if (topCHs[i]) topCHs[i].value = data.topCH[i];
-        if (botSLs[i]) botSLs[i].value = data.botSL[i];
-        if (botBHs[i]) botBHs[i].value = data.botBH[i];
-        if (botCHs[i]) botCHs[i].value = data.botCH[i];
+        if (topSLs[i]) topSLs[i].value = data.topSL[i] > 0 ? data.topSL[i] : '';
+        if (topBHs[i]) topBHs[i].value = data.topBH[i] > 0 ? data.topBH[i] : '';
+        if (topCHs[i]) topCHs[i].value = data.topCH[i] > 0 ? data.topCH[i] : '';
+        if (botSLs[i]) botSLs[i].value = data.botSL[i] > 0 ? data.botSL[i] : '';
+        if (botBHs[i]) botBHs[i].value = data.botBH[i] > 0 ? data.botBH[i] : '';
+        if (botCHs[i]) botCHs[i].value = data.botCH[i] > 0 ? data.botCH[i] : '';
       }
 
       updateStepperUI(index);
       updateSeamCalculations();
     };
+
+    const resetAllSeamInputs = () => {
+      currentTinIndex = 0;
+      for (let t = 0; t < 4; t++) {
+        sampleTinsData[t] = {
+          topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0],
+          botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0],
+          completed: false
+        };
+      }
+      document.querySelectorAll('.seam-top-sl, .seam-top-bh, .seam-top-ch, .seam-bot-sl, .seam-bot-bh, .seam-bot-ch').forEach(input => {
+        input.value = '';
+      });
+      updateStepperUI(0);
+      document.getElementById('resTopOverlapPercent').textContent = '-- %';
+      document.getElementById('resBottomOverlapPercent').textContent = '-- %';
+      document.getElementById('resSeamStatus').innerHTML = '<span class="badge" style="font-size:14px; padding:6px 16px; background:#e2e8f0; color:#475569">READY FOR INPUT ⚪</span>';
+      showToast('All 4 Tins Seam Matrix cleared & reset for new inspection!', 'info');
+    };
+
+    document.getElementById('btnClearSeamSessionQC')?.addEventListener('click', resetAllSeamInputs);
 
     const readInputsToTin = (index) => {
       const data = sampleTinsData[index];
