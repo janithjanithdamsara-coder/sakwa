@@ -101,11 +101,10 @@ const DEFAULT_FACTORY_DATA = {
   ],
 
   rawMaterialsStock: [
-    { id: 'RM-01', name: 'Frozen Mackerel Grade A', category: 'Raw Fish', supplier: 'Seagold Fisheries', lotBatch: 'FISH-2025-05-18-01', receivedQty: 15000, issuedQty: 2550, balance: 12450, unit: 'kg', expiry: '2025-11-18' },
-    { id: 'RM-02', name: 'Frozen Yellowfin Tuna', category: 'Raw Fish', supplier: 'Ocean Deep Catch Ltd', lotBatch: 'FISH-2025-05-16-02', receivedQty: 8000, issuedQty: 3200, balance: 4800, unit: 'kg', expiry: '2025-10-30' },
-    { id: 'RM-03', name: 'Iodized Industrial Salt', category: 'Salt', supplier: 'Lanka Salt Ltd', lotBatch: 'SALT-2024-12-01', receivedQty: 3000, issuedQty: 850, balance: 2150, unit: 'kg', expiry: '2026-06-01' },
-    { id: 'RM-04', name: 'Refined Palm Oil', category: 'Ingredients', supplier: 'Pyramid Wilmar', lotBatch: 'OIL-2025-01-15', receivedQty: 2500, issuedQty: 1180, balance: 1320, unit: 'L', expiry: '2025-07-15' },
-    { id: 'RM-05', name: 'Citric Acid Solution', category: 'Ingredients', supplier: 'Chemex Corp', lotBatch: 'CIT-2025-02-10', receivedQty: 500, issuedQty: 150, balance: 350, unit: 'L', expiry: '2026-02-10' }
+    { id: 'RM-01', name: 'Local Fish (Chill Fish) - Cool Room', category: 'Raw Fish', supplier: 'Local Harbours', lotBatch: 'FISH-LOC-2025-05-18', receivedQty: 15000, issuedQty: 2550, balance: 12450, unit: 'kg', expiry: '2025-06-18' },
+    { id: 'RM-02', name: 'Frozen Pacific Mackerel - Cool Room', category: 'Raw Fish', supplier: 'Seagold Fisheries', lotBatch: 'FISH-PAC-2025-05-16', receivedQty: 18000, issuedQty: 4200, balance: 13800, unit: 'kg', expiry: '2025-11-30' },
+    { id: 'RM-03', name: 'Salt (1 kg Packets)', category: 'Salt', supplier: 'Lanka Salt Ltd', lotBatch: 'SALT-1KG-2025-01', receivedQty: 5000, issuedQty: 1200, balance: 3800, unit: 'Packets (kg)', expiry: '2026-06-01' },
+    { id: 'RM-04', name: 'Salt (25 kg Sacks)', category: 'Salt', supplier: 'Industrial Salt Suppliers', lotBatch: 'SALT-25KG-2025-01', receivedQty: 200, issuedQty: 45, balance: 155, unit: 'Sacks (25kg)', expiry: '2026-06-01' }
   ],
 
   packagingMaterialsStock: [

@@ -543,11 +543,11 @@ document.addEventListener('DOMContentLoaded', () => {
     tr.innerHTML = `
       <td>
         <select class="form-control grn-type">
-          <option value="Raw Fish (Mackerel)" ${item.type.includes('Mackerel') ? 'selected' : ''}>Raw Fish (Mackerel)</option>
-          <option value="Raw Fish (Tuna)" ${item.type.includes('Tuna') ? 'selected' : ''}>Raw Fish (Tuna)</option>
+          <option value="Local Fish (Chill Fish)" ${item.type.includes('Local') ? 'selected' : ''}>Local Fish (Chill Fish) - Cool Room</option>
+          <option value="Frozen Pacific Mackerel" ${item.type.includes('Mackerel') ? 'selected' : ''}>Frozen Pacific Mackerel - Cool Room</option>
+          <option value="Salt (1 kg Packets)" ${item.type.includes('1 kg') ? 'selected' : ''}>Salt (1 kg Packets)</option>
+          <option value="Salt (25 kg Sacks)" ${item.type.includes('25 kg') ? 'selected' : ''}>Salt (25 kg Sacks)</option>
           <option value="Empty Cans (Rigiform)" ${item.type.includes('Rigiform') ? 'selected' : ''}>Empty Cans (Rigiform)</option>
-          <option value="Empty Cans (Plastic)" ${item.type.includes('Plastic') ? 'selected' : ''}>Empty Cans (Plastic)</option>
-          <option value="Salt" ${item.type.includes('Salt') ? 'selected' : ''}>Salt</option>
           <option value="Oil" ${item.type.includes('Oil') ? 'selected' : ''}>Oil</option>
         </select>
       </td>
