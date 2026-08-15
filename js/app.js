@@ -871,6 +871,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <tr>
           <td data-label="Product" style="font-weight:600">${item.brandProduct}</td>
           <td data-label="Batch No."><code>${item.batchNo}</code></td>
+          <td data-label="QC Disposition">
+            <span class="badge ${item.qualityStatus && item.qualityStatus.includes('HOLD') ? 'badge-expired' : 'badge-good'}" style="font-size:10px; padding:4px 8px">
+              ${item.qualityStatus || 'MAIN BATCH 🟢'}
+            </span>
+          </td>
           <td data-label="Mfg Date">${item.prodDate}</td>
           <td data-label="Expiry Date">${item.expiryDate}</td>
           <td data-label="Total Cartons">${item.totalCartons.toLocaleString()}</td>
@@ -1489,6 +1494,43 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      9. MASTER SETTINGS & DYNAMIC DROPDOWN MANAGER MODULE
      ========================================================================== */
+  let activeMasterCategory = 'fishSpecies';
+  let masterDropdowns = JSON.parse(localStorage.getItem('SAKWA_MASTER_DROPDOWNS')) || {
+    fishSpecies: ['Mackerel', 'Tuna', 'Pacific Mackerel', 'Local Chill Fish'],
+    rawMaterials: [
+      'Local Fish (Chill Fish) - Cool Room',
+      'Frozen Pacific Mackerel - Cool Room',
+      'Salt (1kg / 25kg Packets & Sacks)',
+      'Water (Potable Water)'
+    ],
+    packaging: [
+      '300 Ø A1 S/R Stackable Can with Ends (Primary)',
+      'Label - Sakwa J.M (Secondary)',
+      'Label - Sakwa M (Secondary)',
+      'Label - Luhu (Secondary)',
+      'Corrugated Box / Master Carton (Secondary)'
+    ],
+    finishedGoods: [
+      'Sakwa 425g x 24 Cans',
+      'Luhu 425g x 24 Cans',
+      'Skipper 425g x 24 Cans',
+      'Calido 425g x 24 Cans'
+    ],
+    boilerFuels: [
+      'Kerosene (Industrial Grade)',
+      'Diesel (Automotive Gas Oil)',
+      'Industrial Oil (Furnace Fuel)'
+    ],
+    qualityDispositions: [
+      'HOLD BATCH (Quarantine / QC Inspection Pending)',
+      'MAIN BATCH (Approved for Distribution)'
+    ],
+    boxTypes: ['Rigiform Box', 'Plastic Box', 'Wooden Crate'],
+    suppliers: ['Seagold Fisheries', 'Ocean Deep Catch Ltd', 'Lanka Salt Ltd', 'Pyramid Wilmar'],
+    departments: ['Fish Canning Line - 1', 'Fish Canning Line - 2', 'Retort Sterilization Dept', 'Labeling & Packing Dept'],
+    inspectors: ['Storekeeper', 'HACCP Inspection Team', 'Nimal Perera', 'QC Supervisor']
+  };
+
   function initMasterSettingsModule() {
     const tabs = document.querySelectorAll('#masterCategoryTabs .tab-btn');
     tabs.forEach(tab => {

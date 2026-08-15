@@ -125,9 +125,10 @@ const DEFAULT_FACTORY_DATA = {
   ],
 
   finishedGoodsStock: [
-    { id: 'FG-01', brandProduct: '425g Mackerel in Tomato Sauce (Gold Brand)', batchNo: 'BATCH-2025-05-10', prodDate: '2025-05-10', expiryDate: '2028-05-10', cansPerCarton: 24, totalCartons: 1250, totalCans: 30000, dispatchedQty: 10000, balanceCartons: 833, balanceCans: 20000 },
-    { id: 'FG-02', brandProduct: '425g Mackerel in Brine (Ocean Fresh)', batchNo: 'BATCH-2025-05-12', prodDate: '2025-05-12', expiryDate: '2028-05-12', cansPerCarton: 24, totalCartons: 900, totalCans: 21600, dispatchedQty: 4800, balanceCartons: 700, balanceCans: 16800 },
-    { id: 'FG-03', brandProduct: '425g Yellowfin Tuna in Sunflower Oil', batchNo: 'BATCH-2025-05-14', prodDate: '2025-05-14', expiryDate: '2028-05-14', cansPerCarton: 24, totalCartons: 600, totalCans: 14400, dispatchedQty: 2400, balanceCartons: 500, balanceCans: 12000 }
+    { id: 'FG-01', brandProduct: 'Sakwa 425g x 24 Cans (Mackerel in Tomato)', batchNo: 'BATCH-2025-05-10', prodDate: '2025-05-10', expiryDate: '2028-05-10', cansPerCarton: 24, totalCartons: 1250, totalCans: 30000, dispatchedQty: 10000, balanceCartons: 833, balanceCans: 20000, qualityStatus: 'MAIN BATCH 🟢' },
+    { id: 'FG-02', brandProduct: 'Luhu 425g x 24 Cans (Mackerel in Brine)', batchNo: 'BATCH-2025-05-12', prodDate: '2025-05-12', expiryDate: '2028-05-12', cansPerCarton: 24, totalCartons: 900, totalCans: 21600, dispatchedQty: 4800, balanceCartons: 700, balanceCans: 16800, qualityStatus: 'HOLD BATCH 🟡 (Quarantine)' },
+    { id: 'FG-03', brandProduct: 'Skipper 425g x 24 Cans (Tuna in Oil)', batchNo: 'BATCH-2025-05-14', prodDate: '2025-05-14', expiryDate: '2028-05-14', cansPerCarton: 24, totalCartons: 600, totalCans: 14400, dispatchedQty: 2400, balanceCartons: 500, balanceCans: 12000, qualityStatus: 'MAIN BATCH 🟢' },
+    { id: 'FG-04', brandProduct: 'Calido 425g x 24 Cans (Mackerel in Sauce)', batchNo: 'BATCH-2025-05-18', prodDate: '2025-05-18', expiryDate: '2028-05-18', cansPerCarton: 24, totalCartons: 400, totalCans: 9600, dispatchedQty: 0, balanceCartons: 400, balanceCans: 9600, qualityStatus: 'HOLD BATCH 🟡 (Micro Testing)' }
   ],
 
   reorderAlerts: [
@@ -172,6 +173,39 @@ const DEFAULT_FACTORY_DATA = {
       overlapPercent: '45.57 %',
       status: 'FAIL ❌'
     }
+  ],
+
+  masterRawMaterials: [
+    'Local Fish (Chill Fish) - Cool Room',
+    'Frozen Pacific Mackerel - Cool Room',
+    'Salt (1kg / 25kg Packets & Sacks)',
+    'Water (Potable Water)'
+  ],
+
+  masterPackingMaterials: [
+    '300 Ø A1 S/R Stackable Can with Ends (Primary)',
+    'Label - Sakwa J.M (Secondary)',
+    'Label - Sakwa M (Secondary)',
+    'Label - Luhu (Secondary)',
+    'Corrugated Box / Master Carton (Secondary)'
+  ],
+
+  masterFinishedGoods: [
+    'Sakwa 425g x 24 Cans',
+    'Luhu 425g x 24 Cans',
+    'Skipper 425g x 24 Cans',
+    'Calido 425g x 24 Cans'
+  ],
+
+  masterBoilerFuels: [
+    'Kerosene (Industrial Grade)',
+    'Diesel (Automotive Gas Oil)',
+    'Industrial Oil (Furnace Fuel)'
+  ],
+
+  qualityDispositions: [
+    'HOLD BATCH (Quarantine / QC Inspection Pending)',
+    'MAIN BATCH (Approved for Distribution)'
   ]
 };
 
