@@ -1196,132 +1196,180 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- ==========================================
-       OFFICIAL HACCP DOUBLE SEAM PRINT SHEET (EXACT MATCH FOR SEAM.XLSX)
+       OFFICIAL HACCP DOUBLE SEAM PRINT SHEET (EXACT 1:1 REPLICA OF FACTORY SHEET)
        ========================================== -->
   <div class="haccp-print-sheet" id="haccpPrintSheet">
-    <!-- Header Title Box -->
-    <div class="haccp-print-header">
-      <div class="haccp-brand-col">
-        <h2 style="margin:0; font-size:18px; font-weight:800; text-transform:uppercase; color:#0f172a">Sakwa Canneries &amp; Exports (Pvt) Ltd</h2>
-        <div style="font-size:11px; color:#475569; margin-top:2px">Aratuweta Waththa, Boralukada, Baddegama, Sri Lanka • Tel: 071 55 22 378</div>
-      </div>
-      <div class="haccp-doc-title">
-        <h3 style="margin:0; font-size:15px; font-weight:800; letter-spacing:0.5px">DOUBLE SEAM INSPECTION SHEET</h3>
-        <div style="font-size:10px; margin-top:2px; font-weight:700; color:#2563eb">HACCP QUALITY CONTROL SYSTEM</div>
-      </div>
-      <div class="haccp-doc-meta">
-        <div><strong>DOC REF:</strong> SC&amp;E/QC/DS/01</div>
-        <div><strong>ISSUE NO:</strong> 01 | <strong>REV:</strong> 00</div>
-        <div><strong>PAGE:</strong> 1 of 1</div>
-      </div>
-    </div>
-
-    <!-- Meta Details Table -->
-    <table class="haccp-meta-table">
+    
+    <!-- Top Header Table -->
+    <table class="factory-sheet-header">
       <tr>
-        <td><strong>INSPECTION DATE:</strong> <span id="printDate">2025-09-01</span></td>
-        <td><strong>CAN SIZE / TYPE:</strong> <span id="printCanSize">425g A1 Tin (Standard)</span></td>
-      </tr>
-      <tr>
-        <td><strong>BATCH NO:</strong> <span id="printBatchNo">BATCH-2025-05-10</span></td>
-        <td><strong>LINE / INSPECTOR:</strong> <span id="printInspector">Line #1 • HACCP Team</span></td>
-      </tr>
-      <tr>
-        <td><strong>EPT (End Plate):</strong> 0.20 mm</td>
-        <td><strong>BPT (Body Plate):</strong> 0.17 mm</td>
+        <td style="width:100px; font-weight:900; font-size:22px; text-align:center; border:1px solid #000">SC&amp;E</td>
+        <td style="border:1px solid #000; padding:0">
+          <table style="width:100%; border-collapse:collapse">
+            <tr>
+              <td style="font-size:9px; font-weight:700; color:#475569; border-bottom:1px solid #000; text-align:center; padding:2px">TITLE</td>
+              <td style="font-size:14px; font-weight:900; text-transform:uppercase; text-align:center; border-bottom:1px solid #000; padding:4px">DOUBLE SEAM INSPECTION SHEET</td>
+            </tr>
+          </table>
+          <table style="width:100%; border-collapse:collapse; font-size:10px">
+            <tr>
+              <td style="border-right:1px solid #000; padding:3px 6px"><strong>Issue NO:</strong> 01</td>
+              <td style="border-right:1px solid #000; padding:3px 6px"><strong>Issue Date:</strong> 9/1/2025</td>
+              <td style="padding:3px 6px"><strong>DOC REF NO:</strong></td>
+            </tr>
+            <tr>
+              <td style="border-right:1px solid #000; border-top:1px solid #000; padding:3px 6px"><strong>Revision No:</strong> 00</td>
+              <td style="border-right:1px solid #000; border-top:1px solid #000; padding:3px 6px"><strong>Revision Date:</strong> 00</td>
+              <td style="border-top:1px solid #000; padding:3px 6px">SC&amp;E REG 06 12 | Page 01</td>
+            </tr>
+          </table>
+        </td>
       </tr>
     </table>
 
-    <!-- 4-Point Full Matrix Table (Matching Seam.xlsx exactly!) -->
-    <table class="haccp-matrix-table">
+    <!-- Meta Formulas & Details Row -->
+    <div class="factory-meta-box">
+      <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+        <div><strong>DATE:</strong> <span id="printDate">9/8/2026</span></div>
+        <div><strong>ACTUAL OVERLAP = (CH+BH+EPT)-SL</strong></div>
+        <div><strong>OVERLAP (%) = (CH+BH+EPT)-SL / SL-(2EPT+BPT)</strong></div>
+      </div>
+      <div style="display:flex; justify-content:space-between">
+        <div><strong>CAN SUPPLY:</strong> cantec</div>
+        <div><strong>BATCH NO:</strong> <span id="printBatchNo">EX502329</span></div>
+        <div><strong>CAN SIZE:</strong> <span id="printCanSize">A1</span> &nbsp;|&nbsp; <strong>EPT:</strong> 0.2 &nbsp;|&nbsp; <strong>BPT:</strong> 0.17</div>
+      </div>
+    </div>
+
+    <!-- Factory Colour-Coded Seam Matrix Table -->
+    <table class="factory-matrix-table">
       <thead>
         <tr>
-          <th rowspan="2">INSPECTION PARAMETERS (mm)</th>
-          <th colspan="4" style="text-align:center">POINT MEASUREMENTS</th>
-          <th rowspan="2" style="text-align:center">AVERAGE</th>
-          <th rowspan="2" style="text-align:center">SPECIFICATION STANDARD</th>
+          <th rowspan="2" style="width:60px">TIME</th>
+          <th rowspan="2" style="width:50px">BATCH</th>
+          <th colspan="4" class="col-sl">Seam Length</th>
+          <th colspan="4" class="col-bh">Body Hook</th>
+          <th colspan="4" class="col-ch">Cover Hook</th>
+          <th colspan="4" class="col-ol">ACTUAL OVERLAP</th>
+          <th colspan="4" class="col-pct">OVERLAP %</th>
         </tr>
         <tr>
-          <th>Point 1</th>
-          <th>Point 2</th>
-          <th>Point 3</th>
-          <th>Point 4</th>
+          <th class="col-sl">1</th><th class="col-sl">2</th><th class="col-sl">3</th><th class="col-sl">4</th>
+          <th class="col-bh">1</th><th class="col-bh">2</th><th class="col-bh">3</th><th class="col-bh">4</th>
+          <th class="col-ch">1</th><th class="col-ch">2</th><th class="col-ch">3</th><th class="col-ch">4</th>
+          <th class="col-ol">1</th><th class="col-ol">2</th><th class="col-ol">3</th><th class="col-ol">4</th>
+          <th class="col-pct">1</th><th class="col-pct">2</th><th class="col-pct">3</th><th class="col-pct">4</th>
         </tr>
       </thead>
       <tbody>
+        <!-- Top Seam Rows (1, 2, 3, 4) -->
         <tr>
-          <td><strong>Seam Length (SL)</strong></td>
-          <td id="pSL1">2.80</td>
-          <td id="pSL2">2.83</td>
-          <td id="pSL3">2.81</td>
-          <td id="pSL4">2.87</td>
-          <td id="pSLAvg" style="font-weight:700">2.83</td>
-          <td style="font-size:11px">2.80 mm &plusmn; 0.20 mm</td>
-        </tr>
-        <tr>
-          <td><strong>Body Hook (BH)</strong></td>
-          <td id="pBH1">1.88</td>
-          <td id="pBH2">1.89</td>
-          <td id="pBH3">1.93</td>
-          <td id="pBH4">1.90</td>
-          <td id="pBHAvg" style="font-weight:700">1.90</td>
-          <td style="font-size:11px">2.00 mm &plusmn; 0.20 mm</td>
+          <td rowspan="4" style="font-weight:700; text-align:center">9.30am<br><small style="color:#2563eb">(Top Seam)</small></td>
+          <td style="font-weight:700; text-align:center">1</td>
+          <td class="col-sl" id="fpTopSL1">2.83</td><td class="col-sl" id="fpTopSL2">2.90</td><td class="col-sl" id="fpTopSL3">2.93</td><td class="col-sl" id="fpTopSL4">2.85</td>
+          <td class="col-bh" id="fpTopBH1">2.09</td><td class="col-bh" id="fpTopBH2">2.09</td><td class="col-bh" id="fpTopBH3">2.09</td><td class="col-bh" id="fpTopBH4">2.07</td>
+          <td class="col-ch" id="fpTopCH1">1.70</td><td class="col-ch" id="fpTopCH2">1.70</td><td class="col-ch" id="fpTopCH3">1.70</td><td class="col-ch" id="fpTopCH4">1.63</td>
+          <td class="col-ol" id="fpTopOL1">1.16</td><td class="col-ol" id="fpTopOL2">1.09</td><td class="col-ol" id="fpTopOL3">1.06</td><td class="col-ol" id="fpTopOL4">1.05</td>
+          <td class="col-pct" id="fpTopPct1">51%</td><td class="col-pct" id="fpTopPct2">47%</td><td class="col-pct" id="fpTopPct3">45%</td><td class="col-pct" id="fpTopPct4">46%</td>
         </tr>
         <tr>
-          <td><strong>Cover Hook (CH)</strong></td>
-          <td id="pCH1">1.82</td>
-          <td id="pCH2">1.74</td>
-          <td id="pCH3">1.83</td>
-          <td id="pCH4">1.74</td>
-          <td id="pCHAvg" style="font-weight:700">1.78</td>
-          <td style="font-size:11px">2.00 mm &plusmn; 0.20 mm</td>
+          <td style="font-weight:700; text-align:center">2</td>
+          <td class="col-sl">2.84</td><td class="col-sl">2.80</td><td class="col-sl">2.80</td><td class="col-sl">2.75</td>
+          <td class="col-bh">1.91</td><td class="col-bh">2.03</td><td class="col-bh">1.99</td><td class="col-bh">1.99</td>
+          <td class="col-ch">1.83</td><td class="col-ch">1.88</td><td class="col-ch">2.00</td><td class="col-ch">1.82</td>
+          <td class="col-ol">1.10</td><td class="col-ol">1.31</td><td class="col-ol">1.39</td><td class="col-ol">1.26</td>
+          <td class="col-pct">48%</td><td class="col-pct">59%</td><td class="col-pct">62%</td><td class="col-pct">58%</td>
         </tr>
-        <tr style="background:#f8fafc">
-          <td><strong>Actual Overlap (mm)</strong></td>
-          <td id="pOL1">1.10</td>
-          <td id="pOL2">1.00</td>
-          <td id="pOL3">1.15</td>
-          <td id="pOL4">0.97</td>
-          <td id="pOLAvg" style="font-weight:800; color:#2563eb">1.06</td>
-          <td style="font-size:11px">Target: &ge; 0.80 mm</td>
+        <tr>
+          <td style="font-weight:700; text-align:center">3</td>
+          <td class="col-sl">2.85</td><td class="col-sl">2.84</td><td class="col-sl">2.85</td><td class="col-sl">2.90</td>
+          <td class="col-bh">2.08</td><td class="col-bh">2.07</td><td class="col-bh">2.05</td><td class="col-bh">2.02</td>
+          <td class="col-ch">1.74</td><td class="col-ch">1.70</td><td class="col-ch">1.71</td><td class="col-ch">1.74</td>
+          <td class="col-ol">1.17</td><td class="col-ol">1.13</td><td class="col-ol">1.11</td><td class="col-ol">1.06</td>
+          <td class="col-pct">51%</td><td class="col-pct">50%</td><td class="col-pct">49%</td><td class="col-pct">45%</td>
         </tr>
-        <tr style="background:#f8fafc">
-          <td><strong>Overlap Percentage (%)</strong></td>
-          <td id="pOLPct1">49.33%</td>
-          <td id="pOLPct2">44.25%</td>
-          <td id="pOLPct3">51.34%</td>
-          <td id="pOLPct4">42.17%</td>
-          <td id="pOLPctAvg" style="font-weight:800; color:#2563eb">46.77%</td>
-          <td style="font-size:11px; font-weight:700">Standard: &ge; 50 %</td>
+        <tr>
+          <td style="font-weight:700; text-align:center">4</td>
+          <td class="col-sl">2.78</td><td class="col-sl">2.84</td><td class="col-sl">2.92</td><td class="col-sl">2.78</td>
+          <td class="col-bh">1.94</td><td class="col-bh">2.12</td><td class="col-bh">2.06</td><td class="col-bh">2.03</td>
+          <td class="col-ch">1.91</td><td class="col-ch">1.95</td><td class="col-ch">1.94</td><td class="col-ch">1.96</td>
+          <td class="col-ol">1.27</td><td class="col-ol">1.43</td><td class="col-ol">1.28</td><td class="col-ol">1.41</td>
+          <td class="col-pct">57%</td><td class="col-pct">63%</td><td class="col-pct">54%</td><td class="col-pct">64%</td>
+        </tr>
+
+        <!-- Bottom Seam Rows (1, 2, 3, 4) -->
+        <tr style="border-top:2px solid #000">
+          <td rowspan="4" style="font-weight:700; text-align:center">10.15am<br><small style="color:#0369a1">(Bottom Seam)</small></td>
+          <td style="font-weight:700; text-align:center">1</td>
+          <td class="col-sl" id="fpBotSL1">2.98</td><td class="col-sl" id="fpBotSL2">2.94</td><td class="col-sl" id="fpBotSL3">3.00</td><td class="col-sl" id="fpBotSL4">3.00</td>
+          <td class="col-bh" id="fpBotBH1">2.13</td><td class="col-bh" id="fpBotBH2">2.10</td><td class="col-bh" id="fpBotBH3">2.08</td><td class="col-bh" id="fpBotBH4">2.12</td>
+          <td class="col-ch" id="fpBotCH1">1.85</td><td class="col-ch" id="fpBotCH2">1.86</td><td class="col-ch" id="fpBotCH3">1.82</td><td class="col-ch" id="fpBotCH4">1.89</td>
+          <td class="col-ol" id="fpBotOL1">1.20</td><td class="col-ol" id="fpBotOL2">1.22</td><td class="col-ol" id="fpBotOL3">1.10</td><td class="col-ol" id="fpBotOL4">1.21</td>
+          <td class="col-pct" id="fpBotPct1">50%</td><td class="col-pct" id="fpBotPct2">51%</td><td class="col-pct" id="fpBotPct3">45%</td><td class="col-pct" id="fpBotPct4">50%</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700; text-align:center">2</td>
+          <td class="col-sl">2.84</td><td class="col-sl">2.82</td><td class="col-sl">2.75</td><td class="col-sl">2.76</td>
+          <td class="col-bh">2.02</td><td class="col-bh">2.01</td><td class="col-bh">2.12</td><td class="col-bh">2.08</td>
+          <td class="col-ch">1.98</td><td class="col-ch">1.99</td><td class="col-ch">1.91</td><td class="col-ch">1.93</td>
+          <td class="col-ol">1.36</td><td class="col-ol">1.38</td><td class="col-ol">1.48</td><td class="col-ol">1.45</td>
+          <td class="col-pct">60%</td><td class="col-pct">61%</td><td class="col-pct">68%</td><td class="col-pct">66%</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700; text-align:center">3</td>
+          <td class="col-sl">3.00</td><td class="col-sl">2.92</td><td class="col-sl">2.98</td><td class="col-sl">2.93</td>
+          <td class="col-bh">2.11</td><td class="col-bh">2.14</td><td class="col-bh">2.09</td><td class="col-bh">2.13</td>
+          <td class="col-ch">1.73</td><td class="col-ch">1.72</td><td class="col-ch">1.70</td><td class="col-ch">1.84</td>
+          <td class="col-ol">1.04</td><td class="col-ol">1.14</td><td class="col-ol">1.01</td><td class="col-ol">1.24</td>
+          <td class="col-pct">43%</td><td class="col-pct">49%</td><td class="col-pct">42%</td><td class="col-pct">53%</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700; text-align:center">4</td>
+          <td class="col-sl">2.72</td><td class="col-sl">2.71</td><td class="col-sl">2.73</td><td class="col-sl">2.75</td>
+          <td class="col-bh">1.85</td><td class="col-bh">1.81</td><td class="col-bh">1.90</td><td class="col-bh">1.93</td>
+          <td class="col-ch">1.95</td><td class="col-ch">1.81</td><td class="col-ch">1.86</td><td class="col-ch">1.76</td>
+          <td class="col-ol">1.28</td><td class="col-ol">1.11</td><td class="col-ol">1.23</td><td class="col-ol">1.14</td>
+          <td class="col-pct">60%</td><td class="col-pct">52%</td><td class="col-pct">57%</td><td class="col-pct">52%</td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Result Banner -->
-    <div class="haccp-status-box" id="printStatusBox">
-      FINAL QC DECISION: PASS ✅ (OVERLAP WITHIN HACCP SPECIFICATIONS)
+    <!-- Remarks Box -->
+    <div style="border:1px solid #000; border-top:none; padding:6px 10px; font-weight:700; font-size:11px">
+      Remarks - Good welding / Quality Double Seams Verified.
     </div>
 
-    <!-- Formulas Explanation Footer -->
-    <div class="haccp-formula-footer">
-      <div><strong>Formulas &amp; Calculation Reference:</strong></div>
-      <div>1. Actual Overlap = (Cover Hook + Body Hook + EPT) - Seam Length &nbsp;|&nbsp; <em>Where EPT = 0.20mm</em></div>
-      <div>2. Overlap (%) = [Actual Overlap / (Seam Length - (2 &times; EPT + BPT))] &times; 100 &nbsp;|&nbsp; <em>Where BPT = 0.17mm</em></div>
+    <!-- Specifications Footnote Bar -->
+    <div class="factory-specs-bar">
+      <div>(Seam length = 2.80mm &plusmn; 0.20mm)</div>
+      <div>(Body hook length = 2.00mm &plusmn; 0.20mm)</div>
+      <div>(Cover hook length = 2.00mm &plusmn; 0.20mm)</div>
+      <div>(Actual overlap = &ge; 1mm)</div>
+      <div>(Overlap = &ge; 45%)</div>
     </div>
 
-    <!-- HACCP Audit Signature Block (Matching Seam.xlsx) -->
-    <div class="haccp-signatures">
-      <div class="sig-block">
+    <!-- 3-Block Approval Signature Footer -->
+    <div class="factory-signatures-grid">
+      <div class="sig-box">
         <div class="sig-line"></div>
-        <div class="sig-role">Done / Prepared by</div>
-        <div class="sig-title">HACCP Inspection Team</div>
+        <div class="sig-bold">Done by</div>
+        <div class="sig-sub">HACCP team</div>
+        <div class="sig-bold" style="margin-top:4px">Prepared by</div>
       </div>
-      <div class="sig-block">
+      <div class="sig-box">
         <div class="sig-line"></div>
-        <div class="sig-role">Checked / Reviewed by</div>
-        <div class="sig-title">Quality Assurance Manager</div>
+        <div class="sig-bold">Checked by</div>
+        <div class="sig-sub">Quality Assurance Manager</div>
+        <div class="sig-bold" style="margin-top:4px">Reviewed by</div>
+      </div>
+      <div class="sig-box">
+        <div class="sig-line"></div>
+        <div class="sig-bold">Assistant Production Manager</div>
+        <div class="sig-sub">MD</div>
+        <div class="sig-bold" style="margin-top:4px">Authorized by</div>
       </div>
     </div>
+
   </div>
 
   <!-- Application Logic Scripts -->
