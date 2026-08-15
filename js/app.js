@@ -1127,32 +1127,40 @@ document.addEventListener('DOMContentLoaded', () => {
       input.addEventListener('input', updateSeamCalculations);
     });
 
+    // Save & Next Tin Handler (Saves Each Tin Individually!)
     document.getElementById('btnNextTinQC')?.addEventListener('click', () => {
       readInputsToTin(currentTinIndex);
+
+      const topRes = calcSingleTin(
+        sampleTinsData[currentTinIndex].topSL, sampleTinsData[currentTinIndex].topBH, sampleTinsData[currentTinIndex].topCH,
+        sampleTinsData[currentTinIndex].botSL, sampleTinsData[currentTinIndex].botBH, sampleTinsData[currentTinIndex].botCH
+      );
+
+      const isPass = (topRes.topPct >= 50.0) && (topRes.botPct >= 50.0);
+      const batchNo = document.getElementById('seamBatchNo').value || 'BATCH-2025-05-10';
+
+      const tinRecord = {
+        id: 'SEAM-' + Date.now().toString().slice(-4),
+        date: document.getElementById('seamDate').value,
+        batchNo: `${batchNo} (Tin #${currentTinIndex + 1})`,
+        canSize: document.getElementById('seamCanSize').value,
+        seamLocation: `Tin #${currentTinIndex + 1} (Top & Bottom)`,
+        topOverlapPercent: topRes.topPct.toFixed(2) + ' %',
+        botOverlapPercent: topRes.botPct.toFixed(2) + ' %',
+        status: isPass ? 'PASS ✅' : 'FAIL ❌'
+      };
+
+      appData.seamQcRecords = appData.seamQcRecords || [];
+      appData.seamQcRecords.unshift(tinRecord);
+      saveStoredData(appData);
+      renderSeamQcHistory();
 
       if (currentTinIndex < 3) {
         currentTinIndex++;
         loadTinToInputs(currentTinIndex);
-        showToast(`Tin #${currentTinIndex} saved! Advanced to Tin #${currentTinIndex + 1}.`, 'info');
+        showToast(`Tin #${currentTinIndex} saved individually! Advanced to Tin #${currentTinIndex + 1}.`, 'success');
       } else {
-        const batchNo = document.getElementById('seamBatchNo').value;
-        const record = {
-          id: 'SEAM-' + Date.now().toString().slice(-4),
-          date: document.getElementById('seamDate').value,
-          batchNo: batchNo,
-          canSize: document.getElementById('seamCanSize').value,
-          seamLocation: '4 Tins (Top & Bottom)',
-          topOverlapPercent: document.getElementById('resTopOverlapPercent').textContent,
-          botOverlapPercent: document.getElementById('resBottomOverlapPercent').textContent,
-          status: 'PASS ✅'
-        };
-
-        appData.seamQcRecords = appData.seamQcRecords || [];
-        appData.seamQcRecords.unshift(record);
-        saveStoredData(appData);
-
-        renderSeamQcHistory();
-        showToast(`All 4 Tins QC Inspection for Batch ${batchNo} Completed & Saved!`, 'success');
+        showToast(`All 4 Tins QC Inspection for Batch ${batchNo} Completed & Saved Individually!`, 'success');
       }
     });
 
