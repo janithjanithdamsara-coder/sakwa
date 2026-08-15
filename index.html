@@ -993,17 +993,33 @@
             Measure 4 points around the canned fish tin rim (SL, BH, CH) for <strong>Top Cover Seam (Can Lid)</strong> and <strong>Bottom End Seam (Can Maker's End)</strong>. System calculates Overlap % in real time. Pass threshold: Overlap % &ge; 50%.
           </p>
 
-          <!-- 4-TIN RANDOM SAMPLING MATRIX TABLE -->
+          <!-- 4-Tin Sampling Progress Stepper Header -->
+          <div class="stock-tabs-header" id="tinStepperHeader" style="margin-bottom:20px">
+            <button class="tab-btn active" data-tin="0" id="tinStep0Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #1 Sample <span class="badge badge-good" style="font-size:10px; margin-left:4px" id="tin0Badge">Active 🔵</span>
+            </button>
+            <button class="tab-btn" data-tin="1" id="tinStep1Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #2 Sample <span class="badge" style="font-size:10px; margin-left:4px; background:#e2e8f0; color:#475569" id="tin1Badge">Pending ⚪</span>
+            </button>
+            <button class="tab-btn" data-tin="2" id="tinStep2Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #3 Sample <span class="badge" style="font-size:10px; margin-left:4px; background:#e2e8f0; color:#475569" id="tin2Badge">Pending ⚪</span>
+            </button>
+            <button class="tab-btn" data-tin="3" id="tinStep3Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #4 Sample <span class="badge" style="font-size:10px; margin-left:4px; background:#e2e8f0; color:#475569" id="tin3Badge">Pending ⚪</span>
+            </button>
+          </div>
+
+          <!-- 4-POINT CIRCUMFERENTIAL MATRIX TABLE FOR ACTIVE TIN -->
           <div class="table-container" style="margin-bottom:24px">
-            <table class="custom-table seam-matrix-table" id="seamMatrixTableCombined">
+            <table class="custom-table seam-matrix-table" id="seamMatrixTableSingle">
               <thead>
                 <tr>
                   <th style="width:160px">Parameters (mm)</th>
                   <th style="width:120px">Seam Location</th>
-                  <th>Tin #1</th>
-                  <th>Tin #2</th>
-                  <th>Tin #3</th>
-                  <th>Tin #4</th>
+                  <th>Point 1 (0&deg;)</th>
+                  <th>Point 2 (90&deg;)</th>
+                  <th>Point 3 (180&deg;)</th>
+                  <th>Point 4 (270&deg;)</th>
                   <th>Target Standard</th>
                 </tr>
               </thead>
@@ -1012,54 +1028,54 @@
                 <tr>
                   <td rowspan="2" data-label="Parameter" style="font-weight:800; vertical-align:middle">Seam Length (SL)</td>
                   <td data-label="Location" style="font-weight:700; color:#2563eb">🔝 Top Seam</td>
-                  <td data-label="Tin #1"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.83"></td>
-                  <td data-label="Tin #2"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.90"></td>
-                  <td data-label="Tin #3"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.93"></td>
-                  <td data-label="Tin #4"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.85"></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.83"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.90"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.93"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.85"></td>
                   <td rowspan="2" data-label="Target" style="font-size:12px; color:var(--text-secondary); vertical-align:middle">2.80mm &plusmn; 0.20mm</td>
                 </tr>
                 <tr>
                   <td data-label="Location" style="font-weight:700; color:#0369a1">🔚 Bottom Seam</td>
-                  <td data-label="Tin #1"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.98"></td>
-                  <td data-label="Tin #2"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.94"></td>
-                  <td data-label="Tin #3"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00"></td>
-                  <td data-label="Tin #4"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00"></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.98"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.94"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00"></td>
                 </tr>
 
                 <!-- Body Hook (BH) -->
                 <tr style="border-top:2px solid var(--border)">
                   <td rowspan="2" data-label="Parameter" style="font-weight:800; vertical-align:middle">Body Hook (BH)</td>
                   <td data-label="Location" style="font-weight:700; color:#2563eb">🔝 Top Seam</td>
-                  <td data-label="Tin #1"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
-                  <td data-label="Tin #2"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
-                  <td data-label="Tin #3"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
-                  <td data-label="Tin #4"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.07"></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.07"></td>
                   <td rowspan="2" data-label="Target" style="font-size:12px; color:var(--text-secondary); vertical-align:middle">2.00mm &plusmn; 0.20mm</td>
                 </tr>
                 <tr>
                   <td data-label="Location" style="font-weight:700; color:#0369a1">🔚 Bottom Seam</td>
-                  <td data-label="Tin #1"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.13"></td>
-                  <td data-label="Tin #2"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.10"></td>
-                  <td data-label="Tin #3"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.08"></td>
-                  <td data-label="Tin #4"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.12"></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.13"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.10"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.08"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.12"></td>
                 </tr>
 
                 <!-- Cover Hook (CH) -->
                 <tr style="border-top:2px solid var(--border)">
                   <td rowspan="2" data-label="Parameter" style="font-weight:800; vertical-align:middle">Cover Hook (CH)</td>
                   <td data-label="Location" style="font-weight:700; color:#2563eb">🔝 Top Seam</td>
-                  <td data-label="Tin #1"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
-                  <td data-label="Tin #2"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
-                  <td data-label="Tin #3"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
-                  <td data-label="Tin #4"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.63"></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.63"></td>
                   <td rowspan="2" data-label="Target" style="font-size:12px; color:var(--text-secondary); vertical-align:middle">2.00mm &plusmn; 0.20mm</td>
                 </tr>
                 <tr>
                   <td data-label="Location" style="font-weight:700; color:#0369a1">🔚 Bottom Seam</td>
-                  <td data-label="Tin #1"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.85"></td>
-                  <td data-label="Tin #2"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.86"></td>
-                  <td data-label="Tin #3"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.82"></td>
-                  <td data-label="Tin #4"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.89"></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.85"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.86"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.82"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.89"></td>
                 </tr>
               </tbody>
             </table>
@@ -1083,8 +1099,8 @@
 
           <!-- Action Buttons -->
           <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap">
-            <button type="button" class="btn-hero-primary" id="btnSaveSeamQC">
-              <i class="fa-solid fa-floppy-disk"></i> Save QC Inspection
+            <button type="button" class="btn-hero-primary" id="btnNextTinQC">
+              <i class="fa-solid fa-arrow-right"></i> Save &amp; Continue to Next Tin ➔
             </button>
             <button type="button" class="btn-outline-blue" id="btnPrintSeamQC">
               <i class="fa-solid fa-print"></i> Print HACCP Inspection Sheet

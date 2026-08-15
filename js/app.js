@@ -993,39 +993,130 @@ document.addEventListener('DOMContentLoaded', () => {
       dateInput.value = new Date().toISOString().split('T')[0];
     }
 
-    const EPT = 0.20; // End Plate Thickness (mm)
-    const BPT = 0.17; // Body Plate Thickness (mm)
+    let currentTinIndex = 0; // 0 to 3 for Tins #1..#4
+    const sampleTinsData = [
+      { topSL: [2.83, 2.90, 2.93, 2.85], topBH: [2.09, 2.09, 2.09, 2.07], topCH: [1.70, 1.70, 1.70, 1.63], botSL: [2.98, 2.94, 3.00, 3.00], botBH: [2.13, 2.10, 2.08, 2.12], botCH: [1.85, 1.86, 1.82, 1.89], completed: false },
+      { topSL: [2.84, 2.80, 2.80, 2.75], topBH: [1.91, 2.03, 1.99, 1.99], topCH: [1.83, 1.88, 2.00, 1.82], botSL: [2.84, 2.82, 2.75, 2.76], botBH: [2.02, 2.01, 2.12, 2.08], botCH: [1.98, 1.99, 1.91, 1.93], completed: false },
+      { topSL: [2.85, 2.84, 2.85, 2.90], topBH: [2.08, 2.07, 2.05, 2.02], topCH: [1.74, 1.70, 1.71, 1.74], botSL: [3.00, 2.92, 2.98, 2.93], botBH: [2.11, 2.14, 2.09, 2.13], botCH: [1.73, 1.72, 1.70, 1.84], completed: false },
+      { topSL: [2.78, 2.84, 2.92, 2.78], topBH: [1.94, 2.12, 2.06, 2.03], topCH: [1.91, 1.95, 1.94, 1.96], botSL: [2.72, 2.71, 2.73, 2.75], botBH: [1.85, 1.81, 1.90, 1.93], botCH: [1.95, 1.81, 1.86, 1.76], completed: false }
+    ];
 
-    const calcMatrix = (slSelector, bhSelector, chSelector) => {
-      const sls = document.querySelectorAll(slSelector);
-      const bhs = document.querySelectorAll(bhSelector);
-      const chs = document.querySelectorAll(chSelector);
+    const EPT = 0.20, BPT = 0.17;
 
-      let sumSL = 0, sumBH = 0, sumCH = 0;
-      sls.forEach(i => sumSL += parseFloat(i.value) || 0);
-      bhs.forEach(i => sumBH += parseFloat(i.value) || 0);
-      chs.forEach(i => sumCH += parseFloat(i.value) || 0);
+    const loadTinToInputs = (index) => {
+      const data = sampleTinsData[index];
+      const topSLs = document.querySelectorAll('.seam-top-sl');
+      const topBHs = document.querySelectorAll('.seam-top-bh');
+      const topCHs = document.querySelectorAll('.seam-top-ch');
+      const botSLs = document.querySelectorAll('.seam-bot-sl');
+      const botBHs = document.querySelectorAll('.seam-bot-bh');
+      const botCHs = document.querySelectorAll('.seam-bot-ch');
 
-      const avgSL = sumSL / 4;
-      const avgBH = sumBH / 4;
-      const avgCH = sumCH / 4;
+      for (let i = 0; i < 4; i++) {
+        if (topSLs[i]) topSLs[i].value = data.topSL[i];
+        if (topBHs[i]) topBHs[i].value = data.topBH[i];
+        if (topCHs[i]) topCHs[i].value = data.topCH[i];
+        if (botSLs[i]) botSLs[i].value = data.botSL[i];
+        if (botBHs[i]) botBHs[i].value = data.botBH[i];
+        if (botCHs[i]) botCHs[i].value = data.botCH[i];
+      }
 
-      const actualOverlap = (avgCH + avgBH + EPT) - avgSL;
-      const denominator = avgSL - ((2 * EPT) + BPT);
-      const overlapPercent = denominator > 0 ? (actualOverlap / denominator) * 100 : 0;
+      updateStepperUI(index);
+      updateSeamCalculations();
+    };
 
-      return { avgSL, avgBH, avgCH, actualOverlap, overlapPercent };
+    const readInputsToTin = (index) => {
+      const data = sampleTinsData[index];
+      const topSLs = document.querySelectorAll('.seam-top-sl');
+      const topBHs = document.querySelectorAll('.seam-top-bh');
+      const topCHs = document.querySelectorAll('.seam-top-ch');
+      const botSLs = document.querySelectorAll('.seam-bot-sl');
+      const botBHs = document.querySelectorAll('.seam-bot-bh');
+      const botCHs = document.querySelectorAll('.seam-bot-ch');
+
+      for (let i = 0; i < 4; i++) {
+        if (topSLs[i]) data.topSL[i] = parseFloat(topSLs[i].value) || 0;
+        if (topBHs[i]) data.topBH[i] = parseFloat(topBHs[i].value) || 0;
+        if (topCHs[i]) data.topCH[i] = parseFloat(topCHs[i].value) || 0;
+        if (botSLs[i]) data.botSL[i] = parseFloat(botSLs[i].value) || 0;
+        if (botBHs[i]) data.botBH[i] = parseFloat(botBHs[i].value) || 0;
+        if (botCHs[i]) data.botCH[i] = parseFloat(botCHs[i].value) || 0;
+      }
+      data.completed = true;
+    };
+
+    const updateStepperUI = (activeIndex) => {
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`tinStep${i}Btn`);
+        const badge = document.getElementById(`tin${i}Badge`);
+        if (!btn || !badge) continue;
+
+        if (i === activeIndex) {
+          btn.classList.add('active');
+          badge.textContent = 'Active 🔵';
+          badge.className = 'badge badge-good';
+          badge.style.background = '#2563eb';
+          badge.style.color = '#fff';
+        } else if (sampleTinsData[i].completed) {
+          btn.classList.remove('active');
+          badge.textContent = 'Done ✅';
+          badge.className = 'badge badge-good';
+          badge.style.background = '#16a34a';
+          badge.style.color = '#fff';
+        } else {
+          btn.classList.remove('active');
+          badge.textContent = 'Pending ⚪';
+          badge.className = 'badge';
+          badge.style.background = '#e2e8f0';
+          badge.style.color = '#475569';
+        }
+      }
+    };
+
+    for (let i = 0; i < 4; i++) {
+      document.getElementById(`tinStep${i}Btn`)?.addEventListener('click', () => {
+        readInputsToTin(currentTinIndex);
+        currentTinIndex = i;
+        loadTinToInputs(currentTinIndex);
+      });
+    }
+
+    const calcSingleTin = (topSL, topBH, topCH, botSL, botBH, botCH) => {
+      const avgTopSL = topSL.reduce((a,b)=>a+b,0)/4;
+      const avgTopBH = topBH.reduce((a,b)=>a+b,0)/4;
+      const avgTopCH = topCH.reduce((a,b)=>a+b,0)/4;
+
+      const avgBotSL = botSL.reduce((a,b)=>a+b,0)/4;
+      const avgBotBH = botBH.reduce((a,b)=>a+b,0)/4;
+      const avgBotCH = botCH.reduce((a,b)=>a+b,0)/4;
+
+      const topOL = (avgTopCH + avgTopBH + EPT) - avgTopSL;
+      const topDen = avgTopSL - ((2*EPT) + BPT);
+      const topPct = topDen > 0 ? (topOL / topDen) * 100 : 0;
+
+      const botOL = (avgBotCH + avgBotBH + EPT) - avgBotSL;
+      const botDen = avgBotSL - ((2*EPT) + BPT);
+      const botPct = botDen > 0 ? (botOL / botDen) * 100 : 0;
+
+      return { topPct, botPct };
     };
 
     const updateSeamCalculations = () => {
-      const topRes = calcMatrix('.seam-top-sl', '.seam-top-bh', '.seam-top-ch');
-      const botRes = calcMatrix('.seam-bot-sl', '.seam-bot-bh', '.seam-bot-ch');
+      const topSLs = Array.from(document.querySelectorAll('.seam-top-sl')).map(i => parseFloat(i.value) || 0);
+      const topBHs = Array.from(document.querySelectorAll('.seam-top-bh')).map(i => parseFloat(i.value) || 0);
+      const topCHs = Array.from(document.querySelectorAll('.seam-top-ch')).map(i => parseFloat(i.value) || 0);
 
-      document.getElementById('resTopOverlapPercent').textContent = topRes.overlapPercent.toFixed(2) + ' %';
-      document.getElementById('resBottomOverlapPercent').textContent = botRes.overlapPercent.toFixed(2) + ' %';
+      const botSLs = Array.from(document.querySelectorAll('.seam-bot-sl')).map(i => parseFloat(i.value) || 0);
+      const botBHs = Array.from(document.querySelectorAll('.seam-bot-bh')).map(i => parseFloat(i.value) || 0);
+      const botCHs = Array.from(document.querySelectorAll('.seam-bot-ch')).map(i => parseFloat(i.value) || 0);
 
-      const isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
-      const statusText = isPass ? 'PASS ✅ (Both Top & Bottom Seams Comply)' : 'FAIL ❌ (Seam Defect Found)';
+      const res = calcSingleTin(topSLs, topBHs, topCHs, botSLs, botBHs, botCHs);
+
+      document.getElementById('resTopOverlapPercent').textContent = res.topPct.toFixed(2) + ' %';
+      document.getElementById('resBottomOverlapPercent').textContent = res.botPct.toFixed(2) + ' %';
+
+      const isPass = (res.topPct >= 50.0) && (res.botPct >= 50.0);
+      const statusText = isPass ? `PASS ✅ (Tin #${currentTinIndex + 1} Comply)` : `FAIL ❌ (Tin #${currentTinIndex + 1} Defect)`;
 
       document.getElementById('resSeamStatus').innerHTML = isPass
         ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
@@ -1036,47 +1127,50 @@ document.addEventListener('DOMContentLoaded', () => {
       input.addEventListener('input', updateSeamCalculations);
     });
 
-    updateSeamCalculations();
+    document.getElementById('btnNextTinQC')?.addEventListener('click', () => {
+      readInputsToTin(currentTinIndex);
 
-    document.getElementById('btnSaveSeamQC')?.addEventListener('click', () => {
-      const topRes = calcMatrix('.seam-top-sl', '.seam-top-bh', '.seam-top-ch');
-      const botRes = calcMatrix('.seam-bot-sl', '.seam-bot-bh', '.seam-bot-ch');
+      if (currentTinIndex < 3) {
+        currentTinIndex++;
+        loadTinToInputs(currentTinIndex);
+        showToast(`Tin #${currentTinIndex} saved! Advanced to Tin #${currentTinIndex + 1}.`, 'info');
+      } else {
+        const batchNo = document.getElementById('seamBatchNo').value;
+        const record = {
+          id: 'SEAM-' + Date.now().toString().slice(-4),
+          date: document.getElementById('seamDate').value,
+          batchNo: batchNo,
+          canSize: document.getElementById('seamCanSize').value,
+          seamLocation: '4 Tins (Top & Bottom)',
+          topOverlapPercent: document.getElementById('resTopOverlapPercent').textContent,
+          botOverlapPercent: document.getElementById('resBottomOverlapPercent').textContent,
+          status: 'PASS ✅'
+        };
 
-      const isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
+        appData.seamQcRecords = appData.seamQcRecords || [];
+        appData.seamQcRecords.unshift(record);
+        saveStoredData(appData);
 
-      const record = {
-        id: 'SEAM-' + Date.now().toString().slice(-4),
-        date: document.getElementById('seamDate').value,
-        batchNo: document.getElementById('seamBatchNo').value,
-        canSize: document.getElementById('seamCanSize').value,
-        seamLocation: 'Top & Bottom Dual Seams',
-        topOverlapPercent: topRes.overlapPercent.toFixed(2) + ' %',
-        botOverlapPercent: botRes.overlapPercent.toFixed(2) + ' %',
-        status: isPass ? 'PASS ✅' : 'FAIL ❌'
-      };
-
-      appData.seamQcRecords = appData.seamQcRecords || [];
-      appData.seamQcRecords.unshift(record);
-      saveStoredData(appData);
-
-      renderSeamQcHistory();
-      showToast('Double Seam QC Record for Top & Bottom Seams saved!', 'success');
+        renderSeamQcHistory();
+        showToast(`All 4 Tins QC Inspection for Batch ${batchNo} Completed & Saved!`, 'success');
+      }
     });
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
+      readInputsToTin(currentTinIndex);
+
       const dateVal = document.getElementById('seamDate').value || new Date().toISOString().split('T')[0];
       const canSizeVal = document.getElementById('seamCanSize').value;
       const batchNoVal = document.getElementById('seamBatchNo').value;
-      const inspectorVal = document.getElementById('seamInspector').value;
 
       document.getElementById('printDate').textContent = dateVal;
       document.getElementById('printCanSize').textContent = canSizeVal;
       document.getElementById('printBatchNo').textContent = batchNoVal;
-      document.getElementById('printInspector').textContent = inspectorVal;
 
       window.print();
     });
 
+    loadTinToInputs(0);
     renderSeamQcHistory();
   }
 
