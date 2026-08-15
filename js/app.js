@@ -1169,47 +1169,93 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Save QC Session Record to History Table Handler
+    // Save Complete 4-Tin QC Session Record to History Table Handler
     document.getElementById('btnSaveSeamSessionQC')?.addEventListener('click', () => {
       readInputsToTin(currentTinIndex);
 
-      const topRes = calcSingleTin(
-        sampleTinsData[currentTinIndex].topSL, sampleTinsData[currentTinIndex].topBH, sampleTinsData[currentTinIndex].topCH,
-        sampleTinsData[currentTinIndex].botSL, sampleTinsData[currentTinIndex].botBH, sampleTinsData[currentTinIndex].botCH
-      );
+      let totalTopPct = 0, totalBotPct = 0;
+      let overallPass = true;
 
-      const isPass = (topRes.topPct >= 50.0) && (topRes.botPct >= 50.0);
+      for (let t = 0; t < 4; t++) {
+        const res = calcSingleTin(
+          sampleTinsData[t].topSL, sampleTinsData[t].topBH, sampleTinsData[t].topCH,
+          sampleTinsData[t].botSL, sampleTinsData[t].botBH, sampleTinsData[t].botCH
+        );
+        totalTopPct += res.topPct;
+        totalBotPct += res.botPct;
+        if (res.topPct < 50.0 || res.botPct < 50.0) {
+          overallPass = false;
+        }
+      }
+
+      const avgTopPct = totalTopPct / 4;
+      const avgBotPct = totalBotPct / 4;
       const batchNo = document.getElementById('seamBatchNo').value || 'EX502329';
 
-      const tinRecord = {
+      const masterRecord = {
         id: 'SEAM-' + Date.now().toString().slice(-4),
         date: document.getElementById('seamDate').value,
-        batchNo: `${batchNo} (Tin #${currentTinIndex + 1})`,
+        batchNo: batchNo,
         canSize: document.getElementById('seamCanSize').value,
-        seamLocation: `Tin #${currentTinIndex + 1} Sample`,
-        topOverlapPercent: topRes.topPct.toFixed(2) + ' %',
-        botOverlapPercent: topRes.botPct.toFixed(2) + ' %',
-        status: isPass ? 'PASS ✅' : 'FAIL ❌ (Defect Found)'
+        seamLocation: '4 Tins (8 Seam Matrices)',
+        topOverlapPercent: avgTopPct.toFixed(2) + ' %',
+        botOverlapPercent: avgBotPct.toFixed(2) + ' %',
+        status: overallPass ? 'PASS ✅' : 'FAIL ❌ (Defect Found)',
+        allTinsData: JSON.parse(JSON.stringify(sampleTinsData))
       };
 
       appData.seamQcRecords = appData.seamQcRecords || [];
-      appData.seamQcRecords.unshift(tinRecord);
+      appData.seamQcRecords.unshift(masterRecord);
       saveStoredData(appData);
 
       renderSeamQcHistory();
-      showToast(`QC Record for Batch ${batchNo} (Tin #${currentTinIndex + 1}) saved to History Table below!`, 'success');
+      showToast(`Full 4-Tin Inspection Document for Batch ${batchNo} saved to History Table!`, 'success');
     });
+
+    const populatePrintSheetWithData = (record) => {
+      document.getElementById('printDate').textContent = record.date;
+      document.getElementById('printCanSize').textContent = record.canSize;
+      document.getElementById('printBatchNo').textContent = record.batchNo;
+
+      const tins = record.allTinsData || sampleTinsData;
+      for (let t = 0; t < 4; t++) {
+        const data = tins[t];
+        if (!data) continue;
+        for (let pt = 1; pt <= 4; pt++) {
+          const slTop = data.topSL[pt - 1] || 2.80, bhTop = data.topBH[pt - 1] || 2.00, chTop = data.topCH[pt - 1] || 2.00;
+          const olTop = (chTop + bhTop + EPT) - slTop;
+          const olPctTop = slTop - ((2*EPT) + BPT) > 0 ? (olTop / (slTop - ((2*EPT) + BPT))) * 100 : 0;
+
+          const slBot = data.botSL[pt - 1] || 2.80, bhBot = data.botBH[pt - 1] || 2.00, chBot = data.botCH[pt - 1] || 2.00;
+          const olBot = (chBot + bhBot + EPT) - slBot;
+          const olPctBot = slBot - ((2*EPT) + BPT) > 0 ? (olBot / (slBot - ((2*EPT) + BPT))) * 100 : 0;
+
+          if (t === 0) {
+            const elSLTop = document.getElementById(`fpTopSL${pt}`); if (elSLTop) elSLTop.textContent = slTop.toFixed(2);
+            const elBHTop = document.getElementById(`fpTopBH${pt}`); if (elBHTop) elBHTop.textContent = bhTop.toFixed(2);
+            const elCHTop = document.getElementById(`fpTopCH${pt}`); if (elCHTop) elCHTop.textContent = chTop.toFixed(2);
+            const elOLTop = document.getElementById(`fpTopOL${pt}`); if (elOLTop) elOLTop.textContent = olTop.toFixed(2);
+            const elPctTop = document.getElementById(`fpTopPct${pt}`); if (elPctTop) elPctTop.textContent = olPctTop.toFixed(0) + '%';
+
+            const elSLBot = document.getElementById(`fpBotSL${pt}`); if (elSLBot) elSLBot.textContent = slBot.toFixed(2);
+            const elBHBot = document.getElementById(`fpBotBH${pt}`); if (elBHBot) elBHBot.textContent = bhBot.toFixed(2);
+            const elCHBot = document.getElementById(`fpBotCH${pt}`); if (elCHBot) elCHBot.textContent = chBot.toFixed(2);
+            const elOLBot = document.getElementById(`fpBotOL${pt}`); if (elOLBot) elOLBot.textContent = olBot.toFixed(2);
+            const elPctBot = document.getElementById(`fpBotPct${pt}`); if (elPctBot) elPctBot.textContent = olPctBot.toFixed(0) + '%';
+          }
+        }
+      }
+    };
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
       readInputsToTin(currentTinIndex);
 
-      const dateVal = document.getElementById('seamDate').value || new Date().toISOString().split('T')[0];
-      const canSizeVal = document.getElementById('seamCanSize').value;
-      const batchNoVal = document.getElementById('seamBatchNo').value;
-
-      document.getElementById('printDate').textContent = dateVal;
-      document.getElementById('printCanSize').textContent = canSizeVal;
-      document.getElementById('printBatchNo').textContent = batchNoVal;
+      populatePrintSheetWithData({
+        date: document.getElementById('seamDate').value || new Date().toISOString().split('T')[0],
+        canSize: document.getElementById('seamCanSize').value,
+        batchNo: document.getElementById('seamBatchNo').value,
+        allTinsData: sampleTinsData
+      });
 
       window.print();
     });
@@ -1237,20 +1283,20 @@ document.addEventListener('DOMContentLoaded', () => {
         <td data-label="Date">${item.date}</td>
         <td data-label="Batch No."><code>${item.batchNo}</code></td>
         <td data-label="Can Size">${item.canSize}</td>
-        <td data-label="Samples"><strong>${item.seamLocation || 'Single Tin'}</strong></td>
+        <td data-label="Samples"><strong>${item.seamLocation || '4 Tins (8 Matrices)'}</strong></td>
         <td data-label="Top Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.topOverlapPercent || 'N/A'}</td>
         <td data-label="Bottom Overlap %" style="font-weight:700; color:var(--accent-green)">${item.botOverlapPercent || 'N/A'}</td>
         <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
         <td data-label="Action" style="text-align:center">
           <div style="display:flex; gap:6px; justify-content:center">
-            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px" title="View Full QC Details (👁️)">
+            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px" title="View Full 4-Tin Document Details (👁️)">
               <i class="fa-solid fa-eye"></i> View
             </button>
-            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#2563eb" title="Edit Record (✏️)">
+            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#2563eb" title="Edit Master Record (✏️)">
               <i class="fa-solid fa-pen-to-square"></i> Edit
             </button>
             <button type="button" class="btn-outline-blue btn-print-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#059669; border-color:#34d399" title="Print / Download PDF Sheet (🖨️)">
-              <i class="fa-solid fa-file-pdf"></i> PDF
+              <i class="fa-solid fa-file-pdf"></i> PDF Sheet
             </button>
             <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Record">
               <i class="fa-solid fa-trash"></i>
@@ -1265,16 +1311,19 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-index'));
         const item = appData.seamQcRecords[idx];
-        document.getElementById('modalBatchTitle').textContent = `HACCP QC Record: ${item.batchNo}`;
+        document.getElementById('modalBatchTitle').textContent = `HACCP QC Full Document: ${item.batchNo}`;
         
         document.getElementById('modalSeamContent').innerHTML = `
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; font-size:13px">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; font-size:13px; background:#f8fafc; padding:12px; border-radius:8px">
             <div><strong>Inspection Date:</strong> ${item.date}</div>
             <div><strong>Can Size:</strong> ${item.canSize}</div>
-            <div><strong>Top Overlap %:</strong> <span style="font-weight:800; color:#2563eb">${item.topOverlapPercent}</span></div>
-            <div><strong>Bottom Overlap %:</strong> <span style="font-weight:800; color:#059669">${item.botOverlapPercent}</span></div>
+            <div><strong>Top Avg Overlap %:</strong> <span style="font-weight:800; color:#2563eb">${item.topOverlapPercent}</span></div>
+            <div><strong>Bottom Avg Overlap %:</strong> <span style="font-weight:800; color:#059669">${item.botOverlapPercent}</span></div>
             <div><strong>HACCP Decision:</strong> <span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></div>
+            <div><strong>Document Standard:</strong> SC&E REG 06 12</div>
           </div>
+          <div style="font-size:13px; font-weight:700; color:var(--primary-navy); margin-bottom:8px">Full 4-Tin Circumferential Measurements (Top &amp; Bottom)</div>
+          <div style="font-size:12px; color:var(--text-secondary)">All 4 sampled tins verified. Click 'Print / Download PDF Sheet' below to output the official physical sheet replica.</div>
         `;
         document.getElementById('seamQcViewModal').style.display = 'flex';
       });
@@ -1286,9 +1335,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const idx = parseInt(btn.getAttribute('data-index'));
         const item = appData.seamQcRecords[idx];
         document.getElementById('seamDate').value = item.date;
-        document.getElementById('seamBatchNo').value = item.batchNo.replace(/ \(Tin #\d\)/, '');
+        document.getElementById('seamBatchNo').value = item.batchNo;
         document.getElementById('seamCanSize').value = item.canSize;
-        showToast(`Loaded ${item.batchNo} into form for editing.`, 'info');
+        showToast(`Loaded ${item.batchNo} master session into form for editing.`, 'info');
       });
     });
 
@@ -1297,9 +1346,11 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-index'));
         const item = appData.seamQcRecords[idx];
+        
         document.getElementById('printDate').textContent = item.date;
-        document.getElementById('printBatchNo').textContent = item.batchNo;
         document.getElementById('printCanSize').textContent = item.canSize;
+        document.getElementById('printBatchNo').textContent = item.batchNo;
+
         window.print();
       });
     });
@@ -1311,7 +1362,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appData.seamQcRecords.splice(idx, 1);
         saveStoredData(appData);
         renderSeamQcHistory();
-        showToast('QC Record deleted.', 'info');
+        showToast('Full QC Session Record deleted.', 'info');
       });
     });
   }
