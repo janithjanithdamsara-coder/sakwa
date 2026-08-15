@@ -1155,8 +1155,22 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(`Machine adjusted! Re-testing Tin #${currentTinIndex + 1}. Enter new measurements.`, 'info');
     });
 
-    // Save & Next Tin Handler (Saves Each Tin Individually!)
+    // Next Tin Button Handler
     document.getElementById('btnNextTinQC')?.addEventListener('click', () => {
+      readInputsToTin(currentTinIndex);
+      if (currentTinIndex < 3) {
+        currentTinIndex++;
+        loadTinToInputs(currentTinIndex);
+        showToast(`Advanced to Tin #${currentTinIndex + 1}.`, 'info');
+      } else {
+        currentTinIndex = 0;
+        loadTinToInputs(0);
+        showToast(`Returned to Tin #1.`, 'info');
+      }
+    });
+
+    // Save QC Session Record to History Table Handler
+    document.getElementById('btnSaveSeamSessionQC')?.addEventListener('click', () => {
       readInputsToTin(currentTinIndex);
 
       const topRes = calcSingleTin(
@@ -1165,32 +1179,25 @@ document.addEventListener('DOMContentLoaded', () => {
       );
 
       const isPass = (topRes.topPct >= 50.0) && (topRes.botPct >= 50.0);
-      const batchNo = document.getElementById('seamBatchNo').value || 'BATCH-2025-05-10';
+      const batchNo = document.getElementById('seamBatchNo').value || 'EX502329';
 
       const tinRecord = {
         id: 'SEAM-' + Date.now().toString().slice(-4),
         date: document.getElementById('seamDate').value,
         batchNo: `${batchNo} (Tin #${currentTinIndex + 1})`,
         canSize: document.getElementById('seamCanSize').value,
-        seamLocation: `Tin #${currentTinIndex + 1}`,
+        seamLocation: `Tin #${currentTinIndex + 1} Sample`,
         topOverlapPercent: topRes.topPct.toFixed(2) + ' %',
         botOverlapPercent: topRes.botPct.toFixed(2) + ' %',
-        status: isPass ? 'PASS ✅' : 'FAIL ❌ (Needs Re-Test)',
-        tinData: JSON.parse(JSON.stringify(sampleTinsData[currentTinIndex]))
+        status: isPass ? 'PASS ✅' : 'FAIL ❌ (Defect Found)'
       };
 
       appData.seamQcRecords = appData.seamQcRecords || [];
       appData.seamQcRecords.unshift(tinRecord);
       saveStoredData(appData);
-      renderSeamQcHistory();
 
-      if (currentTinIndex < 3) {
-        currentTinIndex++;
-        loadTinToInputs(currentTinIndex);
-        showToast(`Tin #${currentTinIndex} saved individually! Advanced to Tin #${currentTinIndex + 1}.`, 'success');
-      } else {
-        showToast(`All 4 Tins QC Inspection for Batch ${batchNo} Completed & Saved Individually!`, 'success');
-      }
+      renderSeamQcHistory();
+      showToast(`QC Record for Batch ${batchNo} (Tin #${currentTinIndex + 1}) saved to History Table below!`, 'success');
     });
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {

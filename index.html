@@ -1101,10 +1101,13 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
+          <!-- Action Buttons Bar (Separated Save, Next Tin, Print PDF) -->
           <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap">
             <button type="button" class="btn-hero-primary" id="btnNextTinQC">
-              <i class="fa-solid fa-arrow-right"></i> Save &amp; Continue to Next Tin ➔
+              <i class="fa-solid fa-arrow-right"></i> Next Tin (Tin #<span id="nextTinNumSpan">2</span>) ➔
+            </button>
+            <button type="button" class="btn-primary-green" id="btnSaveSeamSessionQC" style="font-weight:700">
+              <i class="fa-solid fa-floppy-disk"></i> 💾 Save QC Record to History Table
             </button>
             <button type="button" class="btn-outline-blue" id="btnRetryFailedTin" style="display:none; color:#ea580c; border-color:#f97316; font-weight:700">
               <i class="fa-solid fa-rotate-right"></i> Adjust Machine &amp; Re-Test Tin #<span id="retryTinNum">1</span>
