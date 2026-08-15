@@ -997,6 +997,30 @@
             Measure 4 points around the canned fish tin rim (SL, BH, CH) for <strong>Top Cover Seam (Can Lid)</strong> and <strong>Bottom End Seam (Can Maker's End)</strong>. System calculates Overlap % in real time. Pass threshold: Overlap % &ge; 50%.
           </p>
 
+          <!-- Meta Header Inputs Card -->
+          <div class="form-grid-4" style="margin-bottom:20px; background:var(--bg-main); padding:16px; border-radius:8px; border:1px solid var(--border-color)">
+            <div class="form-group">
+              <label>Inspection Date <span class="required">*</span></label>
+              <input type="date" class="form-control" id="seamDate">
+            </div>
+            <div class="form-group">
+              <label>Batch No. <span class="required">*</span></label>
+              <input type="text" class="form-control" id="seamBatchNo" value="EX502329">
+            </div>
+            <div class="form-group">
+              <label>Can Size / Type <span class="required">*</span></label>
+              <select class="form-control" id="seamCanSize">
+                <option value="425g A1 Tin" selected>425g A1 Tin (Standard)</option>
+                <option value="155g Club Tin">155g Club Tin</option>
+                <option value="425g Oval Tin">425g Oval Tin</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Inspector / QC Team</label>
+              <input type="text" class="form-control" id="seamInspector" value="HACCP Inspection Team" readonly>
+            </div>
+          </div>
+
           <!-- 4-Tin Sampling Progress Stepper Header -->
           <div class="stock-tabs-header" id="tinStepperHeader" style="margin-bottom:20px">
             <button class="tab-btn active" data-tin="0" id="tinStep0Btn">

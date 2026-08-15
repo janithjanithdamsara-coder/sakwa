@@ -1190,13 +1190,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const avgTopPct = totalTopPct / 4;
       const avgBotPct = totalBotPct / 4;
-      const batchNo = document.getElementById('seamBatchNo').value || 'EX502329';
+
+      const dateEl = document.getElementById('seamDate');
+      const batchEl = document.getElementById('seamBatchNo');
+      const sizeEl = document.getElementById('seamCanSize');
+
+      const dateVal = (dateEl && dateEl.value) ? dateEl.value : new Date().toISOString().split('T')[0];
+      const batchNo = (batchEl && batchEl.value) ? batchEl.value : 'EX502329';
+      const canSize = (sizeEl && sizeEl.value) ? sizeEl.value : '425g A1 Tin';
 
       const masterRecord = {
         id: 'SEAM-' + Date.now().toString().slice(-4),
-        date: document.getElementById('seamDate').value,
+        date: dateVal,
         batchNo: batchNo,
-        canSize: document.getElementById('seamCanSize').value,
+        canSize: canSize,
         seamLocation: '4 Tins (8 Seam Matrices)',
         topOverlapPercent: avgTopPct.toFixed(2) + ' %',
         botOverlapPercent: avgBotPct.toFixed(2) + ' %',
@@ -1209,7 +1216,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveStoredData(appData);
 
       renderSeamQcHistory();
-      showToast(`Full 4-Tin Inspection Document for Batch ${batchNo} saved to History Table!`, 'success');
+      showToast(`Full 4-Tin Inspection Document for Batch ${batchNo} saved to History Table below!`, 'success');
     });
 
     const populatePrintSheetWithData = (record) => {
