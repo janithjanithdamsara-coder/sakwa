@@ -1101,6 +1101,24 @@ document.addEventListener('DOMContentLoaded', () => {
       return { topPct, botPct };
     };
 
+    // Target Overlap Threshold Setup
+    appData.haccpTargetOverlapThreshold = appData.haccpTargetOverlapThreshold || 50.0;
+    const targetInput = document.getElementById('targetOverlapThresholdInput');
+    if (targetInput) {
+      targetInput.value = appData.haccpTargetOverlapThreshold;
+    }
+
+    const saveTargetThreshold = () => {
+      const val = parseFloat(targetInput.value) || 50.0;
+      appData.haccpTargetOverlapThreshold = val;
+      saveStoredData(appData);
+      updateSeamCalculations();
+      showToast(`HACCP Target Pass Overlap % Threshold saved as ${val.toFixed(1)}%!`, 'success');
+    };
+
+    document.getElementById('btnSaveOverlapThreshold')?.addEventListener('click', saveTargetThreshold);
+    targetInput?.addEventListener('change', saveTargetThreshold);
+
     const updateSeamCalculations = () => {
       const topSLs = Array.from(document.querySelectorAll('.seam-top-sl')).map(i => parseFloat(i.value) || 0);
       const topBHs = Array.from(document.querySelectorAll('.seam-top-bh')).map(i => parseFloat(i.value) || 0);
@@ -1115,8 +1133,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('resTopOverlapPercent').textContent = res.topPct.toFixed(2) + ' %';
       document.getElementById('resBottomOverlapPercent').textContent = res.botPct.toFixed(2) + ' %';
 
-      const isPass = (res.topPct >= 50.0) && (res.botPct >= 50.0);
-      const statusText = isPass ? `PASS ✅ (Tin #${currentTinIndex + 1} Comply)` : `FAIL ❌ (Tin #${currentTinIndex + 1} Defect)`;
+      const targetThreshold = parseFloat(appData.haccpTargetOverlapThreshold) || 50.0;
+      const isPass = (res.topPct >= targetThreshold) && (res.botPct >= targetThreshold);
+      const statusText = isPass ? `PASS ✅ (Tin #${currentTinIndex + 1} Comply &ge; ${targetThreshold.toFixed(1)}%)` : `FAIL ❌ (Tin #${currentTinIndex + 1} Defect &lt; ${targetThreshold.toFixed(1)}%)`;
 
       document.getElementById('resSeamStatus').innerHTML = isPass
         ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
