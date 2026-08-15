@@ -1121,10 +1121,38 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('resSeamStatus').innerHTML = isPass
         ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
         : `<span class="badge badge-expired" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-triangle-exclamation"></i> ${statusText}</span>`;
+
+      // Show/Hide Re-Test Button if Tin Fails!
+      const retryBtn = document.getElementById('btnRetryFailedTin');
+      const retryNum = document.getElementById('retryTinNum');
+      if (retryBtn && retryNum) {
+        if (!isPass) {
+          retryBtn.style.display = 'inline-flex';
+          retryNum.textContent = (currentTinIndex + 1).toString();
+        } else {
+          retryBtn.style.display = 'none';
+        }
+      }
     };
 
     document.querySelectorAll('.seam-top-sl, .seam-top-bh, .seam-top-ch, .seam-bot-sl, .seam-bot-bh, .seam-bot-ch').forEach(input => {
       input.addEventListener('input', updateSeamCalculations);
+    });
+
+    // Re-Test Failed Can Handler
+    document.getElementById('btnRetryFailedTin')?.addEventListener('click', () => {
+      const data = sampleTinsData[currentTinIndex];
+      // Reset measurements to target defaults for re-testing after machine adjustment
+      data.topSL = [2.80, 2.80, 2.80, 2.80];
+      data.topBH = [2.00, 2.00, 2.00, 2.00];
+      data.topCH = [2.00, 2.00, 2.00, 2.00];
+      data.botSL = [2.80, 2.80, 2.80, 2.80];
+      data.botBH = [2.00, 2.00, 2.00, 2.00];
+      data.botCH = [2.00, 2.00, 2.00, 2.00];
+      data.completed = false;
+
+      loadTinToInputs(currentTinIndex);
+      showToast(`Machine adjusted! Re-testing Tin #${currentTinIndex + 1}. Enter new measurements.`, 'info');
     });
 
     // Save & Next Tin Handler (Saves Each Tin Individually!)
@@ -1144,10 +1172,11 @@ document.addEventListener('DOMContentLoaded', () => {
         date: document.getElementById('seamDate').value,
         batchNo: `${batchNo} (Tin #${currentTinIndex + 1})`,
         canSize: document.getElementById('seamCanSize').value,
-        seamLocation: `Tin #${currentTinIndex + 1} (Top & Bottom)`,
+        seamLocation: `Tin #${currentTinIndex + 1}`,
         topOverlapPercent: topRes.topPct.toFixed(2) + ' %',
         botOverlapPercent: topRes.botPct.toFixed(2) + ' %',
-        status: isPass ? 'PASS ✅' : 'FAIL ❌'
+        status: isPass ? 'PASS ✅' : 'FAIL ❌ (Needs Re-Test)',
+        tinData: JSON.parse(JSON.stringify(sampleTinsData[currentTinIndex]))
       };
 
       appData.seamQcRecords = appData.seamQcRecords || [];
@@ -1178,6 +1207,16 @@ document.addEventListener('DOMContentLoaded', () => {
       window.print();
     });
 
+    // Close Modal Handler
+    document.getElementById('btnCloseSeamModal')?.addEventListener('click', () => {
+      document.getElementById('seamQcViewModal').style.display = 'none';
+    });
+
+    document.getElementById('btnModalPrintSheet')?.addEventListener('click', () => {
+      document.getElementById('seamQcViewModal').style.display = 'none';
+      window.print();
+    });
+
     loadTinToInputs(0);
     renderSeamQcHistory();
   }
@@ -1191,13 +1230,22 @@ document.addEventListener('DOMContentLoaded', () => {
         <td data-label="Date">${item.date}</td>
         <td data-label="Batch No."><code>${item.batchNo}</code></td>
         <td data-label="Can Size">${item.canSize}</td>
-        <td data-label="Seam Type"><strong>${item.seamLocation || 'Top Cover Seam'}</strong></td>
-        <td data-label="Top Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.topOverlapPercent || item.overlapPercent || 'N/A'}</td>
+        <td data-label="Samples"><strong>${item.seamLocation || 'Single Tin'}</strong></td>
+        <td data-label="Top Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.topOverlapPercent || 'N/A'}</td>
         <td data-label="Bottom Overlap %" style="font-weight:700; color:var(--accent-green)">${item.botOverlapPercent || 'N/A'}</td>
         <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
         <td data-label="Action" style="text-align:center">
           <div style="display:flex; gap:6px; justify-content:center">
-            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Record">
+            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px" title="View Full QC Details (👁️)">
+              <i class="fa-solid fa-eye"></i> View
+            </button>
+            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#2563eb" title="Edit Record (✏️)">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            <button type="button" class="btn-outline-blue btn-print-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#059669; border-color:#34d399" title="Print / Download PDF Sheet (🖨️)">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </button>
+            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Record">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -1205,13 +1253,58 @@ document.addEventListener('DOMContentLoaded', () => {
       </tr>
     `).join('');
 
+    // View Modal Trigger
+    tbody.querySelectorAll('.btn-view-seam-rec').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        const item = appData.seamQcRecords[idx];
+        document.getElementById('modalBatchTitle').textContent = `HACCP QC Record: ${item.batchNo}`;
+        
+        document.getElementById('modalSeamContent').innerHTML = `
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; font-size:13px">
+            <div><strong>Inspection Date:</strong> ${item.date}</div>
+            <div><strong>Can Size:</strong> ${item.canSize}</div>
+            <div><strong>Top Overlap %:</strong> <span style="font-weight:800; color:#2563eb">${item.topOverlapPercent}</span></div>
+            <div><strong>Bottom Overlap %:</strong> <span style="font-weight:800; color:#059669">${item.botOverlapPercent}</span></div>
+            <div><strong>HACCP Decision:</strong> <span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></div>
+          </div>
+        `;
+        document.getElementById('seamQcViewModal').style.display = 'flex';
+      });
+    });
+
+    // Edit Handler
+    tbody.querySelectorAll('.btn-edit-seam-rec').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        const item = appData.seamQcRecords[idx];
+        document.getElementById('seamDate').value = item.date;
+        document.getElementById('seamBatchNo').value = item.batchNo.replace(/ \(Tin #\d\)/, '');
+        document.getElementById('seamCanSize').value = item.canSize;
+        showToast(`Loaded ${item.batchNo} into form for editing.`, 'info');
+      });
+    });
+
+    // PDF Print Handler
+    tbody.querySelectorAll('.btn-print-seam-rec').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        const item = appData.seamQcRecords[idx];
+        document.getElementById('printDate').textContent = item.date;
+        document.getElementById('printBatchNo').textContent = item.batchNo;
+        document.getElementById('printCanSize').textContent = item.canSize;
+        window.print();
+      });
+    });
+
+    // Delete Handler
     tbody.querySelectorAll('.btn-delete-seam-rec').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-index'));
-        const removed = appData.seamQcRecords.splice(idx, 1);
+        appData.seamQcRecords.splice(idx, 1);
         saveStoredData(appData);
         renderSeamQcHistory();
-        showToast(`QC Record ${removed[0].batchNo} deleted.`, 'info');
+        showToast('QC Record deleted.', 'info');
       });
     });
   }
