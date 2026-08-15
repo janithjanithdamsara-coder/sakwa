@@ -36,9 +36,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // Master Dropdown State Variables
   const defaultMasterDropdowns = {
     fishSpecies: ['Mackerel (Aratoluwa)', 'Tuna (Kelawalla)', 'Linna', 'Balaya', 'Hurulla', 'Yellowfin Tuna'],
+    rawMaterials: [
+      'Local Fish (Chill Fish) - Cool Room',
+      'Frozen Pacific Mackerel - Cool Room',
+      'Salt (1kg / 25kg Packets & Sacks)',
+      'Water (Potable Water)'
+    ],
+    packaging: [
+      '300 Ø A1 S/R Stackable Can with Ends (Primary)',
+      'Label - Sakwa J.M (Secondary)',
+      'Label - Sakwa M (Secondary)',
+      'Label - Luhu (Secondary)',
+      'Corrugated Box / Master Carton (Secondary)'
+    ],
+    finishedGoods: [
+      'Sakwa 425g x 24 Cans',
+      'Luhu 425g x 24 Cans',
+      'Skipper 425g x 24 Cans',
+      'Calido 425g x 24 Cans'
+    ],
+    boilerFuels: [
+      'Kerosene (Industrial Grade)',
+      'Diesel (Automotive Gas Oil)',
+      'Industrial Oil (Furnace Fuel)'
+    ],
+    qualityDispositions: [
+      'HOLD BATCH (Quarantine / QC Inspection Pending)',
+      'MAIN BATCH (Approved for Distribution)'
+    ],
     boxTypes: ['Rigiform Box (25kg)', 'Plastic Crate (30kg)', 'Insulated Tub (100kg)', 'Wooden Box'],
     suppliers: ['Seagold Fisheries', 'Ocean Fresh Traders', 'Lanka Sea Foods Ltd', 'Industrial Salt Suppliers'],
-    packaging: ['425g Tin Cans Standard', '425g Easy-Open Lid', 'Printed Paper Labels', 'Master Cartons'],
     departments: ['Fish Canning Line - 1', 'Fish Canning Line - 2', 'Retort Sterilization', 'Packing Line'],
     inspectors: ['Line #1 • HACCP Team', 'Nimal Perera (Production Mgr)', 'Sarath Silva (Plant Sup)']
   };
@@ -1494,43 +1521,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      9. MASTER SETTINGS & DYNAMIC DROPDOWN MANAGER MODULE
      ========================================================================== */
-  let activeMasterCategory = 'fishSpecies';
-  let masterDropdowns = JSON.parse(localStorage.getItem('SAKWA_MASTER_DROPDOWNS')) || {
-    fishSpecies: ['Mackerel', 'Tuna', 'Pacific Mackerel', 'Local Chill Fish'],
-    rawMaterials: [
-      'Local Fish (Chill Fish) - Cool Room',
-      'Frozen Pacific Mackerel - Cool Room',
-      'Salt (1kg / 25kg Packets & Sacks)',
-      'Water (Potable Water)'
-    ],
-    packaging: [
-      '300 Ø A1 S/R Stackable Can with Ends (Primary)',
-      'Label - Sakwa J.M (Secondary)',
-      'Label - Sakwa M (Secondary)',
-      'Label - Luhu (Secondary)',
-      'Corrugated Box / Master Carton (Secondary)'
-    ],
-    finishedGoods: [
-      'Sakwa 425g x 24 Cans',
-      'Luhu 425g x 24 Cans',
-      'Skipper 425g x 24 Cans',
-      'Calido 425g x 24 Cans'
-    ],
-    boilerFuels: [
-      'Kerosene (Industrial Grade)',
-      'Diesel (Automotive Gas Oil)',
-      'Industrial Oil (Furnace Fuel)'
-    ],
-    qualityDispositions: [
-      'HOLD BATCH (Quarantine / QC Inspection Pending)',
-      'MAIN BATCH (Approved for Distribution)'
-    ],
-    boxTypes: ['Rigiform Box', 'Plastic Box', 'Wooden Crate'],
-    suppliers: ['Seagold Fisheries', 'Ocean Deep Catch Ltd', 'Lanka Salt Ltd', 'Pyramid Wilmar'],
-    departments: ['Fish Canning Line - 1', 'Fish Canning Line - 2', 'Retort Sterilization Dept', 'Labeling & Packing Dept'],
-    inspectors: ['Storekeeper', 'HACCP Inspection Team', 'Nimal Perera', 'QC Supervisor']
-  };
-
   function initMasterSettingsModule() {
     const tabs = document.querySelectorAll('#masterCategoryTabs .tab-btn');
     tabs.forEach(tab => {
