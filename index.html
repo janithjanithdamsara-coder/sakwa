@@ -323,6 +323,10 @@
           <i class="fa-solid fa-compass-drafting"></i>
           <span>Double Seam QC</span>
         </li>
+        <li class="nav-item" data-view="coldroom-telemetry">
+          <i class="fa-solid fa-snowflake"></i>
+          <span>Cold Room (IoT)</span>
+        </li>
         <li class="nav-item" data-view="master-settings">
           <i class="fa-solid fa-sliders"></i>
           <span>Master Settings</span>
@@ -1148,7 +1152,75 @@
         </div>
       </div>
 
-      <!-- 9. MASTER SETTINGS & DYNAMIC DROPDOWN MANAGER VIEW -->
+      <!-- 9. COLD ROOM TELEMETRY VIEW (COPELAND DIXELL XR06CX IOT CONTROLLER) -->
+      <section class="view-panel" id="view-coldroom-telemetry">
+        <div class="form-card">
+          <div class="form-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
+            <span>Copeland Dixell XR06CX Controller • Real-Time IoT Telemetry Stream</span>
+            <span class="badge badge-good" style="font-size:12px; padding:6px 14px"><span class="live-dot" style="display:inline-block; width:8px; height:8px; background:#22c55e; border-radius:50%; margin-right:6px"></span> RS485 Modbus IoT Connected</span>
+          </div>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;">
+            Real-time cold room temperature monitoring stream via <strong>Copeland Dixell XR06CX RS485 Modbus Protocol</strong> connected to <strong>ESP32 Microcontroller</strong> over Wi-Fi. Target setpoint: <strong>-18.0 &deg;C</strong>. Safety high alarm threshold: <strong>-10.0 &deg;C</strong>.
+          </p>
+
+          <!-- Main Controller Display Card -->
+          <div class="coldroom-card" style="background:#0f172a; color:#fff; border-radius:12px; padding:24px; margin-bottom:24px; border:2px solid #1e293b">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #334155; padding-bottom:12px">
+              <div>
+                <h3 style="margin:0; font-size:18px; color:#38bdf8; font-weight:800"><i class="fa-solid fa-snowflake"></i> Baddegama Factory Cold Storage #1</h3>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px">Controller Model: Copeland Dixell XR06CX-5N0C1 | S/N: DIX-884920</div>
+              </div>
+              <div style="text-align:right">
+                <span class="badge badge-good" style="font-size:12px; background:#065f46; color:#34d399; padding:6px 12px">Compressor Relay: ACTIVE ⚡</span>
+              </div>
+            </div>
+
+            <!-- LED Screen & Live Meters -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px; align-items:center">
+              <div class="led-display-box" style="background:#020617; border:3px solid #0284c7; border-radius:10px; padding:20px; text-align:center">
+                <div style="font-size:10px; font-weight:800; color:#38bdf8; letter-spacing:1px; margin-bottom:4px">ROOM PROBE (Pb1) DIGITAL LED</div>
+                <div style="font-size:42px; font-weight:900; color:#38bdf8; font-family:'Courier New', monospace; letter-spacing:2px">
+                  <span id="telemetryRoomTemp">-18.4</span> <span style="font-size:22px">&deg;C</span>
+                </div>
+                <div style="font-size:11px; color:#94a3b8; margin-top:6px">Status: OPTIMAL STORAGE ✅</div>
+              </div>
+
+              <div class="led-display-box" style="background:#020617; border:2px solid #334155; border-radius:10px; padding:20px; text-align:center">
+                <div style="font-size:10px; font-weight:800; color:#a855f7; letter-spacing:1px; margin-bottom:4px">EVAPORATOR PROBE (Pb2)</div>
+                <div style="font-size:36px; font-weight:900; color:#c084fc; font-family:'Courier New', monospace; letter-spacing:2px">
+                  <span id="telemetryEvapTemp">-22.1</span> <span style="font-size:20px">&deg;C</span>
+                </div>
+                <div style="font-size:11px; color:#94a3b8; margin-top:6px">Evaporator Active 🌀</div>
+              </div>
+
+              <!-- Relays & Hardware Status -->
+              <div style="background:#1e293b; border-radius:10px; padding:16px; font-size:12px; line-height:1.8">
+                <div style="display:flex; justify-content:space-between"><span>Compressor Relay (COMP):</span> <strong style="color:#4ade80">ON ⚡</strong></div>
+                <div style="display:flex; justify-content:space-between"><span>Defrost Relay (DEF):</span> <strong style="color:#94a3b8">OFF ❄️</strong></div>
+                <div style="display:flex; justify-content:space-between"><span>Evaporator Fan (FAN):</span> <strong style="color:#38bdf8">ON 🌀</strong></div>
+                <div style="display:flex; justify-content:space-between"><span>Modbus RS485 Address:</span> <strong>01 (Baud 9600 8N1)</strong></div>
+                <div style="display:flex; justify-content:space-between"><span>ESP32 Wi-Fi Stream:</span> <strong style="color:#4ade80">ONLINE (100% Signal)</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hardware Circuit Reference & Setup Guide -->
+          <div class="form-card" style="background:var(--bg-main); border:1px solid var(--border-color); padding:20px">
+            <div style="font-size:14px; font-weight:700; color:var(--primary-navy); margin-bottom:10px">
+              🔌 IoT Circuit Wiring Reference (Copeland Dixell XR06CX RS485 ➔ ESP32)
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.6">
+              <div>1. <strong>Dixell Port Terminal 9 (Data A)</strong> &rarr; MAX485 Board Pin A</div>
+              <div>2. <strong>Dixell Port Terminal 10 (Data B)</strong> &rarr; MAX485 Board Pin B</div>
+              <div>3. <strong>MAX485 RO Pin</strong> &rarr; ESP32 GPIO 16 (RX2) &nbsp;|&nbsp; <strong>MAX485 DI Pin</strong> &rarr; ESP32 GPIO 17 (TX2)</div>
+              <div>4. <strong>MAX485 DE &amp; RE Pins</strong> &rarr; ESP32 GPIO 4 (RTS Control Pin)</div>
+              <div>5. <strong>Telemetry Protocol:</strong> ESP32 sends HTTP POST JSON payload to <code>https://sahashrajanith.site/api/telemetry.php</code> every 5 seconds.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. MASTER SETTINGS & DYNAMIC DROPDOWN MANAGER VIEW -->
       <section class="view-panel" id="view-master-settings">
         <div class="form-card">
           <div class="form-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">

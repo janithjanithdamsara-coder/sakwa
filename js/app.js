@@ -1326,6 +1326,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Real-Time Copeland Dixell XR06CX Telemetry Stream Simulator
+  setInterval(() => {
+    const liveTempEl = document.getElementById('liveColdRoomTemp');
+    const roomTempEl = document.getElementById('telemetryRoomTemp');
+    const evapTempEl = document.getElementById('telemetryEvapTemp');
+
+    // Smooth fluctuation around -18.4 °C and -22.1 °C
+    const baseRoom = -18.4 + ((Math.random() - 0.5) * 0.4);
+    const baseEvap = -22.1 + ((Math.random() - 0.5) * 0.5);
+
+    if (liveTempEl) liveTempEl.textContent = baseRoom.toFixed(1);
+    if (roomTempEl) roomTempEl.textContent = baseRoom.toFixed(1);
+    if (evapTempEl) evapTempEl.textContent = baseEvap.toFixed(1);
+  }, 2500);
+
   // Step 2: Instant Live Search Filter across all active tables
   const globalSearchInput = document.getElementById('globalTableSearch');
   globalSearchInput?.addEventListener('input', (e) => {
