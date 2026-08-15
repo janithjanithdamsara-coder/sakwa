@@ -993,55 +993,113 @@ document.addEventListener('DOMContentLoaded', () => {
       dateInput.value = new Date().toISOString().split('T')[0];
     }
 
-    const slInputs = document.querySelectorAll('.seam-sl');
-    const bhInputs = document.querySelectorAll('.seam-bh');
-    const chInputs = document.querySelectorAll('.seam-ch');
+    let activeLoc = 'top'; // 'top', 'bottom', or 'both'
 
-    const updateSeamCalculations = () => {
+    const seamTabs = document.querySelectorAll('#seamLocationTabs .tab-btn');
+    const topCard = document.getElementById('topSeamMatrixCard');
+    const botCard = document.getElementById('bottomSeamMatrixCard');
+    const botResBox = document.getElementById('resBottomBox');
+
+    seamTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        seamTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeLoc = tab.getAttribute('data-loc');
+
+        if (activeLoc === 'top') {
+          if (topCard) topCard.style.display = 'block';
+          if (botCard) botCard.style.display = 'none';
+          if (botResBox) botResBox.style.display = 'none';
+        } else if (activeLoc === 'bottom') {
+          if (topCard) topCard.style.display = 'none';
+          if (botCard) botCard.style.display = 'block';
+          if (botResBox) botResBox.style.display = 'none';
+        } else {
+          if (topCard) topCard.style.display = 'block';
+          if (botCard) botCard.style.display = 'block';
+          if (botResBox) botResBox.style.display = 'block';
+        }
+
+        updateSeamCalculations();
+      });
+    });
+
+    const EPT = 0.20; // End Plate Thickness (mm)
+    const BPT = 0.17; // Body Plate Thickness (mm)
+
+    const calcMatrix = (slSelector, bhSelector, chSelector) => {
+      const sls = document.querySelectorAll(slSelector);
+      const bhs = document.querySelectorAll(bhSelector);
+      const chs = document.querySelectorAll(chSelector);
+
       let sumSL = 0, sumBH = 0, sumCH = 0;
-      slInputs.forEach(i => sumSL += parseFloat(i.value) || 0);
-      bhInputs.forEach(i => sumBH += parseFloat(i.value) || 0);
-      chInputs.forEach(i => sumCH += parseFloat(i.value) || 0);
+      sls.forEach(i => sumSL += parseFloat(i.value) || 0);
+      bhs.forEach(i => sumBH += parseFloat(i.value) || 0);
+      chs.forEach(i => sumCH += parseFloat(i.value) || 0);
 
       const avgSL = sumSL / 4;
       const avgBH = sumBH / 4;
       const avgCH = sumCH / 4;
 
-      const EPT = 0.20; // End Plate Thickness (mm)
-      const BPT = 0.17; // Body Plate Thickness (mm)
-
       const actualOverlap = (avgCH + avgBH + EPT) - avgSL;
-      const overlapDenominator = avgSL - ((2 * EPT) + BPT);
-      const overlapPercent = overlapDenominator > 0 ? (actualOverlap / overlapDenominator) * 100 : 0;
+      const denominator = avgSL - ((2 * EPT) + BPT);
+      const overlapPercent = denominator > 0 ? (actualOverlap / denominator) * 100 : 0;
 
-      const isPass = overlapPercent >= 50.0;
-
-      document.getElementById('resActualOverlap').textContent = actualOverlap.toFixed(2) + ' mm';
-      document.getElementById('resOverlapPercent').textContent = overlapPercent.toFixed(2) + ' %';
-      document.getElementById('resSeamStatus').innerHTML = isPass
-        ? '<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> PASS ✅</span>'
-        : '<span class="badge badge-expired" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-triangle-exclamation"></i> FAIL ❌</span>';
+      return { avgSL, avgBH, avgCH, actualOverlap, overlapPercent };
     };
 
-    [...slInputs, ...bhInputs, ...chInputs].forEach(input => {
+    const updateSeamCalculations = () => {
+      const topRes = calcMatrix('.seam-top-sl', '.seam-top-bh', '.seam-top-ch');
+      const botRes = calcMatrix('.seam-bot-sl', '.seam-bot-bh', '.seam-bot-ch');
+
+      document.getElementById('resTopOverlapPercent').textContent = topRes.overlapPercent.toFixed(2) + ' %';
+      document.getElementById('resBottomOverlapPercent').textContent = botRes.overlapPercent.toFixed(2) + ' %';
+
+      let isPass = false;
+      let statusText = '';
+
+      if (activeLoc === 'top') {
+        isPass = topRes.overlapPercent >= 50.0;
+        statusText = isPass ? 'PASS ✅ (Top Seam)' : 'FAIL ❌ (Top Seam Defect)';
+      } else if (activeLoc === 'bottom') {
+        isPass = botRes.overlapPercent >= 50.0;
+        statusText = isPass ? 'PASS ✅ (Bottom Seam)' : 'FAIL ❌ (Bottom Seam Defect)';
+      } else {
+        isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
+        statusText = isPass ? 'PASS ✅ (Both Seams Comply)' : 'FAIL ❌ (Seam Defect Found)';
+      }
+
+      document.getElementById('resSeamStatus').innerHTML = isPass
+        ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
+        : `<span class="badge badge-expired" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-triangle-exclamation"></i> ${statusText}</span>`;
+    };
+
+    document.querySelectorAll('.seam-top-sl, .seam-top-bh, .seam-top-ch, .seam-bot-sl, .seam-bot-bh, .seam-bot-ch').forEach(input => {
       input.addEventListener('input', updateSeamCalculations);
     });
 
     updateSeamCalculations();
 
     document.getElementById('btnSaveSeamQC')?.addEventListener('click', () => {
+      const topRes = calcMatrix('.seam-top-sl', '.seam-top-bh', '.seam-top-ch');
+      const botRes = calcMatrix('.seam-bot-sl', '.seam-bot-bh', '.seam-bot-ch');
+
+      const locName = activeLoc === 'top' ? 'Top Cover Seam' : (activeLoc === 'bottom' ? 'Bottom End Seam' : 'Both Top & Bottom');
+
+      let isPass = false;
+      if (activeLoc === 'top') isPass = topRes.overlapPercent >= 50.0;
+      else if (activeLoc === 'bottom') isPass = botRes.overlapPercent >= 50.0;
+      else isPass = (topRes.overlapPercent >= 50.0) && (botRes.overlapPercent >= 50.0);
+
       const record = {
         id: 'SEAM-' + Date.now().toString().slice(-4),
         date: document.getElementById('seamDate').value,
         batchNo: document.getElementById('seamBatchNo').value,
         canSize: document.getElementById('seamCanSize').value,
-        inspector: document.getElementById('seamInspector').value,
-        avgSL: (Array.from(slInputs).reduce((a, b) => a + (parseFloat(b.value) || 0), 0) / 4).toFixed(2) + ' mm',
-        avgBH: (Array.from(bhInputs).reduce((a, b) => a + (parseFloat(b.value) || 0), 0) / 4).toFixed(2) + ' mm',
-        avgCH: (Array.from(chInputs).reduce((a, b) => a + (parseFloat(b.value) || 0), 0) / 4).toFixed(2) + ' mm',
-        actualOverlap: document.getElementById('resActualOverlap').textContent,
-        overlapPercent: document.getElementById('resOverlapPercent').textContent,
-        status: document.getElementById('resSeamStatus').textContent.includes('PASS') ? 'PASS ✅' : 'FAIL ❌'
+        seamLocation: locName,
+        topOverlapPercent: (activeLoc === 'bottom' ? 'N/A' : topRes.overlapPercent.toFixed(2) + ' %'),
+        botOverlapPercent: (activeLoc === 'top' ? 'N/A' : botRes.overlapPercent.toFixed(2) + ' %'),
+        status: isPass ? 'PASS ✅' : 'FAIL ❌'
       };
 
       appData.seamQcRecords = appData.seamQcRecords || [];
@@ -1049,68 +1107,19 @@ document.addEventListener('DOMContentLoaded', () => {
       saveStoredData(appData);
 
       renderSeamQcHistory();
-      showToast('Double Seam Inspection Record saved successfully!', 'success');
+      showToast(`Double Seam QC Record for ${locName} saved!`, 'success');
     });
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
-      // Sync meta details
       const dateVal = document.getElementById('seamDate').value || new Date().toISOString().split('T')[0];
       const canSizeVal = document.getElementById('seamCanSize').value;
       const batchNoVal = document.getElementById('seamBatchNo').value;
       const inspectorVal = document.getElementById('seamInspector').value;
 
       document.getElementById('printDate').textContent = dateVal;
-      document.getElementById('printMetaDate').textContent = dateVal;
       document.getElementById('printCanSize').textContent = canSizeVal;
       document.getElementById('printBatchNo').textContent = batchNoVal;
       document.getElementById('printInspector').textContent = inspectorVal;
-
-      // Sync 4-Point measurements
-      const slValues = Array.from(slInputs).map(i => parseFloat(i.value) || 0);
-      const bhValues = Array.from(bhInputs).map(i => parseFloat(i.value) || 0);
-      const chValues = Array.from(chInputs).map(i => parseFloat(i.value) || 0);
-
-      const EPT = 0.20, BPT = 0.17;
-
-      for (let pt = 1; pt <= 4; pt++) {
-        const sl = slValues[pt - 1];
-        const bh = bhValues[pt - 1];
-        const ch = chValues[pt - 1];
-
-        const ol = (ch + bh + EPT) - sl;
-        const olDen = sl - ((2 * EPT) + BPT);
-        const olPct = olDen > 0 ? (ol / olDen) * 100 : 0;
-
-        document.getElementById(`pSL${pt}`).textContent = sl.toFixed(2);
-        document.getElementById(`pBH${pt}`).textContent = bh.toFixed(2);
-        document.getElementById(`pCH${pt}`).textContent = ch.toFixed(2);
-        document.getElementById(`pOL${pt}`).textContent = ol.toFixed(2);
-        document.getElementById(`pOLPct${pt}`).textContent = olPct.toFixed(2) + '%';
-      }
-
-      const avgSL = slValues.reduce((a,b)=>a+b,0)/4;
-      const avgBH = bhValues.reduce((a,b)=>a+b,0)/4;
-      const avgCH = chValues.reduce((a,b)=>a+b,0)/4;
-      const avgOL = (avgCH + avgBH + EPT) - avgSL;
-      const avgOLDen = avgSL - ((2 * EPT) + BPT);
-      const avgOLPct = avgOLDen > 0 ? (avgOL / avgOLDen) * 100 : 0;
-
-      document.getElementById('pSLAvg').textContent = avgSL.toFixed(2);
-      document.getElementById('pBHAvg').textContent = avgBH.toFixed(2);
-      document.getElementById('pCHAvg').textContent = avgCH.toFixed(2);
-      document.getElementById('pOLAvg').textContent = avgOL.toFixed(2) + ' mm';
-      document.getElementById('pOLPctAvg').textContent = avgOLPct.toFixed(2) + '%';
-
-      const isPass = avgOLPct >= 50.0;
-      const statusBox = document.getElementById('printStatusBox');
-      if (statusBox) {
-        statusBox.textContent = isPass
-          ? 'FINAL QC DECISION: PASS ✅ (OVERLAP WITHIN HACCP SPECIFICATIONS)'
-          : 'FINAL QC DECISION: FAIL ❌ (OVERLAP BELOW HACCP 50% SAFETY THRESHOLD)';
-        statusBox.style.background = isPass ? '#f0fdf4' : '#fef2f2';
-        statusBox.style.borderColor = isPass ? '#22c55e' : '#ef4444';
-        statusBox.style.color = isPass ? '#15803d' : '#991b1b';
-      }
 
       window.print();
     });
@@ -1127,17 +1136,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <td data-label="Date">${item.date}</td>
         <td data-label="Batch No."><code>${item.batchNo}</code></td>
         <td data-label="Can Size">${item.canSize}</td>
-        <td data-label="Avg SL">${item.avgSL}</td>
-        <td data-label="Avg BH">${item.avgBH}</td>
-        <td data-label="Avg CH">${item.avgCH}</td>
-        <td data-label="Actual Overlap" style="font-weight:700">${item.actualOverlap}</td>
-        <td data-label="Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.overlapPercent}</td>
+        <td data-label="Seam Type"><strong>${item.seamLocation || 'Top Cover Seam'}</strong></td>
+        <td data-label="Top Overlap %" style="font-weight:700; color:var(--accent-blue)">${item.topOverlapPercent || item.overlapPercent || 'N/A'}</td>
+        <td data-label="Bottom Overlap %" style="font-weight:700; color:var(--accent-green)">${item.botOverlapPercent || 'N/A'}</td>
         <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
         <td data-label="Action" style="text-align:center">
           <div style="display:flex; gap:6px; justify-content:center">
-            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:3px 8px; font-size:11px" title="Edit Record">
-              <i class="fa-solid fa-pen"></i>
-            </button>
             <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:3px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Record">
               <i class="fa-solid fa-trash"></i>
             </button>
@@ -1153,20 +1157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveStoredData(appData);
         renderSeamQcHistory();
         showToast(`QC Record ${removed[0].batchNo} deleted.`, 'info');
-      });
-    });
-
-    tbody.querySelectorAll('.btn-edit-seam-rec').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const idx = parseInt(btn.getAttribute('data-index'));
-        const rec = appData.seamQcRecords[idx];
-        const newBatch = prompt('Edit Batch No:', rec.batchNo);
-        if (newBatch && newBatch.trim()) {
-          rec.batchNo = newBatch.trim();
-          saveStoredData(appData);
-          renderSeamQcHistory();
-          showToast('Record updated successfully!', 'success');
-        }
       });
     });
   }
