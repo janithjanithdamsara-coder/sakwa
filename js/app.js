@@ -1192,7 +1192,26 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnSaveOverlapThreshold')?.addEventListener('click', saveTargetThreshold);
     targetInput?.addEventListener('change', saveTargetThreshold);
 
+    const validateFieldTolerance = (selector, minVal, maxVal) => {
+      document.querySelectorAll(selector).forEach(inp => {
+        const val = parseFloat(inp.value);
+        if (!isNaN(val) && val > 0) {
+          if (val < minVal || val > maxVal) {
+            inp.classList.add('input-out-of-spec');
+          } else {
+            inp.classList.remove('input-out-of-spec');
+          }
+        } else {
+          inp.classList.remove('input-out-of-spec');
+        }
+      });
+    };
+
     const updateSeamCalculations = () => {
+      validateFieldTolerance('.seam-top-sl, .seam-bot-sl', 2.60, 3.00);
+      validateFieldTolerance('.seam-top-bh, .seam-bot-bh', 1.80, 2.20);
+      validateFieldTolerance('.seam-top-ch, .seam-bot-ch', 1.80, 2.20);
+
       const topSLs = Array.from(document.querySelectorAll('.seam-top-sl')).map(i => parseFloat(i.value) || 0);
       const topBHs = Array.from(document.querySelectorAll('.seam-top-bh')).map(i => parseFloat(i.value) || 0);
       const topCHs = Array.from(document.querySelectorAll('.seam-top-ch')).map(i => parseFloat(i.value) || 0);

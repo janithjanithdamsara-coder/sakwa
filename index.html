@@ -1069,68 +1069,98 @@
             <table class="custom-table seam-matrix-table" id="seamMatrixTableSingle">
               <thead>
                 <tr>
-                  <th style="width:160px">Parameters (mm)</th>
-                  <th style="width:120px">Seam Location</th>
-                  <th>Point 1 (0&deg;)</th>
-                  <th>Point 2 (90&deg;)</th>
-                  <th>Point 3 (180&deg;)</th>
-                  <th>Point 4 (270&deg;)</th>
-                  <th>Target Standard</th>
+                  <th style="width:170px"><i class="fa-solid fa-sliders"></i> Parameters (mm)</th>
+                  <th style="width:140px"><i class="fa-solid fa-location-dot"></i> Seam Location</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 1 (0&deg;)</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 2 (90&deg;)</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 3 (180&deg;)</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 4 (270&deg;)</th>
+                  <th style="width:170px"><i class="fa-solid fa-bullseye"></i> Target Standard</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- Seam Length (SL) -->
                 <tr>
-                  <td rowspan="2" data-label="Parameter" style="font-weight:800; vertical-align:middle">Seam Length (SL)</td>
-                  <td data-label="Location" style="font-weight:700; color:#2563eb">🔝 Top Seam</td>
-                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.83"></td>
-                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.90"></td>
-                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.93"></td>
-                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.85"></td>
-                  <td rowspan="2" data-label="Target" style="font-size:12px; color:var(--text-secondary); vertical-align:middle">2.80mm &plusmn; 0.20mm</td>
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell">
+                    <div class="param-badge-container">
+                      <span class="param-icon">📏</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name">Seam Length</div>
+                        <div class="param-sub-code">(SL)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.83" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.90" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.93" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.85" placeholder="0.00"></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill"><i class="fa-solid fa-bullseye"></i> 2.80 &plusmn; 0.20 mm</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td data-label="Location" style="font-weight:700; color:#0369a1">🔚 Bottom Seam</td>
-                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.98"></td>
-                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.94"></td>
-                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00"></td>
-                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00"></td>
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.98" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.94" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00" placeholder="0.00"></td>
                 </tr>
 
                 <!-- Body Hook (BH) -->
                 <tr class="block-divider">
-                  <td rowspan="2" data-label="Parameter" style="font-weight:800; vertical-align:middle">Body Hook (BH)</td>
-                  <td data-label="Location" style="font-weight:700; color:#2563eb">🔝 Top Seam</td>
-                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
-                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
-                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09"></td>
-                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.07"></td>
-                  <td rowspan="2" data-label="Target" style="font-size:12px; color:var(--text-secondary); vertical-align:middle">2.00mm &plusmn; 0.20mm</td>
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell">
+                    <div class="param-badge-container">
+                      <span class="param-icon">⚓</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name">Body Hook</div>
+                        <div class="param-sub-code">(BH)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.07" placeholder="0.00"></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill"><i class="fa-solid fa-bullseye"></i> 2.00 &plusmn; 0.20 mm</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td data-label="Location" style="font-weight:700; color:#0369a1">🔚 Bottom Seam</td>
-                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.13"></td>
-                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.10"></td>
-                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.08"></td>
-                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.12"></td>
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.13" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.10" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.08" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.12" placeholder="0.00"></td>
                 </tr>
 
                 <!-- Cover Hook (CH) -->
                 <tr class="block-divider">
-                  <td rowspan="2" data-label="Parameter" style="font-weight:800; vertical-align:middle">Cover Hook (CH)</td>
-                  <td data-label="Location" style="font-weight:700; color:#2563eb">🔝 Top Seam</td>
-                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
-                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
-                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70"></td>
-                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.63"></td>
-                  <td rowspan="2" data-label="Target" style="font-size:12px; color:var(--text-secondary); vertical-align:middle">2.00mm &plusmn; 0.20mm</td>
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell">
+                    <div class="param-badge-container">
+                      <span class="param-icon">🪝</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name">Cover Hook</div>
+                        <div class="param-sub-code">(CH)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.63" placeholder="0.00"></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill"><i class="fa-solid fa-bullseye"></i> 2.00 &plusmn; 0.20 mm</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td data-label="Location" style="font-weight:700; color:#0369a1">🔚 Bottom Seam</td>
-                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.85"></td>
-                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.86"></td>
-                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.82"></td>
-                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.89"></td>
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.85" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.86" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.82" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.89" placeholder="0.00"></td>
                 </tr>
               </tbody>
             </table>

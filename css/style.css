@@ -2075,55 +2075,169 @@ textarea.form-control { height: 70px; resize: vertical; }
   color: #f8fafc;
 }
 
-/* DOUBLE SEAM QC INSPECTION STYLES */
+/* DOUBLE SEAM QC INSPECTION STYLES - MODERN INDUSTRIAL QC GRID */
 .seam-matrix-table {
-  border-collapse: collapse !important;
-  border: 2px solid #334155 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
   width: 100% !important;
   background: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
   margin-bottom: 24px !important;
 }
 
 .seam-matrix-table th {
-  background: #1e293b !important;
-  color: #ffffff !important;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  color: #f8fafc !important;
   font-weight: 800 !important;
-  font-size: 11px !important;
+  font-size: 11.5px !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  border: 1.5px solid #334155 !important;
-  padding: 12px 10px !important;
+  letter-spacing: 0.6px !important;
+  border: none !important;
+  border-bottom: 2px solid #334155 !important;
+  padding: 14px 12px !important;
   text-align: center !important;
+}
+
+.seam-matrix-table th i {
+  color: #38bdf8 !important;
+  margin-right: 4px !important;
 }
 
 .seam-matrix-table td {
-  border: 1.5px solid #cbd5e1 !important;
-  padding: 8px 10px !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 10px 12px !important;
   vertical-align: middle !important;
   background: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.seam-matrix-table tr:hover td {
+  background: #f8fafc;
 }
 
 .seam-matrix-table tr.block-divider td {
-  border-top: 2.5px solid #0f172a !important;
+  border-top: 2.5px solid #cbd5e1 !important;
 }
 
+/* Parameter Title Badges */
+.param-title-cell {
+  background: #f8fafc !important;
+  border-right: 2px solid #e2e8f0 !important;
+  vertical-align: middle !important;
+}
+
+.param-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.param-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.param-name-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.param-main-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.param-sub-code {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 0.5px;
+}
+
+/* Seam Location Badges */
+.seam-loc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.seam-loc-badge.top-badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.seam-loc-badge.bot-badge {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+/* Target Standard Pill */
+.target-std-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.target-std-pill i {
+  color: #2563eb;
+  font-size: 11px;
+}
+
+/* Modern Input Boxes */
 .seam-matrix-table input.form-control {
-  border: 1.5px solid #94a3b8 !important;
-  border-radius: 4px !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 8px !important;
   text-align: center !important;
-  font-weight: 700 !important;
-  font-size: 14px !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  font-family: Consolas, 'Fira Code', monospace, sans-serif !important;
   color: #0f172a !important;
-  background: #ffffff !important;
-  padding: 6px 10px !important;
+  background: #f8fafc !important;
+  padding: 8px 10px !important;
+  height: 40px !important;
   transition: all 0.2s ease !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+
+.seam-matrix-table input.form-control:hover {
+  background: #ffffff !important;
+  border-color: #94a3b8 !important;
 }
 
 .seam-matrix-table input.form-control:focus {
   border-color: #2563eb !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
-  background: #eff6ff !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18) !important;
+  background: #ffffff !important;
+  color: #1d4ed8 !important;
+}
+
+/* Out-of-Tolerance Highlight */
+.seam-matrix-table input.form-control.input-out-of-spec {
+  border-color: #f87171 !important;
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
 }
 
 .seam-results-bar {
