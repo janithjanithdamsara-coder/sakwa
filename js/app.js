@@ -1110,7 +1110,7 @@ document.addEventListener('DOMContentLoaded', () => {
           badge.className = 'badge badge-good';
           badge.style.background = '#2563eb';
           badge.style.color = '#fff';
-        } else if (sampleTinsData[i].completed) {
+        } else if (sampleTinsData[i] && sampleTinsData[i].completed) {
           btn.classList.remove('active');
           badge.textContent = 'Done ✅';
           badge.className = 'badge badge-good';
@@ -1123,6 +1123,26 @@ document.addEventListener('DOMContentLoaded', () => {
           badge.style.background = '#e2e8f0';
           badge.style.color = '#475569';
         }
+      }
+
+      // Dynamic Next Tin Button Text Update
+      const nextTinBtn = document.getElementById('btnNextTinQC');
+      const nextTinNumSpan = document.getElementById('nextTinNumSpan');
+      if (nextTinBtn) {
+        if (activeIndex < 3) {
+          const nextNum = activeIndex + 2;
+          if (nextTinNumSpan) nextTinNumSpan.textContent = nextNum.toString();
+          nextTinBtn.innerHTML = `<i class="fa-solid fa-arrow-right"></i> Next Tin (Tin #${nextNum}) ➔`;
+        } else {
+          if (nextTinNumSpan) nextTinNumSpan.textContent = '1';
+          nextTinBtn.innerHTML = `<i class="fa-solid fa-rotate-left"></i> Loop to Tin #1 ➔`;
+        }
+      }
+
+      // Dynamic Active Tin Header Title Update
+      const activeTinTitle = document.getElementById('activeTinTitle');
+      if (activeTinTitle) {
+        activeTinTitle.innerHTML = `<i class="fa-solid fa-flask" style="color:#2563eb"></i> Inspecting: <strong>Tin #${activeIndex + 1}</strong> <span style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-left:6px">(Sample ${activeIndex + 1} of 4)</span>`;
       }
     };
 
@@ -1367,17 +1387,17 @@ document.addEventListener('DOMContentLoaded', () => {
         <td data-label="Bottom Overlap %" style="font-weight:700; color:var(--accent-green)">${item.botOverlapPercent || 'N/A'}</td>
         <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
         <td data-label="Action" style="text-align:center">
-          <div style="display:flex; gap:6px; justify-content:center">
-            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px" title="View Full 4-Tin Document Details (👁️)">
+          <div style="display:flex; gap:6px; justify-content:center; flex-wrap:nowrap">
+            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; white-space:nowrap; flex-shrink:0" title="View Full 4-Tin Document Details (👁️)">
               <i class="fa-solid fa-eye"></i> View
             </button>
-            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#2563eb" title="Edit Master Record (✏️)">
+            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; color:#2563eb; white-space:nowrap; flex-shrink:0" title="Edit Master Record (✏️)">
               <i class="fa-solid fa-pen-to-square"></i> Edit
             </button>
-            <button type="button" class="btn-outline-blue btn-print-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#059669; border-color:#34d399" title="Print / Download PDF Sheet (🖨️)">
+            <button type="button" class="btn-outline-blue btn-print-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; color:#059669; border-color:#34d399; white-space:nowrap; flex-shrink:0" title="Print / Download PDF Sheet (🖨️)">
               <i class="fa-solid fa-file-pdf"></i> PDF Sheet
             </button>
-            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:4px 8px; font-size:11px; color:#ef4444; border-color:#f87171" title="Delete Record">
+            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; color:#ef4444; border-color:#f87171; white-space:nowrap; flex-shrink:0" title="Delete Record">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>

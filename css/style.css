@@ -1336,27 +1336,22 @@ textarea.form-control { height: 70px; resize: vertical; }
   border-radius: var(--radius-md);
   margin-bottom: 20px;
   background: var(--bg-card);
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (min-width: 769px) {
-  .table-container {
-    overflow: hidden !important;
-    overflow-x: hidden !important;
-  }
-
-  .custom-table, #grnItemsTable, #issueItemsTable, #seamMatrixTable {
-    table-layout: fixed !important;
-    width: 100% !important;
+  .custom-table, #grnItemsTable, #issueItemsTable, #seamMatrixTableSingle, #seamHistoryTable {
+    width: 100%;
   }
 
   .custom-table th, .custom-table td,
   #grnItemsTable th, #grnItemsTable td,
   #issueItemsTable th, #issueItemsTable td,
-  #seamMatrixTable th, #seamMatrixTable td {
-    padding: 8px 10px !important;
-    font-size: 12px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+  #seamMatrixTableSingle th, #seamMatrixTableSingle td,
+  #seamHistoryTable th, #seamHistoryTable td {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
     vertical-align: middle !important;
   }
 
@@ -1364,13 +1359,30 @@ textarea.form-control { height: 70px; resize: vertical; }
   #grnItemsTable select.form-control,
   #issueItemsTable input.form-control,
   #issueItemsTable select.form-control,
-  #seamMatrixTable input.form-control {
+  #seamMatrixTableSingle input.form-control {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
     padding: 6px 8px !important;
     font-size: 12px !important;
   }
+}
+
+#seamHistoryTable {
+  min-width: 950px;
+  width: 100%;
+}
+
+#seamHistoryTable th, #seamHistoryTable td {
+  white-space: nowrap;
+}
+
+#seamHistoryTable td[data-label="Action"] {
+  min-width: 250px;
+}
+
+#seamMatrixTableSingle, .seam-matrix-table {
+  min-width: 700px;
 }
 
 @media (max-width: 768px) {
@@ -2414,7 +2426,7 @@ textarea.form-control { height: 70px; resize: vertical; }
     border-radius: var(--radius-sm) !important;
   }
 
-  .custom-table, #grnItemsTable, #issueItemsTable, #seamMatrixTable, #masterOptionsTable {
+  .custom-table, #grnItemsTable, #issueItemsTable, #seamMatrixTableSingle, #seamHistoryTable, #masterOptionsTable {
     width: 100% !important;
     min-width: 600px !important; /* Forces clean horizontal swipe on small screens */
   }

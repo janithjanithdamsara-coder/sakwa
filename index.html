@@ -1054,6 +1054,16 @@
             </button>
           </div>
 
+          <!-- ACTIVE TIN INDICATOR HEADER & MATRIX TABLE -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px">
+            <div style="font-weight:800; font-size:15px; color:var(--primary-navy)" id="activeTinTitle">
+              <i class="fa-solid fa-flask" style="color:#2563eb"></i> Inspecting: <strong>Tin #1</strong> <span style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-left:6px">(Sample 1 of 4)</span>
+            </div>
+            <div style="font-size:12px; font-weight:600; color:var(--text-secondary)">
+              4-Point Circumferential Seam Measurements
+            </div>
+          </div>
+
           <!-- 4-POINT CIRCUMFERENTIAL MATRIX TABLE FOR ACTIVE TIN -->
           <div class="table-container" style="margin-bottom:24px">
             <table class="custom-table seam-matrix-table" id="seamMatrixTableSingle">
@@ -1169,14 +1179,14 @@
             <table class="custom-table" id="seamHistoryTable">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Batch No.</th>
-                  <th>Can Size</th>
-                  <th>Samples</th>
-                  <th>Top Overlap %</th>
-                  <th>Bottom Overlap %</th>
-                  <th>Status</th>
-                  <th style="text-align:center">Action</th>
+                  <th style="width:105px">Date</th>
+                  <th style="width:110px">Batch No.</th>
+                  <th style="width:115px">Can Size</th>
+                  <th style="width:160px">Samples</th>
+                  <th style="width:125px">Top Overlap %</th>
+                  <th style="width:145px">Bottom Overlap %</th>
+                  <th style="width:140px">Status</th>
+                  <th style="width:250px; text-align:center">Action</th>
                 </tr>
               </thead>
               <tbody id="seamHistoryBody"></tbody>
