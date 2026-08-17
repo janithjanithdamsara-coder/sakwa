@@ -1038,47 +1038,160 @@
             </div>
           </div>
 
-          <!-- SEAM LOCATION SWITCHER & FACTORY MATRIX HEADER -->
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:12px">
-            <div style="display:flex; align-items:center; gap:8px">
-              <span style="font-weight:800; font-size:15px; color:var(--primary-navy)" id="activeTinTitle">
-                <i class="fa-solid fa-industry" style="color:#2563eb"></i> Factory HACCP Double Seam 4-Tin Inspection Sheet
-              </span>
-            </div>
+          <!-- 4-Tin Sampling Progress Stepper Header -->
+          <div class="stock-tabs-header" id="tinStepperHeader" style="margin-bottom:20px">
+            <button class="tab-btn active" data-tin="0" id="tinStep0Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #1 Sample <span class="badge badge-good" style="font-size:10px; margin-left:4px" id="tin0Badge">Active 🔵</span>
+            </button>
+            <button class="tab-btn" data-tin="1" id="tinStep1Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #2 Sample <span class="badge" style="font-size:10px; margin-left:4px; background:#e2e8f0; color:#475569" id="tin1Badge">Pending ⚪</span>
+            </button>
+            <button class="tab-btn" data-tin="2" id="tinStep2Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #3 Sample <span class="badge" style="font-size:10px; margin-left:4px; background:#e2e8f0; color:#475569" id="tin2Badge">Pending ⚪</span>
+            </button>
+            <button class="tab-btn" data-tin="3" id="tinStep3Btn">
+              <i class="fa-solid fa-circle-dot"></i> Tin #4 Sample <span class="badge" style="font-size:10px; margin-left:4px; background:#e2e8f0; color:#475569" id="tin3Badge">Pending ⚪</span>
+            </button>
+          </div>
 
-            <!-- Top Seam vs Bottom Seam Toggle Tabs -->
-            <div style="display:flex; background:#f1f5f9; padding:4px; border-radius:8px; border:1px solid #cbd5e1; gap:4px" id="seamLocToggleGroup">
-              <button type="button" class="seam-loc-toggle-btn active" data-loc="top" id="btnSeamLocTop">
-                <i class="fa-solid fa-arrow-up-long" style="color:#2563eb"></i> 🔝 Top Seam Matrix
-              </button>
-              <button type="button" class="seam-loc-toggle-btn" data-loc="bot" id="btnSeamLocBot">
-                <i class="fa-solid fa-arrow-down-long" style="color:#0369a1"></i> 🔚 Bottom Seam Matrix
-              </button>
+          <!-- ACTIVE TIN INDICATOR HEADER & MATRIX TABLE -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px">
+            <div style="font-weight:800; font-size:15px; color:var(--primary-navy)" id="activeTinTitle">
+              <i class="fa-solid fa-flask" style="color:#2563eb"></i> Inspecting: <strong>Tin #1</strong> <span style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-left:6px">(Sample 1 of 4)</span>
+            </div>
+            <div style="font-size:12px; font-weight:600; color:var(--text-secondary)">
+              4-Point Circumferential Seam Measurements
             </div>
           </div>
 
-          <!-- 4-TIN FACTORY SEAM MATRIX TABLE (1:1 REPLICA OF FACTORY SHEET) -->
-          <div class="table-container" style="margin-bottom:24px; overflow-x:auto">
-            <table class="custom-table factory-matrix-grid" id="factorySeamMatrixGrid">
+          <!-- 4-POINT CIRCUMFERENTIAL MATRIX TABLE FOR ACTIVE TIN -->
+          <div class="table-container" style="margin-bottom:24px">
+            <table class="custom-table seam-matrix-table" id="seamMatrixTableSingle">
               <thead>
                 <tr>
-                  <th rowspan="2" style="width:75px; background:#0f172a; color:#fff; vertical-align:middle; text-align:center">CAN #</th>
-                  <th colspan="4" class="col-sl-header"><i class="fa-solid fa-ruler-horizontal"></i> Seam Length</th>
-                  <th colspan="4" class="col-bh-header"><i class="fa-solid fa-anchor"></i> Body Hook</th>
-                  <th colspan="4" class="col-ch-header"><i class="fa-solid fa-hook"></i> Cover Hook</th>
-                  <th colspan="4" class="col-ol-header"><i class="fa-solid fa-calculator"></i> ACTUAL OVERLAP</th>
-                  <th colspan="4" class="col-pct-header"><i class="fa-solid fa-percent"></i> OVERLAP %</th>
-                </tr>
-                <tr>
-                  <th class="col-sl-sub">1</th><th class="col-sl-sub">2</th><th class="col-sl-sub">3</th><th class="col-sl-sub">4</th>
-                  <th class="col-bh-sub">1</th><th class="col-bh-sub">2</th><th class="col-bh-sub">3</th><th class="col-bh-sub">4</th>
-                  <th class="col-ch-sub">1</th><th class="col-ch-sub">2</th><th class="col-ch-sub">3</th><th class="col-ch-sub">4</th>
-                  <th class="col-ol-sub">1</th><th class="col-ol-sub">2</th><th class="col-ol-sub">3</th><th class="col-ol-sub">4</th>
-                  <th class="col-pct-sub">1</th><th class="col-pct-sub">2</th><th class="col-pct-sub">3</th><th class="col-pct-sub">4</th>
+                  <th style="width:170px"><i class="fa-solid fa-sliders"></i> Parameters (mm)</th>
+                  <th style="width:140px"><i class="fa-solid fa-location-dot"></i> Seam Location</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 1 (0&deg;)</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 2 (90&deg;)</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 3 (180&deg;)</th>
+                  <th><i class="fa-solid fa-compass"></i> Point 4 (270&deg;)</th>
+                  <th style="width:170px"><i class="fa-solid fa-bullseye"></i> Target Standard</th>
                 </tr>
               </thead>
-              <tbody id="factorySeamMatrixBody">
-                <!-- Rows for Cans 1, 2, 3, 4 generated dynamically -->
+              <tbody>
+                <!-- Seam Length (SL) -->
+                <tr>
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell">
+                    <div class="param-badge-container">
+                      <span class="param-icon">📏</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name">Seam Length</div>
+                        <div class="param-sub-code">(SL)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.83" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.90" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.93" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-sl" value="2.85" placeholder="0.00"></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill"><i class="fa-solid fa-bullseye"></i> 2.80 &plusmn; 0.20 mm</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.98" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-sl" value="2.94" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-sl" value="3.00" placeholder="0.00"></td>
+                </tr>
+
+                <!-- Body Hook (BH) -->
+                <tr class="block-divider">
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell">
+                    <div class="param-badge-container">
+                      <span class="param-icon">⚓</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name">Body Hook</div>
+                        <div class="param-sub-code">(BH)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.09" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-bh" value="2.07" placeholder="0.00"></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill"><i class="fa-solid fa-bullseye"></i> 2.00 &plusmn; 0.20 mm</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.13" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.10" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.08" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-bh" value="2.12" placeholder="0.00"></td>
+                </tr>
+
+                <!-- Cover Hook (CH) -->
+                <tr class="block-divider">
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell">
+                    <div class="param-badge-container">
+                      <span class="param-icon">🪝</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name">Cover Hook</div>
+                        <div class="param-sub-code">(CH)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.70" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-top-ch" value="1.63" placeholder="0.00"></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill"><i class="fa-solid fa-bullseye"></i> 2.00 &plusmn; 0.20 mm</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.85" placeholder="0.00"></td>
+                  <td data-label="Point 2"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.86" placeholder="0.00"></td>
+                  <td data-label="Point 3"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.82" placeholder="0.00"></td>
+                  <td data-label="Point 4"><input type="number" step="0.01" class="form-control seam-bot-ch" value="1.89" placeholder="0.00"></td>
+                </tr>
+
+                <!-- Computed Overlap % (Point-by-Point Calculation) -->
+                <tr class="block-divider" style="background:#f8fafc">
+                  <td rowspan="2" data-label="Parameter" class="param-title-cell" style="background:#eff6ff !important">
+                    <div class="param-badge-container">
+                      <span class="param-icon">⚡</span>
+                      <div class="param-name-wrap">
+                        <div class="param-main-name" style="color:#1d4ed8">Overlap %</div>
+                        <div class="param-sub-code">(Computed)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Location"><span class="seam-loc-badge top-badge"><i class="fa-solid fa-arrow-up-long"></i> Top Seam</span></td>
+                  <td data-label="Point 1" class="seam-calc-cell"><span class="overlap-val-badge" id="topOLPt1">--%</span></td>
+                  <td data-label="Point 2" class="seam-calc-cell"><span class="overlap-val-badge" id="topOLPt2">--%</span></td>
+                  <td data-label="Point 3" class="seam-calc-cell"><span class="overlap-val-badge" id="topOLPt3">--%</span></td>
+                  <td data-label="Point 4" class="seam-calc-cell"><span class="overlap-val-badge" id="topOLPt4">--%</span></td>
+                  <td rowspan="2" data-label="Target" style="vertical-align:middle; text-align:center">
+                    <span class="target-std-pill" style="background:#eff6ff; color:#1e40af; border-color:#bfdbfe">
+                      <i class="fa-solid fa-square-check"></i> Target: &ge; 50.0%
+                    </span>
+                  </td>
+                </tr>
+                <tr style="background:#f8fafc">
+                  <td data-label="Location"><span class="seam-loc-badge bot-badge"><i class="fa-solid fa-arrow-down-long"></i> Bottom Seam</span></td>
+                  <td data-label="Point 1" class="seam-calc-cell"><span class="overlap-val-badge" id="botOLPt1">--%</span></td>
+                  <td data-label="Point 2" class="seam-calc-cell"><span class="overlap-val-badge" id="botOLPt2">--%</span></td>
+                  <td data-label="Point 3" class="seam-calc-cell"><span class="overlap-val-badge" id="botOLPt3">--%</span></td>
+                  <td data-label="Point 4" class="seam-calc-cell"><span class="overlap-val-badge" id="botOLPt4">--%</span></td>
+                </tr>
               </tbody>
             </table>
           </div>
