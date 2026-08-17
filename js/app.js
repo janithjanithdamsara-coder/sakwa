@@ -1026,7 +1026,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let currentTinIndex = 0; // 0 to 3 for Tins #1..#4
-    const sampleTinsData = [
     // HACCP Double Seam 4-Tin Factory Matrix Data (Matching Factory Sheet Standard)
     const sampleTinsData = [
       { topSL: [2.83, 2.90, 2.93, 2.85], topBH: [2.09, 2.09, 2.09, 2.07], topCH: [1.70, 1.70, 1.70, 1.63], botSL: [2.98, 2.94, 3.00, 3.00], botBH: [2.13, 2.10, 2.08, 2.12], botCH: [1.85, 1.86, 1.82, 1.89], completed: true },
