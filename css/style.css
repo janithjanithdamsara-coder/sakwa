@@ -2240,6 +2240,31 @@ textarea.form-control { height: 70px; resize: vertical; }
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
 }
 
+/* Seam History Date Filter Tabs */
+.seam-filter-btn {
+  background: transparent;
+  color: #475569;
+  border: none;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.seam-filter-btn:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.seam-filter-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
 .seam-results-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

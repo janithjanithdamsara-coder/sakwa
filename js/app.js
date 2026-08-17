@@ -1388,15 +1388,106 @@ document.addEventListener('DOMContentLoaded', () => {
       window.print();
     });
 
+    setupSeamHistoryFilters();
     loadTinToInputs(0);
     renderSeamQcHistory();
   }
 
+  let activeSeamFilter = 'all';
+
+  function setupSeamHistoryFilters() {
+    const filterTabs = document.getElementById('seamHistoryFilterTabs');
+    const pickerWrap = document.getElementById('seamFilterPickerWrap');
+    const datePicker = document.getElementById('seamFilterDatePicker');
+    const monthPicker = document.getElementById('seamFilterMonthPicker');
+    const yearPicker = document.getElementById('seamFilterYearPicker');
+
+    if (!filterTabs) return;
+
+    filterTabs.querySelectorAll('.seam-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterTabs.querySelectorAll('.seam-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        activeSeamFilter = btn.getAttribute('data-filter');
+
+        if (pickerWrap) {
+          if (activeSeamFilter === 'custom') {
+            pickerWrap.style.display = 'flex';
+            if (datePicker) { datePicker.style.display = 'inline-block'; datePicker.value = new Date().toISOString().split('T')[0]; }
+            if (monthPicker) monthPicker.style.display = 'none';
+            if (yearPicker) yearPicker.style.display = 'none';
+          } else if (activeSeamFilter === 'monthly') {
+            pickerWrap.style.display = 'flex';
+            if (datePicker) datePicker.style.display = 'none';
+            if (monthPicker) { monthPicker.style.display = 'inline-block'; monthPicker.value = new Date().toISOString().slice(0, 7); }
+            if (yearPicker) yearPicker.style.display = 'none';
+          } else if (activeSeamFilter === 'yearly') {
+            pickerWrap.style.display = 'flex';
+            if (datePicker) datePicker.style.display = 'none';
+            if (monthPicker) monthPicker.style.display = 'none';
+            if (yearPicker) { yearPicker.style.display = 'inline-block'; yearPicker.value = new Date().getFullYear().toString(); }
+          } else {
+            pickerWrap.style.display = 'none';
+          }
+        }
+
+        renderSeamQcHistory();
+      });
+    });
+
+    datePicker?.addEventListener('change', renderSeamQcHistory);
+    monthPicker?.addEventListener('change', renderSeamQcHistory);
+    yearPicker?.addEventListener('change', renderSeamQcHistory);
+  }
+
   function renderSeamQcHistory() {
     const tbody = document.getElementById('seamHistoryBody');
+    const badge = document.getElementById('seamRecordCountBadge');
     if (!tbody || !appData.seamQcRecords) return;
 
-    tbody.innerHTML = appData.seamQcRecords.map((item, idx) => `
+    const todayStr = new Date().toISOString().split('T')[0];
+    const currentMonthStr = todayStr.slice(0, 7);
+    const currentYearStr = todayStr.slice(0, 4);
+
+    const datePicker = document.getElementById('seamFilterDatePicker');
+    const monthPicker = document.getElementById('seamFilterMonthPicker');
+    const yearPicker = document.getElementById('seamFilterYearPicker');
+
+    let filteredRecords = appData.seamQcRecords.map((item, originalIndex) => ({ item, originalIndex }));
+
+    if (activeSeamFilter === 'daily') {
+      filteredRecords = filteredRecords.filter(r => r.item.date === todayStr);
+      if (badge) badge.textContent = `Showing Today (${todayStr}) • ${filteredRecords.length} Records`;
+    } else if (activeSeamFilter === 'monthly') {
+      const selectedMonth = (monthPicker && monthPicker.value) ? monthPicker.value : currentMonthStr;
+      filteredRecords = filteredRecords.filter(r => r.item.date && r.item.date.startsWith(selectedMonth));
+      if (badge) badge.textContent = `Showing Month (${selectedMonth}) • ${filteredRecords.length} Records`;
+    } else if (activeSeamFilter === 'yearly') {
+      const selectedYear = (yearPicker && yearPicker.value) ? yearPicker.value : currentYearStr;
+      filteredRecords = filteredRecords.filter(r => r.item.date && r.item.date.startsWith(selectedYear));
+      if (badge) badge.textContent = `Showing Year (${selectedYear}) • ${filteredRecords.length} Records`;
+    } else if (activeSeamFilter === 'custom') {
+      const selectedDate = (datePicker && datePicker.value) ? datePicker.value : todayStr;
+      filteredRecords = filteredRecords.filter(r => r.item.date === selectedDate);
+      if (badge) badge.textContent = `Showing Date (${selectedDate}) • ${filteredRecords.length} Records`;
+    } else {
+      if (badge) badge.textContent = `Showing All (${appData.seamQcRecords.length} Records)`;
+    }
+
+    if (filteredRecords.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center; padding:32px; color:var(--text-secondary)">
+            <i class="fa-solid fa-folder-open" style="font-size:28px; color:#cbd5e1; margin-bottom:8px"></i><br>
+            <strong>No inspection records found for the selected filter period.</strong>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filteredRecords.map(({ item, originalIndex }) => `
       <tr>
         <td data-label="Date">${item.date}</td>
         <td data-label="Batch No."><code>${item.batchNo}</code></td>
@@ -1407,16 +1498,16 @@ document.addEventListener('DOMContentLoaded', () => {
         <td data-label="Status"><span class="badge ${item.status.includes('PASS') ? 'badge-good' : 'badge-expired'}">${item.status}</span></td>
         <td data-label="Action" style="text-align:center">
           <div style="display:flex; gap:6px; justify-content:center; flex-wrap:nowrap">
-            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; white-space:nowrap; flex-shrink:0" title="View Full 4-Tin Document Details (👁️)">
+            <button type="button" class="btn-outline-blue btn-view-seam-rec" data-index="${originalIndex}" style="padding:5px 9px; font-size:11px; white-space:nowrap; flex-shrink:0" title="View Full 4-Tin Document Details (👁️)">
               <i class="fa-solid fa-eye"></i> View
             </button>
-            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; color:#2563eb; white-space:nowrap; flex-shrink:0" title="Edit Master Record (✏️)">
+            <button type="button" class="btn-outline-blue btn-edit-seam-rec" data-index="${originalIndex}" style="padding:5px 9px; font-size:11px; color:#2563eb; white-space:nowrap; flex-shrink:0" title="Edit Master Record (✏️)">
               <i class="fa-solid fa-pen-to-square"></i> Edit
             </button>
-            <button type="button" class="btn-outline-blue btn-print-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; color:#059669; border-color:#34d399; white-space:nowrap; flex-shrink:0" title="Print / Download PDF Sheet (🖨️)">
+            <button type="button" class="btn-outline-blue btn-print-seam-rec" data-index="${originalIndex}" style="padding:5px 9px; font-size:11px; color:#059669; border-color:#34d399; white-space:nowrap; flex-shrink:0" title="Print / Download PDF Sheet (🖨️)">
               <i class="fa-solid fa-file-pdf"></i> PDF Sheet
             </button>
-            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${idx}" style="padding:5px 9px; font-size:11px; color:#ef4444; border-color:#f87171; white-space:nowrap; flex-shrink:0" title="Delete Record">
+            <button type="button" class="btn-outline-blue btn-delete-seam-rec" data-index="${originalIndex}" style="padding:5px 9px; font-size:11px; color:#ef4444; border-color:#f87171; white-space:nowrap; flex-shrink:0" title="Delete Record">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>

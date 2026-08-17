@@ -147,30 +147,44 @@ const DEFAULT_FACTORY_DATA = {
 
   seamQcRecords: [
     {
-      id: 'SEAM-01',
-      date: '2025-09-01',
-      batchNo: 'BATCH-2025-05-10',
-      canSize: '425g A1 Tin (Standard)',
-      inspector: 'Line #1 • HACCP Team',
-      avgSL: '2.83 mm',
-      avgBH: '1.90 mm',
-      avgCH: '1.78 mm',
-      actualOverlap: '1.10 mm',
-      overlapPercent: '49.33 %',
+      id: 'SEAM-88',
+      date: '2026-08-17',
+      batchNo: 'EX502329',
+      canSize: '425g A1 Tin',
+      seamLocation: '4 Tins (8 Seam Matrices)',
+      topOverlapPercent: '54.20 %',
+      botOverlapPercent: '58.40 %',
       status: 'PASS ✅'
     },
     {
-      id: 'SEAM-02',
-      date: '2025-09-01',
-      batchNo: 'BATCH-2025-05-12',
-      canSize: '425g Easy-Open Lid',
-      inspector: 'Line #2 • HACCP Team',
-      avgSL: '2.91 mm',
-      avgBH: '1.89 mm',
-      avgCH: '1.86 mm',
-      actualOverlap: '1.04 mm',
-      overlapPercent: '45.57 %',
-      status: 'FAIL ❌'
+      id: 'SEAM-87',
+      date: '2026-08-15',
+      batchNo: 'EX502325',
+      canSize: '425g A1 Tin',
+      seamLocation: '4 Tins (8 Seam Matrices)',
+      topOverlapPercent: '47.83 %',
+      botOverlapPercent: '62.93 %',
+      status: 'FAIL ❌ (Defect Found)'
+    },
+    {
+      id: 'SEAM-85',
+      date: '2026-05-10',
+      batchNo: 'BATCH-2026-05-10',
+      canSize: '425g A1 Tin (Standard)',
+      seamLocation: '4 Tins (8 Seam Matrices)',
+      topOverlapPercent: '52.10 %',
+      botOverlapPercent: '55.30 %',
+      status: 'PASS ✅'
+    },
+    {
+      id: 'SEAM-80',
+      date: '2025-11-20',
+      batchNo: 'BATCH-2025-11-20',
+      canSize: '155g Club Tin',
+      seamLocation: '4 Tins (8 Seam Matrices)',
+      topOverlapPercent: '51.40 %',
+      botOverlapPercent: '53.80 %',
+      status: 'PASS ✅'
     }
   ],
 
