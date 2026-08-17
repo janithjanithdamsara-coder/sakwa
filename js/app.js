@@ -1257,46 +1257,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderFactoryMatrixGrid();
     });
 
-    renderFactoryMatrixGrid();
-
-    document.querySelectorAll('.seam-top-sl, .seam-top-bh, .seam-top-ch, .seam-bot-sl, .seam-bot-bh, .seam-bot-ch').forEach(input => {
-      input.addEventListener('input', updateSeamCalculations);
-    });
-
-    // Re-Test Failed Can Handler
-    document.getElementById('btnRetryFailedTin')?.addEventListener('click', () => {
-      const data = sampleTinsData[currentTinIndex];
-      // Reset measurements to target defaults for re-testing after machine adjustment
-      data.topSL = [2.80, 2.80, 2.80, 2.80];
-      data.topBH = [2.00, 2.00, 2.00, 2.00];
-      data.topCH = [2.00, 2.00, 2.00, 2.00];
-      data.botSL = [2.80, 2.80, 2.80, 2.80];
-      data.botBH = [2.00, 2.00, 2.00, 2.00];
-      data.botCH = [2.00, 2.00, 2.00, 2.00];
-      data.completed = false;
-
-      loadTinToInputs(currentTinIndex);
-      showToast(`Machine adjusted! Re-testing Tin #${currentTinIndex + 1}. Enter new measurements.`, 'info');
-    });
-
-    // Next Tin Button Handler
-    document.getElementById('btnNextTinQC')?.addEventListener('click', () => {
-      readInputsToTin(currentTinIndex);
-      if (currentTinIndex < 3) {
-        currentTinIndex++;
-        loadTinToInputs(currentTinIndex);
-        showToast(`Advanced to Tin #${currentTinIndex + 1}.`, 'info');
-      } else {
-        currentTinIndex = 0;
-        loadTinToInputs(0);
-        showToast(`Returned to Tin #1.`, 'info');
-      }
-    });
-
     // Save Complete 4-Tin QC Session Record to History Table Handler
     document.getElementById('btnSaveSeamSessionQC')?.addEventListener('click', () => {
-      readInputsToTin(currentTinIndex);
-
       let totalTopPct = 0, totalBotPct = 0;
       let overallPass = true;
 
@@ -1379,8 +1341,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('btnPrintSeamQC')?.addEventListener('click', () => {
-      readInputsToTin(currentTinIndex);
-
       populatePrintSheetWithData({
         date: document.getElementById('seamDate').value || new Date().toISOString().split('T')[0],
         canSize: document.getElementById('seamCanSize').value,
