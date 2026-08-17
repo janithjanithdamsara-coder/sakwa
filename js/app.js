@@ -1027,132 +1027,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentTinIndex = 0; // 0 to 3 for Tins #1..#4
     const sampleTinsData = [
-      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false },
-      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false },
-      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false },
-      { topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0], botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0], completed: false }
+    // HACCP Double Seam 4-Tin Factory Matrix Data (Matching Factory Sheet Standard)
+    const sampleTinsData = [
+      { topSL: [2.83, 2.90, 2.93, 2.85], topBH: [2.09, 2.09, 2.09, 2.07], topCH: [1.70, 1.70, 1.70, 1.63], botSL: [2.98, 2.94, 3.00, 3.00], botBH: [2.13, 2.10, 2.08, 2.12], botCH: [1.85, 1.86, 1.82, 1.89], completed: true },
+      { topSL: [2.84, 2.80, 2.80, 2.75], topBH: [1.91, 2.03, 1.99, 1.99], topCH: [1.83, 1.88, 2.00, 1.82], botSL: [2.90, 2.85, 2.88, 2.82], botBH: [2.05, 2.08, 2.01, 2.04], botCH: [1.80, 1.85, 1.83, 1.81], completed: true },
+      { topSL: [2.85, 2.84, 2.85, 2.90], topBH: [2.08, 2.07, 2.05, 2.02], topCH: [1.74, 1.70, 1.71, 1.74], botSL: [2.92, 2.90, 2.94, 2.88], botBH: [2.10, 2.08, 2.06, 2.12], botCH: [1.86, 1.82, 1.84, 1.85], completed: true },
+      { topSL: [2.78, 2.84, 2.92, 2.78], topBH: [1.94, 2.12, 2.06, 2.03], topCH: [1.91, 1.95, 1.94, 1.96], botSL: [2.86, 2.88, 2.90, 2.84], botBH: [2.04, 2.10, 2.08, 2.06], botCH: [1.84, 1.88, 1.86, 1.87], completed: true }
     ];
 
     const EPT = 0.20, BPT = 0.17;
+    let activeSeamLoc = 'top';
 
-    const loadTinToInputs = (index) => {
-      const data = sampleTinsData[index];
-      const topSLs = document.querySelectorAll('.seam-top-sl');
-      const topBHs = document.querySelectorAll('.seam-top-bh');
-      const topCHs = document.querySelectorAll('.seam-top-ch');
-      const botSLs = document.querySelectorAll('.seam-bot-sl');
-      const botBHs = document.querySelectorAll('.seam-bot-bh');
-      const botCHs = document.querySelectorAll('.seam-bot-ch');
+    const renderFactoryMatrixGrid = () => {
+      const tbody = document.getElementById('factorySeamMatrixBody');
+      if (!tbody) return;
 
-      for (let i = 0; i < 4; i++) {
-        if (topSLs[i]) topSLs[i].value = data.topSL[i] > 0 ? data.topSL[i] : '';
-        if (topBHs[i]) topBHs[i].value = data.topBH[i] > 0 ? data.topBH[i] : '';
-        if (topCHs[i]) topCHs[i].value = data.topCH[i] > 0 ? data.topCH[i] : '';
-        if (botSLs[i]) botSLs[i].value = data.botSL[i] > 0 ? data.botSL[i] : '';
-        if (botBHs[i]) botBHs[i].value = data.botBH[i] > 0 ? data.botBH[i] : '';
-        if (botCHs[i]) botCHs[i].value = data.botCH[i] > 0 ? data.botCH[i] : '';
-      }
+      tbody.innerHTML = [0, 1, 2, 3].map(t => {
+        const data = sampleTinsData[t];
+        const slArr = activeSeamLoc === 'top' ? data.topSL : data.botSL;
+        const bhArr = activeSeamLoc === 'top' ? data.topBH : data.botBH;
+        const chArr = activeSeamLoc === 'top' ? data.topCH : data.botCH;
 
-      updateStepperUI(index);
-      updateSeamCalculations();
+        return `
+          <tr data-tin="${t}">
+            <td style="font-weight:800; background:#f8fafc; color:#0f172a">
+              ${t + 1}
+            </td>
+            <!-- Seam Length (SL) 1-4 -->
+            <td><input type="number" step="0.01" class="form-control fgrid-sl" data-tin="${t}" data-pt="0" value="${slArr[0] > 0 ? slArr[0] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-sl" data-tin="${t}" data-pt="1" value="${slArr[1] > 0 ? slArr[1] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-sl" data-tin="${t}" data-pt="2" value="${slArr[2] > 0 ? slArr[2] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-sl" data-tin="${t}" data-pt="3" value="${slArr[3] > 0 ? slArr[3] : ''}" placeholder="0.00"></td>
+            
+            <!-- Body Hook (BH) 1-4 -->
+            <td><input type="number" step="0.01" class="form-control fgrid-bh" data-tin="${t}" data-pt="0" value="${bhArr[0] > 0 ? bhArr[0] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-bh" data-tin="${t}" data-pt="1" value="${bhArr[1] > 0 ? bhArr[1] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-bh" data-tin="${t}" data-pt="2" value="${bhArr[2] > 0 ? bhArr[2] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-bh" data-tin="${t}" data-pt="3" value="${bhArr[3] > 0 ? bhArr[3] : ''}" placeholder="0.00"></td>
+            
+            <!-- Cover Hook (CH) 1-4 -->
+            <td><input type="number" step="0.01" class="form-control fgrid-ch" data-tin="${t}" data-pt="0" value="${chArr[0] > 0 ? chArr[0] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-ch" data-tin="${t}" data-pt="1" value="${chArr[1] > 0 ? chArr[1] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-ch" data-tin="${t}" data-pt="2" value="${chArr[2] > 0 ? chArr[2] : ''}" placeholder="0.00"></td>
+            <td><input type="number" step="0.01" class="form-control fgrid-ch" data-tin="${t}" data-pt="3" value="${chArr[3] > 0 ? chArr[3] : ''}" placeholder="0.00"></td>
+
+            <!-- Actual Overlap (mm) 1-4 -->
+            <td class="cell-ol" id="fgOL_t${t}_p0">--</td>
+            <td class="cell-ol" id="fgOL_t${t}_p1">--</td>
+            <td class="cell-ol" id="fgOL_t${t}_p2">--</td>
+            <td class="cell-ol" id="fgOL_t${t}_p3">--</td>
+
+            <!-- Overlap % 1-4 -->
+            <td class="cell-pct" id="fgPct_t${t}_p0">--%</td>
+            <td class="cell-pct" id="fgPct_t${t}_p1">--%</td>
+            <td class="cell-pct" id="fgPct_t${t}_p2">--%</td>
+            <td class="cell-pct" id="fgPct_t${t}_p3">--%</td>
+          </tr>
+        `;
+      }).join('');
+
+      attachFactoryGridListeners();
+      updateFactoryMatrixCalculations();
     };
 
-    const resetAllSeamInputs = () => {
-      currentTinIndex = 0;
-      for (let t = 0; t < 4; t++) {
-        sampleTinsData[t] = {
-          topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0],
-          botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0],
-          completed: false
-        };
-      }
-      document.querySelectorAll('.seam-top-sl, .seam-top-bh, .seam-top-ch, .seam-bot-sl, .seam-bot-bh, .seam-bot-ch').forEach(input => {
-        input.value = '';
+    const attachFactoryGridListeners = () => {
+      document.querySelectorAll('.fgrid-sl, .fgrid-bh, .fgrid-ch').forEach(input => {
+        input.addEventListener('input', () => {
+          const t = parseInt(input.getAttribute('data-tin'));
+          const p = parseInt(input.getAttribute('data-pt'));
+          const val = parseFloat(input.value) || 0;
+          const data = sampleTinsData[t];
+
+          if (input.classList.contains('fgrid-sl')) {
+            if (activeSeamLoc === 'top') data.topSL[p] = val; else data.botSL[p] = val;
+          } else if (input.classList.contains('fgrid-bh')) {
+            if (activeSeamLoc === 'top') data.topBH[p] = val; else data.botBH[p] = val;
+          } else if (input.classList.contains('fgrid-ch')) {
+            if (activeSeamLoc === 'top') data.topCH[p] = val; else data.botCH[p] = val;
+          }
+          data.completed = true;
+          updateFactoryMatrixCalculations();
+        });
       });
-      updateStepperUI(0);
-      document.getElementById('resTopOverlapPercent').textContent = '-- %';
-      document.getElementById('resBottomOverlapPercent').textContent = '-- %';
-      document.getElementById('resSeamStatus').innerHTML = '<span class="badge" style="font-size:14px; padding:6px 16px; background:#e2e8f0; color:#475569">READY FOR INPUT ⚪</span>';
-      showToast('All 4 Tins Seam Matrix cleared & reset for new inspection!', 'info');
     };
-
-    document.getElementById('btnClearSeamSessionQC')?.addEventListener('click', resetAllSeamInputs);
-
-    const readInputsToTin = (index) => {
-      const data = sampleTinsData[index];
-      const topSLs = document.querySelectorAll('.seam-top-sl');
-      const topBHs = document.querySelectorAll('.seam-top-bh');
-      const topCHs = document.querySelectorAll('.seam-top-ch');
-      const botSLs = document.querySelectorAll('.seam-bot-sl');
-      const botBHs = document.querySelectorAll('.seam-bot-bh');
-      const botCHs = document.querySelectorAll('.seam-bot-ch');
-
-      for (let i = 0; i < 4; i++) {
-        if (topSLs[i]) data.topSL[i] = parseFloat(topSLs[i].value) || 0;
-        if (topBHs[i]) data.topBH[i] = parseFloat(topBHs[i].value) || 0;
-        if (topCHs[i]) data.topCH[i] = parseFloat(topCHs[i].value) || 0;
-        if (botSLs[i]) data.botSL[i] = parseFloat(botSLs[i].value) || 0;
-        if (botBHs[i]) data.botBH[i] = parseFloat(botBHs[i].value) || 0;
-        if (botCHs[i]) data.botCH[i] = parseFloat(botCHs[i].value) || 0;
-      }
-      data.completed = true;
-    };
-
-    const updateStepperUI = (activeIndex) => {
-      for (let i = 0; i < 4; i++) {
-        const btn = document.getElementById(`tinStep${i}Btn`);
-        const badge = document.getElementById(`tin${i}Badge`);
-        if (!btn || !badge) continue;
-
-        if (i === activeIndex) {
-          btn.classList.add('active');
-          badge.textContent = 'Active 🔵';
-          badge.className = 'badge badge-good';
-          badge.style.background = '#2563eb';
-          badge.style.color = '#fff';
-        } else if (sampleTinsData[i] && sampleTinsData[i].completed) {
-          btn.classList.remove('active');
-          badge.textContent = 'Done ✅';
-          badge.className = 'badge badge-good';
-          badge.style.background = '#16a34a';
-          badge.style.color = '#fff';
-        } else {
-          btn.classList.remove('active');
-          badge.textContent = 'Pending ⚪';
-          badge.className = 'badge';
-          badge.style.background = '#e2e8f0';
-          badge.style.color = '#475569';
-        }
-      }
-
-      // Dynamic Next Tin Button Text Update
-      const nextTinBtn = document.getElementById('btnNextTinQC');
-      const nextTinNumSpan = document.getElementById('nextTinNumSpan');
-      if (nextTinBtn) {
-        if (activeIndex < 3) {
-          const nextNum = activeIndex + 2;
-          if (nextTinNumSpan) nextTinNumSpan.textContent = nextNum.toString();
-          nextTinBtn.innerHTML = `<i class="fa-solid fa-arrow-right"></i> Next Tin (Tin #${nextNum}) ➔`;
-        } else {
-          if (nextTinNumSpan) nextTinNumSpan.textContent = '1';
-          nextTinBtn.innerHTML = `<i class="fa-solid fa-rotate-left"></i> Loop to Tin #1 ➔`;
-        }
-      }
-
-      // Dynamic Active Tin Header Title Update
-      const activeTinTitle = document.getElementById('activeTinTitle');
-      if (activeTinTitle) {
-        activeTinTitle.innerHTML = `<i class="fa-solid fa-flask" style="color:#2563eb"></i> Inspecting: <strong>Tin #${activeIndex + 1}</strong> <span style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-left:6px">(Sample ${activeIndex + 1} of 4)</span>`;
-      }
-    };
-
-    for (let i = 0; i < 4; i++) {
-      document.getElementById(`tinStep${i}Btn`)?.addEventListener('click', () => {
-        readInputsToTin(currentTinIndex);
-        currentTinIndex = i;
-        loadTinToInputs(currentTinIndex);
-      });
-    }
 
     const calcSingleTin = (topSL, topBH, topCH, botSL, botBH, botCH) => {
       const avgTopSL = topSL.reduce((a,b)=>a+b,0)/4;
@@ -1174,6 +1131,99 @@ document.addEventListener('DOMContentLoaded', () => {
       return { topPct, botPct };
     };
 
+    const updateFactoryMatrixCalculations = () => {
+      const targetThreshold = parseFloat(appData.haccpTargetOverlapThreshold) || 50.0;
+
+      let sumTopPct = 0, sumBotPct = 0;
+      let overallPass = true;
+
+      for (let t = 0; t < 4; t++) {
+        const data = sampleTinsData[t];
+
+        const topRes = calcSingleTin(data.topSL, data.topBH, data.topCH, data.topSL, data.topBH, data.topCH);
+        const botRes = calcSingleTin(data.botSL, data.botBH, data.botCH, data.botSL, data.botBH, data.botCH);
+
+        sumTopPct += topRes.topPct;
+        sumBotPct += botRes.topPct;
+
+        if (topRes.topPct < targetThreshold || botRes.topPct < targetThreshold) {
+          overallPass = false;
+        }
+
+        const slArr = activeSeamLoc === 'top' ? data.topSL : data.botSL;
+        const bhArr = activeSeamLoc === 'top' ? data.topBH : data.botBH;
+        const chArr = activeSeamLoc === 'top' ? data.topCH : data.botCH;
+
+        for (let p = 0; p < 4; p++) {
+          const sl = slArr[p], bh = bhArr[p], ch = chArr[p];
+          const cellOL = document.getElementById(`fgOL_t${t}_p${p}`);
+          const cellPct = document.getElementById(`fgPct_t${t}_p${p}`);
+
+          if (sl > 0 && bh > 0 && ch > 0) {
+            const ol = (ch + bh + EPT) - sl;
+            const den = sl - ((2 * EPT) + BPT);
+            const pct = den > 0 ? (ol / den) * 100 : 0;
+
+            if (cellOL) cellOL.textContent = ol.toFixed(2);
+            if (cellPct) {
+              const roundedPct = Math.round(pct);
+              cellPct.textContent = roundedPct + '%';
+              if (pct >= targetThreshold) {
+                cellPct.className = 'cell-pct pct-pass';
+              } else {
+                cellPct.className = 'cell-pct pct-fail';
+              }
+            }
+          } else {
+            if (cellOL) cellOL.textContent = '--';
+            if (cellPct) {
+              cellPct.textContent = '--%';
+              cellPct.className = 'cell-pct';
+            }
+          }
+        }
+      }
+
+      const avgTopPct = sumTopPct / 4;
+      const avgBotPct = sumBotPct / 4;
+
+      const topEl = document.getElementById('resTopOverlapPercent');
+      const botEl = document.getElementById('resBottomOverlapPercent');
+      const statusEl = document.getElementById('resSeamStatus');
+
+      if (topEl) topEl.textContent = avgTopPct > 0 ? avgTopPct.toFixed(2) + ' %' : '-- %';
+      if (botEl) botEl.textContent = avgBotPct > 0 ? avgBotPct.toFixed(2) + ' %' : '-- %';
+
+      if (statusEl) {
+        if (avgTopPct > 0 || avgBotPct > 0) {
+          const isPass = (avgTopPct >= targetThreshold) && (avgBotPct >= targetThreshold);
+          const statusText = isPass ? `PASS ✅ (All 4 Tins Comply &ge; ${targetThreshold.toFixed(1)}%)` : `FAIL ❌ (Defect Found &lt; ${targetThreshold.toFixed(1)}%)`;
+          statusEl.innerHTML = isPass
+            ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
+            : `<span class="badge badge-expired" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-triangle-exclamation"></i> ${statusText}</span>`;
+        } else {
+          statusEl.innerHTML = `<span class="badge" style="font-size:14px; padding:6px 16px; background:#e2e8f0; color:#475569">READY FOR INPUT ⚪</span>`;
+        }
+      }
+    };
+
+    const resetAllSeamInputs = () => {
+      for (let t = 0; t < 4; t++) {
+        sampleTinsData[t] = {
+          topSL: [0, 0, 0, 0], topBH: [0, 0, 0, 0], topCH: [0, 0, 0, 0],
+          botSL: [0, 0, 0, 0], botBH: [0, 0, 0, 0], botCH: [0, 0, 0, 0],
+          completed: false
+        };
+      }
+      renderFactoryMatrixGrid();
+      document.getElementById('resTopOverlapPercent').textContent = '-- %';
+      document.getElementById('resBottomOverlapPercent').textContent = '-- %';
+      document.getElementById('resSeamStatus').innerHTML = '<span class="badge" style="font-size:14px; padding:6px 16px; background:#e2e8f0; color:#475569">READY FOR INPUT ⚪</span>';
+      showToast('All 4 Tins Seam Matrix cleared & reset for new inspection!', 'info');
+    };
+
+    document.getElementById('btnClearSeamSessionQC')?.addEventListener('click', resetAllSeamInputs);
+
     // Target Overlap Threshold Setup
     appData.haccpTargetOverlapThreshold = appData.haccpTargetOverlapThreshold || 50.0;
     const targetInput = document.getElementById('targetOverlapThresholdInput');
@@ -1185,66 +1235,29 @@ document.addEventListener('DOMContentLoaded', () => {
       const val = parseFloat(targetInput.value) || 50.0;
       appData.haccpTargetOverlapThreshold = val;
       saveStoredData(appData);
-      updateSeamCalculations();
+      updateFactoryMatrixCalculations();
       showToast(`HACCP Target Pass Overlap % Threshold saved as ${val.toFixed(1)}%!`, 'success');
     };
 
     document.getElementById('btnSaveOverlapThreshold')?.addEventListener('click', saveTargetThreshold);
     targetInput?.addEventListener('change', saveTargetThreshold);
 
-    const validateFieldTolerance = (selector, minVal, maxVal) => {
-      document.querySelectorAll(selector).forEach(inp => {
-        const val = parseFloat(inp.value);
-        if (!isNaN(val) && val > 0) {
-          if (val < minVal || val > maxVal) {
-            inp.classList.add('input-out-of-spec');
-          } else {
-            inp.classList.remove('input-out-of-spec');
-          }
-        } else {
-          inp.classList.remove('input-out-of-spec');
-        }
-      });
-    };
+    // Toggle button handlers for Top vs Bottom Seam
+    document.getElementById('btnSeamLocTop')?.addEventListener('click', () => {
+      activeSeamLoc = 'top';
+      document.getElementById('btnSeamLocTop')?.classList.add('active');
+      document.getElementById('btnSeamLocBot')?.classList.remove('active');
+      renderFactoryMatrixGrid();
+    });
 
-    const updateSeamCalculations = () => {
-      validateFieldTolerance('.seam-top-sl, .seam-bot-sl', 2.60, 3.00);
-      validateFieldTolerance('.seam-top-bh, .seam-bot-bh', 1.80, 2.20);
-      validateFieldTolerance('.seam-top-ch, .seam-bot-ch', 1.80, 2.20);
+    document.getElementById('btnSeamLocBot')?.addEventListener('click', () => {
+      activeSeamLoc = 'bot';
+      document.getElementById('btnSeamLocBot')?.classList.add('active');
+      document.getElementById('btnSeamLocTop')?.classList.remove('active');
+      renderFactoryMatrixGrid();
+    });
 
-      const topSLs = Array.from(document.querySelectorAll('.seam-top-sl')).map(i => parseFloat(i.value) || 0);
-      const topBHs = Array.from(document.querySelectorAll('.seam-top-bh')).map(i => parseFloat(i.value) || 0);
-      const topCHs = Array.from(document.querySelectorAll('.seam-top-ch')).map(i => parseFloat(i.value) || 0);
-
-      const botSLs = Array.from(document.querySelectorAll('.seam-bot-sl')).map(i => parseFloat(i.value) || 0);
-      const botBHs = Array.from(document.querySelectorAll('.seam-bot-bh')).map(i => parseFloat(i.value) || 0);
-      const botCHs = Array.from(document.querySelectorAll('.seam-bot-ch')).map(i => parseFloat(i.value) || 0);
-
-      const res = calcSingleTin(topSLs, topBHs, topCHs, botSLs, botBHs, botCHs);
-
-      document.getElementById('resTopOverlapPercent').textContent = res.topPct.toFixed(2) + ' %';
-      document.getElementById('resBottomOverlapPercent').textContent = res.botPct.toFixed(2) + ' %';
-
-      const targetThreshold = parseFloat(appData.haccpTargetOverlapThreshold) || 50.0;
-      const isPass = (res.topPct >= targetThreshold) && (res.botPct >= targetThreshold);
-      const statusText = isPass ? `PASS ✅ (Tin #${currentTinIndex + 1} Comply &ge; ${targetThreshold.toFixed(1)}%)` : `FAIL ❌ (Tin #${currentTinIndex + 1} Defect &lt; ${targetThreshold.toFixed(1)}%)`;
-
-      document.getElementById('resSeamStatus').innerHTML = isPass
-        ? `<span class="badge badge-good" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-circle-check"></i> ${statusText}</span>`
-        : `<span class="badge badge-expired" style="font-size:14px; padding:6px 16px"><i class="fa-solid fa-triangle-exclamation"></i> ${statusText}</span>`;
-
-      // Show/Hide Re-Test Button if Tin Fails!
-      const retryBtn = document.getElementById('btnRetryFailedTin');
-      const retryNum = document.getElementById('retryTinNum');
-      if (retryBtn && retryNum) {
-        if (!isPass) {
-          retryBtn.style.display = 'inline-flex';
-          retryNum.textContent = (currentTinIndex + 1).toString();
-        } else {
-          retryBtn.style.display = 'none';
-        }
-      }
-    };
+    renderFactoryMatrixGrid();
 
     document.querySelectorAll('.seam-top-sl, .seam-top-bh, .seam-top-ch, .seam-bot-sl, .seam-bot-bh, .seam-bot-ch').forEach(input => {
       input.addEventListener('input', updateSeamCalculations);
@@ -1389,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     setupSeamHistoryFilters();
-    loadTinToInputs(0);
+    renderFactoryMatrixGrid();
     renderSeamQcHistory();
   }
 
